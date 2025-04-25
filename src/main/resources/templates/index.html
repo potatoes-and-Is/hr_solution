@@ -170,6 +170,16 @@
 
 <th:block layout:fragment="scripts">
     <!-- 페이지별 추가 스크립트 -->
+    <!-- 버튼 클릭 시 알림 기능 -->
+    <script>
+        function checkIn() {
+            alert("출근 시간이 등록되었습니다: " + new Date().toLocaleString());
+        }
+
+        function checkOut() {
+            alert("퇴근 시간이 등록되었습니다: " + new Date().toLocaleString());
+        }
+    </script>
 </th:block>
 </body>
 </html>
