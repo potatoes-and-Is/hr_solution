@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+    <th:block layout:fragment="head">
+        <style>
+            /* 카드 스타일 */
+            .attendance-card {
+                width: 450px !important;
+                height: 200px !important;
+                background-color: #F6F6F6 !important;
+            }
+            .vacation-card {
+                width: 450px !important;
+                height: 200px !important;
+                background-color: #e6f0fa !important;
+            }
+            /* 출퇴근 제목 스타일 */
+            .attendance-title {
+                font-size: 1.1rem;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 10px;
+            }
+            /* 버튼 스타일 */
+            .custom-btn {
+                font-size: 1rem;
+                padding: 40px 60px;
+                background-color: #4e73df;
+                border-color: #4e73df;
+            }
+            .custom-btn:hover {
+                background-color: #2e59d9;
+                border-color: #2e59d9;
+            }
+            /* 달력 스타일 */
+            .calendar-table th, .calendar-table td {
+                font-size: 1.2rem;
+                padding: 15px;
+            }
+            .calendar-table {
+                width: 100%;
+            }
+            /* 제목 스타일 */
+            .greeting-text {
+                font-size: 2rem;
+            }
+            .date-text {
+                font-size: 1.2rem;
+            }
+            /* 휴가 글자 위치 */
+            .vacation-date {
+                margin-top: 20px;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- 컨테이너 -->
+    <div class="container">
+        <!-- "000님, 반가워요!"와 날짜 -->
+        <div class="row justify-content-start mb-4">
+            <div class="col-md-10">
+                <h1 class="greeting-text text-gray-800" th:text="${userName} + '님, 반가워요!'">사용자님, 반가워요!</h1>
+                <p class="date-text" th:text="${currentDateTime}">2025.04.22(화) 20:30</p>
+            </div>
+        </div>
+
+        <!-- 출근하기/퇴근하기/휴가 박스 -->
+        <div class="row justify-content-start mb-4">
+            <div class="col-md-10 d-flex justify-content-start">
+                <!-- 출근하기/퇴근하기 박스 -->
+                <div class="card shadow attendance-card mr-4">
+                    <div class="card-body">
+                        <h5 class="attendance-title text-left">출퇴근</h5>
+                        <div class="d-flex justify-content-start">
+                            <button class="btn btn-primary custom-btn mr-3" onclick="checkIn()" style="background-color: #1cc88a; border-color:#1cc88a">출근하기</button>
+                            <button class="btn btn-primary custom-btn" onclick="checkOut()" style="background-color: #e74a3b; border-color:#e74a3b">퇴근하기</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 휴가 -->
+                <div class="card shadow vacation-card">
+                    <div class="card-body text-center"><br>
+                        <h5 class="m-0 font-weight-bold text-primary mb-3">휴가</h5>
+                        <p class="m-0 vacation-date">2025.05.15 휴가 (승인완료)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 달력 -->
+        <div class="row justify-content-start">
+            <div class="col-md-10">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">2025/04</h6>
+                        <div>
+                            <button class="btn btn-light btn-sm"><</button>
+                            <button class="btn btn-light btn-sm">></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered text-center calendar-table">
+                            <thead>
+                            <tr>
+                                <th style="color: red;">일</th>
+                                <th>월</th>
+                                <th>화</th>
+                                <th>수</th>
+                                <th>목</th>
+                                <th>금</th>
+                                <th style="color: blue;">토</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>7</td>
+                                <td>8</td>
+                                <td>9</td>
+                                <td>10</td>
+                                <td>11</td>
+                                <td>12</td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>14</td>
+                                <td>15</td>
+                                <td>16</td>
+                                <td>17</td>
+                                <td>18</td>
+                                <td>19</td>
+                            </tr>
+                            <tr>
+                                <td>20</td>
+                                <td>21</td>
+                                <td style="background-color: #e6f0fa;">22</td>
+                                <td>23</td>
+                                <td>24</td>
+                                <td>25</td>
+                                <td>26</td>
+                            </tr>
+                            <tr>
+                                <td>27</td>
+                                <td>28</td>
+                                <td>29</td>
+                                <td>30</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+    <!-- 페이지별 추가 스크립트 -->
+</th:block>
+</body>
+</html>
