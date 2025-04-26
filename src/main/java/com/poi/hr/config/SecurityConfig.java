@@ -35,7 +35,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/login", "/auth/fail", "/admin/encrypt-passwords").permitAll()
+                .requestMatchers("/auth/login", "/auth/fail").permitAll()
                 .requestMatchers("/").hasAnyAuthority(
                         Arrays.stream(Role.values())
                                 .map(Role::name)
@@ -52,10 +52,10 @@ public class SecurityConfig {
                 .failureHandler(authFailHandler)
 
     ).logout(logout -> logout
-                .logoutRequestMatcher(new AntPathRequestMatcher("/common/logout"))
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
-                .logoutSuccessUrl("/common/logout")
+                .logoutSuccessUrl("/auth/login")
 
     ).sessionManagement(session -> {
                 session.maximumSessions(1);

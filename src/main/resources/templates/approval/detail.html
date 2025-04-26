@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+    <style>
+        .report-block {
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .report-row {
+            margin-bottom: 10px;
+        }
+        .report-label {
+            font-weight: bold;
+            display: inline-block;
+            width: 120px;
+        }
+    </style>
+    <th:block layout:fragment="head">
+        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">전자 결재 보고서</h1>
+    <p class="mb-4" th:text="${userName} + '님의 전자 결재 보고서 페이지입니다.'"></p>
+
+    <!-- Report Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">결재 내역 상세</h6>
+        </div>
+        <div class="card-body">
+            <div class="report-block">
+                <p><strong>결재번호:</strong> <span th:text="${approval.approvalDocsId}"></span></p>
+                <p><strong>제목:</strong> <span th:text="${approval.approvalTitle}"></span></p>
+                <p><strong>구분:</strong> <span th:text="${approval.docTypeName}"></span></p>
+                <p><strong>기안일:</strong> <span th:text="${approval.createdAt}"></span></p>
+                <p><strong>완료일:</strong> <span th:text="${approval.approvalDate}"></span></p>
+                <p><strong>상태:</strong> <span th:text="${approval.approvalStatus}"></span></p>
+            </div>
+<!--            <div th:each="approval : ${approvalList}" class="report-block">-->
+<!--                <div class="report-row">-->
+<!--                    <span class="report-label">결재번호:</span>-->
+<!--                    <span th:text="${approval.approvalDocsId}">approvalDocsId</span>-->
+<!--                </div>-->
+<!--                <div class="report-row">-->
+<!--                    <span class="report-label">구분:</span>-->
+<!--                    <span th:text="${approval.docTypeName}">docTypeName</span>-->
+<!--                </div>-->
+<!--                <div class="report-row">-->
+<!--                    <span class="report-label">제목:</span>-->
+<!--                    <span th:text="${approval.approvalTitle}">approvalTitle</span>-->
+<!--                </div>-->
+<!--                <div class="report-row">-->
+<!--                    <span class="report-label">기안일:</span>-->
+<!--                    <span th:text="${approval.createdAt}">createdAt</span>-->
+<!--                </div>-->
+<!--                <div class="report-row">-->
+<!--                    <span class="report-label">완료일:</span>-->
+<!--                    <span th:text="${approval.approvalDate}">approvalDate</span>-->
+<!--                </div>-->
+<!--                <div class="report-row">-->
+<!--                    <span class="report-label">상태:</span>-->
+<!--                    <span th:text="${approval.approvalStatus}">approvalStatus</span>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+    <!-- (DataTables는 여기서 안 써도 됨, 표가 아니니까) -->
+</th:block>
+</body>
+</html>

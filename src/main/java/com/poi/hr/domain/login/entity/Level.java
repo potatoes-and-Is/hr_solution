@@ -28,8 +28,7 @@ public class Level {
     public Level() {
     }
 
-    public Level(Integer levelId, String levelCode, String levelName, String createdBy, LocalDateTime createdAt) {
-        this.levelId = levelId;
+    public Level(String levelCode, String levelName, String createdBy, LocalDateTime createdAt) {
         this.levelCode = levelCode;
         this.levelName = levelName;
         this.createdBy = createdBy;

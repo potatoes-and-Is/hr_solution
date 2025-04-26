@@ -53,8 +53,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int employeeId, String employeeName, String gender, String email, String password, String phone, String employeeIdentity, String employeeStatus, LocalDate hireDate, LocalDate retireDate, String employeeNumber, Level level, List<DepPositionEmployee> depPositionEmployees) {
-        this.employeeId = employeeId;
+    public Employee(String employeeName, String gender, String email, String password, String phone, String employeeIdentity, String employeeStatus, LocalDate hireDate, LocalDate retireDate, String employeeNumber, Level level) {
         this.employeeName = employeeName;
         this.gender = gender;
         this.email = email;
@@ -66,7 +65,6 @@ public class Employee {
         this.retireDate = retireDate;
         this.employeeNumber = employeeNumber;
         this.level = level;
-        this.depPositionEmployees = depPositionEmployees;
     }
 
     public int getEmployeeId() {
