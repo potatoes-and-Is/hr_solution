@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
 <head>
+    <style>
+        /* 행 위에 올렸을 때 커서와 색깔 변경 */
+        #dataTable tbody tr:hover {
+            cursor: pointer;
+            background-color: #f2f2f2;
+        }
+    </style>
     <th:block layout:fragment="head">
         <!-- DataTables CSS -->
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -11,6 +18,7 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">전자 결재</h1>
     <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
+    <p class="mb-4" th:text="${userName} + '님의 전자 결재 페이지입니다.'"><a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -31,8 +39,8 @@
                     </tr>
                     <tbody>
                     <tr th:each="approval : ${approvalList}">
-                        <td th:text="${approval.approvalDocId}"></td>
-                        <td th:text="${approval.DocTypeId}"></td>
+                        <td th:text="${approval.approvalDocsId}"></td>
+                        <td th:text="${approval.docTypeName}"></td>
                         <td th:text="${approval.approvalTitle}"></td>
                         <td th:text="${approval.createdAt}"></td>
                         <td th:text="${approval.approvalDate}"></td>
@@ -53,6 +61,17 @@
     <script>
         $(document).ready(function() {
             $('#dataTable').DataTable();
+
+            // 테이블 행 클릭 이벤트
+            $('#dataTable tbody').on('click', 'tr', function() {
+                const approvalDocId = $(this).find('td:eq(0)').text().trim();
+
+                if (approvalDocId) {
+                    window.location.href = '/approval/detail/' + approvalDocId;
+                } else {
+                    alert('결재 문서가 없습니다.')
+                }
+            })
         });
     </script>
 </th:block>
