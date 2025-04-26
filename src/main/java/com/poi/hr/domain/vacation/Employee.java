@@ -12,7 +12,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
-    private int employeeId;
+    private Integer employeeId;
 
     @Column(name = "employee_number", nullable = false, unique = true, length = 30)
     private String employeeNumber;
@@ -71,7 +71,7 @@ public class Employee {
         this.retireDate = retireDate;
     }
 
-    public int getEmployeeId() {
+    public Integer getEmployeeId() {
         return employeeId;
     }
 

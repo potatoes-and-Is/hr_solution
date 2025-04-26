@@ -11,7 +11,7 @@ public class Career {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "career_id")
-    private int careerId;
+    private Integer careerId;
 
     @Column(name = "previous_company", nullable = false, length = 50)
     private String previousCompany;
@@ -48,7 +48,7 @@ public class Career {
         this.employee = employee;
     }
 
-    public int getCareerId() {
+    public Integer getCareerId() {
         return careerId;
     }
 
