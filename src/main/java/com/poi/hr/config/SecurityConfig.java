@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-public class securityConfig {
+public class SecurityConfig {
 
     private AuthFailHandler authFailHandler;
 
@@ -35,20 +35,20 @@ public class securityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/common/login", "/common/fail").permitAll()
-                .requestMatchers("/poihr/*").hasAnyAuthority(
+                .requestMatchers("/auth/login", "/auth/fail", "/admin/encrypt-passwords").permitAll()
+                .requestMatchers("/").hasAnyAuthority(
                         Arrays.stream(Role.values())
                                 .map(Role::name)
                                 .toArray(String[]::new))
                 .anyRequest().authenticated()
 
     ).formLogin(login -> login
-                .loginPage("/common/login")
+                .loginPage("/auth/login")
                 .loginProcessingUrl("/login")
                 .usernameParameter("employeeNumber")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/poihr/main", true)
-                .failureUrl("/common/fail")
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/auth/fail")
                 .failureHandler(authFailHandler)
 
     ).logout(logout -> logout

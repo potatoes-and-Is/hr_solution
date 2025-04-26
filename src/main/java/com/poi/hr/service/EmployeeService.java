@@ -6,21 +6,42 @@ import com.poi.hr.domain.login.entity.DepPositionEmployee;
 import com.poi.hr.domain.login.entity.Employee;
 import com.poi.hr.dto.LoginEmployeeDto;
 import com.poi.hr.repository.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class EmployeeService {
 
+    @Autowired
     private final EmployeeRepository employeeRepository;
+
+    @Autowired
     private final PasswordEncoder encoder;
 
     public EmployeeService(EmployeeRepository employeeRepository, PasswordEncoder encoder) {
         this.employeeRepository = employeeRepository;
         this.encoder = encoder;
     }
+
+    public void encryptAllPasswords() {
+        List<Employee> employees = employeeRepository.findAll();
+
+        for (Employee employee : employees) {
+            // 현재 비밀번호를 가져와서 암호화
+            String rawPassword = employee.getPassword();
+            String encodedPassword = encoder.encode(rawPassword);
+
+            // 암호화된 비밀번호로 업데이트
+            employee.setPassword(encodedPassword);
+            employeeRepository.save(employee);
+        }
+    }
+
 
     //    @Transactional
 //    public Integer regist(SignupDTO signupDTO) {
@@ -43,7 +64,7 @@ public class EmployeeService {
 //            return 0;
 //        }
 //    }
-
+    @Transactional(readOnly = true)
     public LoginEmployeeDto findById(int id) {
         Optional<Employee> employee = employeeRepository.findById(id);
 
@@ -62,6 +83,7 @@ public class EmployeeService {
         }).orElse(null);
     }
 
+    @Transactional(readOnly = true)
     public LoginEmployeeDto findByUsername(String username) {
         Optional<Employee> employee = employeeRepository.findByEmployeeNumber(username);
 

@@ -121,6 +121,58 @@ public class Employee {
         return depPositionEmployees;
     }
 
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setEmployeeIdentity(String employeeIdentity) {
+        this.employeeIdentity = employeeIdentity;
+    }
+
+    public void setEmployeeStatus(String employeeStatus) {
+        this.employeeStatus = employeeStatus;
+    }
+
+    public void setHireDate(LocalDate hireDate) {
+        this.hireDate = hireDate;
+    }
+
+    public void setRetireDate(LocalDate retireDate) {
+        this.retireDate = retireDate;
+    }
+
+    public void setEmployeeNumber(String employeeNumber) {
+        this.employeeNumber = employeeNumber;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public void setDepPositionEmployees(List<DepPositionEmployee> depPositionEmployees) {
+        this.depPositionEmployees = depPositionEmployees;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +

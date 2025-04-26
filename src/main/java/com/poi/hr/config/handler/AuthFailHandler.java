@@ -40,7 +40,7 @@ public class AuthFailHandler extends SimpleUrlAuthenticationFailureHandler {
         //URL을 안전하게 인코딩 하는데 사용되는 유틸로 문자열을 URL에 사용가능한 형식으로 인코딩할 수 있다.
         errorMessage = URLEncoder.encode(errorMessage,"UTF-8");
         //오류를 처리할 페이지로 이동시킨다. URL 요청은 servlet에 정의해야함.
-        setDefaultFailureUrl("/auth/fail?message="+errorMessage);
+        setDefaultFailureUrl("/common/fail?message="+errorMessage);
         // 부모에 메서드를 호출하여 다음 로직을 수행하도록 하기 위함이다.
         super.onAuthenticationFailure(request,response,exception);
     }

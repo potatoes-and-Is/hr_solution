@@ -1,11 +1,14 @@
 package com.poi.hr.auth.model;
 
+import com.poi.hr.domain.common.Role;
 import com.poi.hr.dto.LoginEmployeeDto;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 public class AuthDetails implements UserDetails {
 
@@ -20,10 +23,12 @@ public class AuthDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
+//        Collection<GrantedAuthority> authorities = new ArrayList<>();
+//
+//        loginEmployeeDto.getRoles().forEach(role -> authorities.add(() -> role));
+//        return authorities;
+        return Collections.singletonList(new SimpleGrantedAuthority(loginEmployeeDto.getEmployeeRole().name()));
 
-        loginEmployeeDto.getRoles().forEach(role -> authorities.add(() -> role));
-        return authorities;
     }
 
     @Override

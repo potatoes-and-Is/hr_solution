@@ -16,7 +16,7 @@ public class TeamPosition {
     private int teamPositionId;
 
     @Column(name = "position_name", nullable = false)
-    private String PositionName;
+    private String positionName;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
@@ -30,7 +30,7 @@ public class TeamPosition {
     }
 
     public TeamPosition(String positionName, Role role) {
-        PositionName = positionName;
+        this.positionName = positionName;
         this.role = role;
     }
 
@@ -39,7 +39,7 @@ public class TeamPosition {
     }
 
     public String getPositionName() {
-        return PositionName;
+        return positionName;
     }
 
     public Role getRole() {
@@ -54,7 +54,7 @@ public class TeamPosition {
     public String toString() {
         return "TeamPositions{" +
                 "teamPositionId=" + teamPositionId +
-                ", PositionName='" + PositionName + '\'' +
+                ", PositionName='" + positionName + '\'' +
                 ", role=" + role +
                 ", createdAt=" + createdAt +
                 '}';
