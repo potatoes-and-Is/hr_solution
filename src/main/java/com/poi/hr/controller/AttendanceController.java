@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AttendanceController {
 
     // 출근 버튼 눌렀을 때 받아와야 하는 정보 : employee_id / 현재 시간 /
+
     /* 출퇴근 탭 */
     @GetMapping("/attendanceList")
     public String attendanceList(Model model) {
