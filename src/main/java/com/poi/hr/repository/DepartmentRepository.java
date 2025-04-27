@@ -9,10 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Integer> {
-    Optional<Department> findByDeptName(String deptName);
-    Optional<Department> findByDeptCode(String deptCode);
 
-    void deleteByDeptName(String deptCode);
-    List<Department> findByParentDeptIdIsNull();
-    List<Department> findByParentDeptId(Department parentDept);
 }

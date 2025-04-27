@@ -33,7 +33,6 @@ public class DepartmentDto {
         this.parentDeptId = parentDeptId;
     }
 
-
     public DepartmentDto(String deptCode, String deptName) {
         this.deptCode = deptCode;
         this.deptName = deptName;

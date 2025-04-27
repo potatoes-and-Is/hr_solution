@@ -1,7 +1,9 @@
 package com.poi.hr.service;
 
 import com.poi.hr.domain.department.Department;
+import com.poi.hr.domain.hr.DepPositionEmployee;
 import com.poi.hr.dto.DepartmentDto;
+import com.poi.hr.repository.DepPositionEmployeeRepository;
 import com.poi.hr.repository.DepartmentRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,17 @@ public class DepartmentService {
 
     private static final Logger logger = Logger.getLogger(DepartmentService.class.getName());
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(DepartmentService.class);
+
     private final DepartmentRepository departmentRepository;
+    private final DepPositionEmployeeRepository depPositionEmployeeRepository;
 
     @Autowired
-    public DepartmentService(DepartmentRepository departmentRepository) {
+    public DepartmentService(DepartmentRepository departmentRepository, DepPositionEmployeeRepository depPositionEmployeeRepository) {
         this.departmentRepository = departmentRepository;
+        this.depPositionEmployeeRepository = depPositionEmployeeRepository;
     }
 
+    // 부서 정보 가져오기
     public List<DepartmentDto> getDepartmentList() {
         List<Department> departments = departmentRepository.findAll();
 
@@ -41,6 +47,7 @@ public class DepartmentService {
                 .collect(Collectors.toList());
     }
 
+    // 부서 트리 형태로
     public List<DepartmentDto> buildDeptTree(List<DepartmentDto> flatList) {
         Map<Integer, DepartmentDto> map = new HashMap<>();
         List<DepartmentDto> roots = new ArrayList<>();
@@ -63,6 +70,9 @@ public class DepartmentService {
         return roots;
     }
 
-
+    // 부서별 직원리스트 불러오기
+    public List<DepPositionEmployee> getEmployeesByDeptId(Integer deptId) {
+        return depPositionEmployeeRepository.findByDeptId(deptId);
+    }
 }
 
