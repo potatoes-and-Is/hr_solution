@@ -3,7 +3,7 @@ package com.poi.hr.domain.vacation;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "TeamPosition_Permissions")
+@Table(name = "Team_position_permissions")
 public class TeamPositionPermission {
 
     @Id
