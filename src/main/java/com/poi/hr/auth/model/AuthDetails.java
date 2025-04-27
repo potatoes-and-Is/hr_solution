@@ -36,6 +36,10 @@ public class AuthDetails implements UserDetails {
         return loginEmployeeDto.getEmployeeName();
     }
 
+    public LoginEmployeeDto getLoginEmployeeDto() {
+        return this.loginEmployeeDto;
+    }
+
     @Override
     public String getUsername() {
         return loginEmployeeDto.getEmployeeNumber();

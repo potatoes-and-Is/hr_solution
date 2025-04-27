@@ -7,6 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Controller
 public class HomeController {
 
@@ -16,9 +19,13 @@ public class HomeController {
 
         model.addAttribute("title", "Home");
 
-        // 로그인한 사용자의 이름을 model에 추가
-        model.addAttribute("userName", ((AuthDetails) userDetails).getEmployeeName());
+        AuthDetails authDetails = (AuthDetails) userDetails;
+        model.addAttribute("userName", authDetails.getEmployeeName()); // 이름
+        model.addAttribute("userRole", authDetails.getLoginEmployeeDto().getEmployeeRole().getRole()); // 직책(팀장, 팀원 등)
 
+        // 현재 시간 (yyyy.MM.dd(E) HH:mm:ss)
+        String currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd(E) HH:mm:ss"));
+        model.addAttribute("currentDateTime", currentDateTime);
         return "index";
     }
 
