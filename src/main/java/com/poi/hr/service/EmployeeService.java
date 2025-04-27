@@ -16,9 +16,12 @@ public class EmployeeService {
     private static final Logger log = LoggerFactory.getLogger(EmployeeService.class);
     private final EmployeeRepository employeeRepository;
 
+
+
     @Autowired
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
+
     }
 
     public List<Employee> findAllEmployees() {
@@ -30,7 +33,11 @@ public class EmployeeService {
     }
 
     @Transactional
-    public Employee save(Employee employee){
+    public Employee save(Employee employee) {
+        // 1. Employee 기본 정보 저장
+        Employee savedEmp = employeeRepository.save(employee);
+
+        // ✅ 기존 방식으로 반환 (employeeRepository 재호출)
         return employeeRepository.save(employee);
     }
 
@@ -39,9 +46,4 @@ public class EmployeeService {
             employee.setLevel(1);
         }
     }
-
-    // plcaeholder마다 입력을 할수 있음.
-    // 등록을 누르면 그 데이터가 저장
-    // 저장되면 바로 리스트에 출력
-
 }

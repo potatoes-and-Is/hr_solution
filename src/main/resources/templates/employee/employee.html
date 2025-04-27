@@ -25,18 +25,47 @@
   <input type="text" id="name" placeholder="이름">
 </div>
 <button id="registerBtn">등록</button>
+<label for="levelSelect">직급</label>
+<select id="levelSelect">
+  <option value="1">대표</option>
+  <option value="2">팀장</option>
+  <option value="3">사원</option>
+</select>
+<label for="deptSelect">부서</label>
+<select id="deptSelect">
+  <option value="">부서를 선택하세요</option>
+</select>
+<label for="positionSelect">직책</label>
+<select id="positionSelect">
+  <option value="팀원">팀원</option>
+  <option value="팀장">팀장</option>
+</select>
+<label for="genderSelect"></label>
+<select id="genderSelect">
+  <option value="M">남성</option>
+  <option value="F">여성</option>
+</select>
+<label for="statusSelect"></label>
+<select id="statusSelect">
+  <option value="ACTIVE">재직</option>
+  <option value="INACTIVE">퇴직</option>
+</select>
 </body>
 </html>
 <script>
   document.getElementById('registerBtn').addEventListener('click', function() {
     const employeeData = {
       email: document.getElementById('email').value,
-      employeeIdentity: document.getElementById('identity').value,
+      level: document.getElementById('levelSelect').value,   // level_id 로 매핑
+      deptName: document.getElementById('deptSelect').value,
+      positionName: document.getElementById('positionSelect').value,
+      gender: document.getElementById('genderSelect').value,
+      status: document.getElementById('statusSelect').value,
+      identity: document.getElementById('identity').value,
       phone: document.getElementById('phone').value,
       password: document.getElementById('password').value,
       address: document.getElementById('address').value,
-      employeeName: document.getElementById('name').value
-      // 자동 세팅 항목은 백엔드에서 처리
+      name: document.getElementById('name').value
     };
 
     fetch('/author/add', {

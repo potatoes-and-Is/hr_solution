@@ -1,6 +1,7 @@
 package com.poi.hr.domain.employee;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 
@@ -40,6 +41,7 @@ public class Employee {
     @Column(name = "employee_status")
     private String status;
 
+    @CreationTimestamp
     @Column(name = "hire_date")
     private LocalDate hireDate;
 

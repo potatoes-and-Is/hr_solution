@@ -48,8 +48,9 @@ public class AuthorEmployeeController {
     // 직원 추가
     @PostMapping("/add")
     public ResponseEntity<Employee> saveEmployee(@Validated @RequestBody Employee employee) {
-        employeeService.applyDefaultValues(employee);
+//        employeeService.applyDefaultValues(employee);
         Employee savedEmployee = employeeService.save(employee);
         return ResponseEntity.status(201).body(savedEmployee);
     }
+
 }
