@@ -1,5 +1,6 @@
 package com.poi.hr.controller;
 
+import com.poi.hr.dto.DepartmentDto;
 import com.poi.hr.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
@@ -23,7 +25,9 @@ public class DepartmentController {
 
     @GetMapping("/departmentInfo")
     public String departmentInfo(Model model) {
-        model.addAttribute("departmentList", departmentService.getDepartmentList());
+        List<DepartmentDto> flatList = departmentService.getDepartmentList();
+        List<DepartmentDto> deptTree = departmentService.buildDeptTree(flatList);
+        model.addAttribute("deptTree", deptTree);
         return "department/departmentInfo";
     }
 }

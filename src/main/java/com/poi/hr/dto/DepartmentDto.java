@@ -1,27 +1,50 @@
 package com.poi.hr.dto;
 
-public class DepartmentDto {
+import java.util.ArrayList;
+import java.util.List;
 
+public class DepartmentDto {
+    private Integer deptId;
     private String deptCode;
     private String deptName;
     private String createdBy;
     private String updatedBy;
-    private String parentCode;
+    private Integer parentDeptId;
+
+    private List<DepartmentDto> children = new ArrayList<>();
 
     public DepartmentDto() {
     }
 
-    public DepartmentDto(String deptCode, String deptName, String createdBy, String updatedBy, String parentCode) {
+    public DepartmentDto(int deptId, String deptName, String createdBy, String updatedBy, Integer parentDeptId) {
+        this.deptId = deptId;
+        this.deptName = deptName;
+        this.createdBy = createdBy;
+        this.updatedBy = updatedBy;
+        this.parentDeptId = parentDeptId;
+    }
+
+    public DepartmentDto(int deptId, String deptCode, String deptName, String createdBy, String updatedBy, Integer parentDeptId) {
+        this.deptId = deptId;
         this.deptCode = deptCode;
         this.deptName = deptName;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
-        this.parentCode = parentCode;
+        this.parentDeptId = parentDeptId;
     }
+
 
     public DepartmentDto(String deptCode, String deptName) {
         this.deptCode = deptCode;
         this.deptName = deptName;
+    }
+
+    public Integer getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
     }
 
     public String getDeptCode() {
@@ -56,24 +79,31 @@ public class DepartmentDto {
         this.updatedBy = updatedBy;
     }
 
-    public String getParentCode() {
-        return parentCode;
+    public Integer getParentDeptId() {
+        return parentDeptId;
     }
 
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
+    public void setParentDeptId(Integer parentDeptId) {
+        this.parentDeptId = parentDeptId;
+    }
+
+    public List<DepartmentDto> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<DepartmentDto> children) {
+        this.children = children;
     }
 
     @Override
     public String toString() {
-        return "DeptsDTO{" +
+        return "DepartmentDto{" +
                 "deptCode='" + deptCode + '\'' +
                 ", deptName='" + deptName + '\'' +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
-                ", parentCode='" + parentCode + '\'' +
+                ", parentDeptId=" + parentDeptId + '\'' +
+                ", children=" + children +
                 '}';
     }
-
-
 }
