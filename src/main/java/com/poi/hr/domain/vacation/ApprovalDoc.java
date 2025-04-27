@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Approval_docs")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class ApprovalDoc {
 
     @Id
