@@ -1,5 +1,6 @@
 package com.poi.hr.controller;
 
+import com.poi.hr.dto.vacation.VacationBalanceDTO;
 import com.poi.hr.service.VacationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,13 +22,9 @@ public class MyVacationController {
     public String getMyVacation(Model model) {
         int employeeId = 2;  //임시 아이디
 
-        int totalDays = vacationService.getTotalVacationDays(employeeId);
-        int usedDays = vacationService.getUsedVacationDays(employeeId);
-        int remainingDays = vacationService.getRemainingVacationDays(employeeId);
+        VacationBalanceDTO vacationInfo = vacationService.getTotalVacationInfo(employeeId);
 
-        model.addAttribute("totalDays", totalDays);
-        model.addAttribute("usedDays", usedDays);
-        model.addAttribute("remainingDays", remainingDays);
+        model.addAttribute("vacationInfo", vacationInfo);
 
         return "vacation/my-vacation";
     }

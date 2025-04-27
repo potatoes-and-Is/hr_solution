@@ -30,19 +30,19 @@
             <div class="col-md-4">
                 <div class="summary-box bg-total">
                     <div>총 부여된 휴가</div>
-                    <div class="h2" th:text="${totalDays} + '일'">15일</div>
+                    <div class="h2" th:text="${vacationInfo.getVacCount()} + '일'"></div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="summary-box bg-used">
                     <div>사용한 휴가</div>
-                    <div class="h2" th:text="${usedDays} + '일'">10일</div>
+                    <div class="h2" th:text="${vacationInfo.getUsedVacCount()} + '일'"></div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="summary-box bg-remaining">
                     <div>사용 가능한 휴가</div>
-                    <div class="h2" th:text="${remainingDays} + '일'">5일</div>
+                    <div class="h2" th:text="${vacationInfo.getRemainVacCount()} + '일'"></div>
                 </div>
             </div>
         </div>
