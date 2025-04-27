@@ -27,7 +27,6 @@ public class ApprovalController {
 
     @GetMapping("/approval/list")
     public String showApprovalList(Model model) {
-        System.out.println("!!! 컨트롤러 접근 !!!");
         List<ApprovalListDto> approvalList = approvalService.findAllApprovals();
         model.addAttribute("approvalList", approvalList);
         return "approval/list";
@@ -35,7 +34,7 @@ public class ApprovalController {
 
     @GetMapping("/approval/detail/{id}")
     public String showApprovalDetail(Model model, @PathVariable int id) {
-//        model.addAttribute("approval", approvalService.findById());
+        model.addAttribute("approvalDoc", approvalService.findApprovalById(id));
         return "approval/detail";
     }
 }

@@ -1,9 +1,8 @@
 package com.poi.hr.domain.approval;
 
+import com.poi.hr.domain.enums.ApprovalDocStatus;
 import com.poi.hr.domain.hr.Employee;
 import jakarta.persistence.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -37,9 +36,9 @@ public abstract class ApprovalDocs {
     @Column(name = "approval_reason", nullable = false)
     private String approvalReason;
 
-    @Column(name = "approval_status", nullable = false, length = 10)
-    @ColumnDefault("'승인대기'")
-    private String approvalStatus = "승인대기";
+    @Enumerated(EnumType.STRING)
+    @Column(name = "approval_status", nullable = false)
+    private ApprovalDocStatus approvalStatus = ApprovalDocStatus.PENDING;
 
     @Column(name = "approval_date")
     private LocalDate approvalDate;
@@ -72,7 +71,7 @@ public abstract class ApprovalDocs {
         return approvalReason;
     }
 
-    public String getApprovalStatus() {
+    public ApprovalDocStatus getApprovalStatus() {
         return approvalStatus;
     }
 

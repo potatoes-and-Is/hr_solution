@@ -6,6 +6,7 @@ import com.poi.hr.dto.ApprovalDetailDto;
 import com.poi.hr.dto.ApprovalListDto;
 import com.poi.hr.repository.ApprovalRepository;
 import com.poi.hr.repository.VacationReqRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ public class ApprovalService {
     }
 
     public List<ApprovalListDto> findAllApprovals() {
-        System.out.println("!!! 서비스 접근 !!!");
         approvalRepository.findAll();
 
         List<ApprovalListDto> approvalListDto = new ArrayList<>();
@@ -42,23 +42,24 @@ public class ApprovalService {
     }
 
     public ApprovalDetailDto findApprovalById(int id) {
-        Optional<ApprovalDocs> approvalDoc = approvalRepository.findById(id);
-        Optional<VacationReq> vacationReq = vacationReqRepository.findById(id);
+        ApprovalDocs approvalDoc = approvalRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("해당 결재 문서가 없습니다."));
+        VacationReq vacationReq = vacationReqRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("해당 휴가 요청이 없습니다."));
 
-        ApprovalDetailDto approvalDetailDto = new ApprovalDetailDto(
-                approvalDoc.get().getApprovalDocId(),
-                approvalDoc.get().getDocType().getDocTypeName(),
-                approvalDoc.get().getApprovalTitle(),
-                approvalDoc.get().getCreatedAt(),
-                approvalDoc.get().getApprovalDate(),
-                approvalDoc.get().getApprovalContent(),
-                approvalDoc.get().getApprovalReason(),
+        return new ApprovalDetailDto(
+                approvalDoc.getApprovalDocId(),
+                approvalDoc.getDocType().getDocTypeName(),
+                approvalDoc.getApprovalTitle(),
+                approvalDoc.getCreatedAt(),
+                approvalDoc.getApprovalDate(),
+                approvalDoc.getApprovalStatus().getStatus(),
+                approvalDoc.getApprovalContent(),
+                approvalDoc.getApprovalReason(),
 
-                vacationReq.get().getVacReqStart(),
-                vacationReq.get().getVacReqEnd(),
-                vacationReq.get().getVacUseDay()
+                vacationReq.getVacReqStart(),
+                vacationReq.getVacReqEnd(),
+                vacationReq.getVacUseDay()
         );
-
-        return approvalDetailDto;
     }
 }

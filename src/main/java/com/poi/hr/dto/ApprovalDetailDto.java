@@ -10,6 +10,7 @@ public class ApprovalDetailDto {
     private LocalDate createdAt;
     private LocalDate approvalDate;
     private String approvalStatus;
+    private String approvalContent;
     private String approvalReason;
 
     private LocalDate vacReqStart;
@@ -19,13 +20,14 @@ public class ApprovalDetailDto {
     public ApprovalDetailDto() {
     }
 
-    public ApprovalDetailDto(int approvalDocId, String docTypeName, String approvalTitle, LocalDate createdAt, LocalDate approvalDate, String approvalStatus, String approvalReason, LocalDate vacReqStart, LocalDate vacReqEnd, double vacUseDay) {
+    public ApprovalDetailDto(int approvalDocId, String docTypeName, String approvalTitle, LocalDate createdAt, LocalDate approvalDate, String approvalStatus, String approvalContent, String approvalReason, LocalDate vacReqStart, LocalDate vacReqEnd, double vacUseDay) {
         this.approvalDocId = approvalDocId;
         this.docTypeName = docTypeName;
         this.approvalTitle = approvalTitle;
         this.createdAt = createdAt;
         this.approvalDate = approvalDate;
         this.approvalStatus = approvalStatus;
+        this.approvalContent = approvalContent;
         this.approvalReason = approvalReason;
         this.vacReqStart = vacReqStart;
         this.vacReqEnd = vacReqEnd;
@@ -54,6 +56,10 @@ public class ApprovalDetailDto {
 
     public String getApprovalStatus() {
         return approvalStatus;
+    }
+
+    public String getApprovalContent() {
+        return approvalContent;
     }
 
     public String getApprovalReason() {

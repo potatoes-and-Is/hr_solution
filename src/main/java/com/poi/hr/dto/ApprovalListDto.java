@@ -1,5 +1,7 @@
 package com.poi.hr.dto;
 
+import com.poi.hr.domain.enums.ApprovalDocStatus;
+
 import java.time.LocalDate;
 
 public class ApprovalListDto {
@@ -9,12 +11,12 @@ public class ApprovalListDto {
     private String approvalTitle;
     private LocalDate createdAt;
     private LocalDate approvalDate;
-    private String approvalStatus;
+    private ApprovalDocStatus approvalStatus;
 
     public ApprovalListDto() {
     }
 
-    public ApprovalListDto(int approvalDocsId, String docTypeName, String approvalTitle, LocalDate createdAt, LocalDate approval_date, String approvalStatus) {
+    public ApprovalListDto(int approvalDocsId, String docTypeName, String approvalTitle, LocalDate createdAt, LocalDate approval_date, ApprovalDocStatus approvalStatus) {
         this.approvalDocId = approvalDocsId;
         this.docTypeName = docTypeName;
         this.approvalTitle = approvalTitle;
@@ -43,7 +45,7 @@ public class ApprovalListDto {
         return approvalDate;
     }
 
-    public String getApprovalStatus() {
+    public ApprovalDocStatus getApprovalStatus() {
         return approvalStatus;
     }
 }
