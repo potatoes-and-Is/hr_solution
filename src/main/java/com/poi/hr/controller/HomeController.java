@@ -1,5 +1,6 @@
 package com.poi.hr.controller;
 
+import com.poi.hr.auth.model.AuthDetails;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -14,9 +15,15 @@ public class HomeController {
         System.out.println(userDetails.getAuthorities());
 
         model.addAttribute("title", "Home");
+
+        // 로그인한 사용자의 이름을 model에 추가
+        model.addAttribute("userName", ((AuthDetails) userDetails).getEmployeeName());
+
         return "index";
     }
 
-
-
+    @GetMapping("/approval/detail")
+    public String approval() {
+        return "approval/detail";
+    }
 }

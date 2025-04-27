@@ -76,6 +76,7 @@ public class EmployeeService {
             }
 
             return new LoginEmployeeDto(
+                    u.getEmployeeName(),
                     u.getEmployeeNumber(),
                     u.getPassword(),
                     role
@@ -95,6 +96,7 @@ public class EmployeeService {
             }
 
             return new LoginEmployeeDto(
+                    u.getEmployeeName(),
                     u.getEmployeeNumber(),
                     u.getPassword(),
                     role

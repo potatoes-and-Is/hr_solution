@@ -1,6 +1,7 @@
 package com.poi.hr.auth.model;
 
 import com.poi.hr.domain.common.Role;
+import com.poi.hr.domain.login.entity.Employee;
 import com.poi.hr.dto.LoginEmployeeDto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,6 +30,10 @@ public class AuthDetails implements UserDetails {
 //        return authorities;
         return Collections.singletonList(new SimpleGrantedAuthority(loginEmployeeDto.getEmployeeRole().name()));
 
+    }
+
+    public String getEmployeeName() {
+        return loginEmployeeDto.getEmployeeName();
     }
 
     @Override
