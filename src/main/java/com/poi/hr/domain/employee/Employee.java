@@ -15,10 +15,10 @@ public class Employee {
     private int employeeId;
 
     @Column(name = "employee_number")
-    private String empNumber;
+    private String employeeNumber;
 
     @Column(name = "employee_name")
-    private String name;
+    private String employeeName;
 
     @Column(name = "gender")
     private String gender;
@@ -36,10 +36,10 @@ public class Employee {
     private String phone;
 
     @Column(name = "employee_identity")
-    private String identity;
+    private String employeeIdentity;
 
     @Column(name = "employee_status")
-    private String status;
+    private String employeeStatus;
 
     @CreationTimestamp
     @Column(name = "hire_date")
@@ -48,8 +48,9 @@ public class Employee {
     @Column(name = "retire_date")
     private LocalDate retireDate;
 
-    @Column(name = "level_id")
-    private int level;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "level_id")
+    private Level level;
 
     @Transient
     private Integer deptId;
@@ -66,24 +67,30 @@ public class Employee {
     @Transient
     private String levelName;
 
+    @Transient
+    private Integer levelId;
+
 
     public Employee(){
 
     }
 
-    public Employee(int employeeId, String empNumber, String name, String gender, String address, String email, String password, String phone, String identity, String status, LocalDate hireDate, LocalDate retireDate, String deptName, String positionName, String levelName) {
+    public Employee(int employeeId, String employeeNumber, String employeeName, String gender, String address, String email, String password, String phone, String employeeIdentity, String employeeStatus, LocalDate hireDate, LocalDate retireDate, Level level, Integer deptId, Integer positionId, String deptName, String positionName, String levelName) {
         this.employeeId = employeeId;
-        this.empNumber = empNumber;
-        this.name = name;
+        this.employeeNumber = employeeNumber;
+        this.employeeName = employeeName;
         this.gender = gender;
         this.address = address;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.identity = identity;
-        this.status = status;
+        this.employeeIdentity = employeeIdentity;
+        this.employeeStatus = employeeStatus;
         this.hireDate = hireDate;
         this.retireDate = retireDate;
+        this.level = level;
+        this.deptId = deptId;
+        this.positionId = positionId;
         this.deptName = deptName;
         this.positionName = positionName;
         this.levelName = levelName;
@@ -97,20 +104,20 @@ public class Employee {
         this.employeeId = employeeId;
     }
 
-    public String getEmpNumber() {
-        return empNumber;
+    public String getEmployeeNumber() {
+        return employeeNumber;
     }
 
-    public void setEmpNumber(String empNumber) {
-        this.empNumber = empNumber;
+    public void setEmployeeNumber(String empNumber) {
+        this.employeeNumber = empNumber;
     }
 
-    public String getName() {
-        return name;
+    public String getEmployeeName() {
+        return employeeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmployeeName(String name) {
+        this.employeeName = name;
     }
 
     public String getGender() {
@@ -153,20 +160,20 @@ public class Employee {
         this.phone = phone;
     }
 
-    public String getIdentity() {
-        return identity;
+    public String getEmployeeIdentity() {
+        return employeeIdentity;
     }
 
-    public void setIdentity(String identity) {
-        this.identity = identity;
+    public void setEmployeeIdentity(String identity) {
+        this.employeeIdentity = identity;
     }
 
-    public String getStatus() {
-        return status;
+    public String getEmployeeStatus() {
+        return employeeStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setEmployeeStatus(String status) {
+        this.employeeStatus = status;
     }
 
     public LocalDate getHireDate() {
@@ -185,16 +192,16 @@ public class Employee {
         this.retireDate = retireDate;
     }
 
-    public String getDeptName() {
-        return deptName;
-    }
-
-    public int getLevel() {
+    public Level getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(Level level) {
         this.level = level;
+    }
+
+    public String getDeptName() {
+        return deptName;
     }
 
     public void setDeptName(String deptName) {
@@ -233,24 +240,36 @@ public class Employee {
         this.positionId = positionId;
     }
 
+    public Integer getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(Integer levelId) {
+        this.levelId = levelId;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
                 "employeeId=" + employeeId +
-                ", empNumber='" + empNumber + '\'' +
-                ", name='" + name + '\'' +
+                ", employeeNumber='" + employeeNumber + '\'' +
+                ", employeeName='" + employeeName + '\'' +
                 ", gender='" + gender + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
-                ", identity='" + identity + '\'' +
-                ", status='" + status + '\'' +
+                ", employeeIdentity='" + employeeIdentity + '\'' +
+                ", employeeStatus='" + employeeStatus + '\'' +
                 ", hireDate=" + hireDate +
                 ", retireDate=" + retireDate +
+                ", level=" + level +
+                ", deptId=" + deptId +
+                ", positionId=" + positionId +
                 ", deptName='" + deptName + '\'' +
                 ", positionName='" + positionName + '\'' +
                 ", levelName='" + levelName + '\'' +
+                ", levelId=" + levelId +
                 '}';
     }
 }

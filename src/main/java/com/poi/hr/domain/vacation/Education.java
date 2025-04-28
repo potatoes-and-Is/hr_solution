@@ -1,6 +1,7 @@
 package com.poi.hr.domain.vacation;
 
 import ch.qos.logback.core.util.Loader;
+import com.poi.hr.domain.employee.Employee;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

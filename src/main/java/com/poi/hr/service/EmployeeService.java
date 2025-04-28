@@ -1,18 +1,19 @@
 package com.poi.hr.service;
 
-import com.poi.hr.domain.employee.DPEmployee;
-import com.poi.hr.domain.employee.Employee;
-import com.poi.hr.dto.EmployeeUpdateDTO;
-import com.poi.hr.repository.DPEmployeeRepository;
-import com.poi.hr.repository.EmployeeRepository;
+import com.poi.hr.domain.employee.*;
+import com.poi.hr.dto.ResponseEmployeeDTO;
+import com.poi.hr.dto.ResponseEmployeeDetailDTO;
+import com.poi.hr.dto.UpdateEmployeeDTO;
+import com.poi.hr.repository.*;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 public class EmployeeService {
@@ -20,13 +21,19 @@ public class EmployeeService {
     private static final Logger log = LoggerFactory.getLogger(EmployeeService.class);
     private final EmployeeRepository employeeRepository;
     private final DPEmployeeRepository dpEmployeeRepository;
+    private final DeptsRepository deptsRepository;
+    private final TeamPositionRepository teamPositionRepository;
+    private final LevelRepository levelRepository;
 
 
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository, DPEmployeeRepository dpEmployeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, DPEmployeeRepository dpEmployeeRepository, DeptsRepository deptsRepository, TeamPositionRepository teamPositionRepository, LevelRepository levelRepository) {
         this.employeeRepository = employeeRepository;
         this.dpEmployeeRepository = dpEmployeeRepository;
+        this.deptsRepository = deptsRepository;
+        this.teamPositionRepository = teamPositionRepository;
+        this.levelRepository = levelRepository;
     }
 
     public List<Employee> findAllEmployees() {
@@ -39,10 +46,14 @@ public class EmployeeService {
 
     @Transactional
     public Employee save(Employee employee) {
-        // 1. 직원 기본 정보 저장
+
+        Level level = levelRepository.findById(employee.getLevelId())
+                .orElseThrow(() -> new NoSuchElementException("직급이 없습니다: ID=" + employee.getLevelId()));
+
+        employee.setLevel(level);
+
         Employee savedEmp = employeeRepository.save(employee);
 
-        // 2. 프론트에서 전달받은 deptId, positionId 사용
         Integer deptId = employee.getDeptId();
         Integer positionId = employee.getPositionId();
 
@@ -50,35 +61,56 @@ public class EmployeeService {
             throw new IllegalArgumentException("부서 ID와 직책 ID는 필수입니다.");
         }
 
-        // 3. DPE 테이블 저장
-        DPEmployee dpe = new DPEmployee(
-                savedEmp.getEmployeeId(),
-                deptId,
-                positionId
-        );
+        Depts dept = deptsRepository.findById(deptId)
+                .orElseThrow(() -> new NoSuchElementException("부서를 찾을 수 없습니다. ID=" + deptId));
+
+        TeamPosition position = teamPositionRepository.findById(positionId)
+                .orElseThrow(() -> new NoSuchElementException("직책을 찾을 수 없습니다. ID=" + positionId));
+
+        DepPositionEmployee dpe = new DepPositionEmployee(position, dept, savedEmp);
         dpEmployeeRepository.save(dpe);
 
         return savedEmp;
     }
+
     @Transactional
-    public Employee updateEmployee(int employeeId, Employee updateData) {
+    public Employee updateEmployee(int employeeId, UpdateEmployeeDTO updateData) {
         Employee existingEmployee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 직원이 없습니다: " + employeeId));
 
-        // 필요한 필드만 업데이트
-        existingEmployee.setName(updateData.getName());
+        existingEmployee.setEmployeeName(updateData.getEmployeeName());
         existingEmployee.setAddress(updateData.getAddress());
         existingEmployee.setEmail(updateData.getEmail());
         existingEmployee.setPassword(updateData.getPassword());
-        existingEmployee.setIdentity(updateData.getIdentity());
+        existingEmployee.setEmployeeIdentity(updateData.getEmployeeIdentity());
         existingEmployee.setPhone(updateData.getPhone());
 
         return employeeRepository.save(existingEmployee);
     }
 
-//    public void applyDefaultValues(Employee employee) {
-//        if (employee.getLevel() == 0) {
-//            employee.setLevel(1);
-//        }
-//    }
+    // 상세 조회 서비스 메서드
+    public ResponseEmployeeDetailDTO getEmployeeById(int employeeId) {
+        // 직원 정보 조회 (직원 ID로 직원 정보를 가져오는 메서드)
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new IllegalArgumentException("직원이 존재하지 않습니다. ID: " + employeeId));
+
+        // DTO로 변환하여 반환
+        return new ResponseEmployeeDetailDTO(
+                employee.getEmployeeId(),
+                employee.getEmployeeNumber(),
+                employee.getEmployeeName(),
+                employee.getGender(),
+                employee.getAddress(),
+                employee.getEmail(),
+                employee.getPhone(),
+                employee.getEmployeeIdentity(),
+                employee.getEmployeeStatus(),
+                employee.getHireDate().toString(), // 날짜를 문자열로 변환
+                employee.getRetireDate() != null ? employee.getRetireDate().toString() : null, // null 체크 후 날짜를 문자열로 변환
+                employee.getDeptName(),
+                employee.getPositionName(),
+                employee.getLevelName()
+        );
+    }
+
 }

@@ -3,11 +3,11 @@ package com.poi.hr.dto;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-public class DeptDTO {
+public class ResponseDeptDTO {
     private Integer deptId;
     private String deptName;
 
-    public DeptDTO(int deptId, String deptName) {
+    public ResponseDeptDTO(int deptId, String deptName) {
         this.deptId = deptId;
         this.deptName = deptName;
     }

@@ -1,4 +1,4 @@
-package com.poi.hr.domain.vacation;
+package com.poi.hr.domain.employee;
 
 import jakarta.persistence.*;
 
@@ -17,19 +17,17 @@ public class DepPositionEmployee {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id")
-    private Dept dept;
+    private Depts depts;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    public DepPositionEmployee() {
+    public DepPositionEmployee() {}
 
-    }
-
-    public DepPositionEmployee(TeamPosition teamPosition, Dept dept, Employee employee) {
+    public DepPositionEmployee(TeamPosition teamPosition, Depts depts, Employee employee) {
         this.teamPosition = teamPosition;
-        this.dept = dept;
+        this.depts = depts;
         this.employee = employee;
     }
 
@@ -41,8 +39,8 @@ public class DepPositionEmployee {
         return teamPosition;
     }
 
-    public Dept getDept() {
-        return dept;
+    public Depts getDept() {
+        return depts;
     }
 
     public Employee getEmployee() {
@@ -53,8 +51,8 @@ public class DepPositionEmployee {
         this.teamPosition = teamPosition;
     }
 
-    public void setDept(Dept dept) {
-        this.dept = dept;
+    public void setDept(Depts dept) {
+        this.depts = dept;
     }
 
     public void setEmployee(Employee employee) {
@@ -66,7 +64,7 @@ public class DepPositionEmployee {
         return "DepPositionEmployee{" +
                 "dpeId=" + dpeId +
                 ", teamPosition=" + (teamPosition != null ? teamPosition.getTeamPositionId() : null) +
-                ", dept=" + (dept != null ? dept.getDeptId() : null) +
+                ", dept=" + (depts != null ? depts.getDeptId() : null) +
                 ", employeeId=" + (employee != null ? employee.getEmployeeId() : null) +
                 '}';
     }

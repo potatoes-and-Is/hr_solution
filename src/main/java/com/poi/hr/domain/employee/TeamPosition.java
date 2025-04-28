@@ -1,7 +1,7 @@
-package com.poi.hr.domain.vacation;
+package com.poi.hr.domain.employee;
 
-import com.poi.hr.domain.vacation.enums.TeamPositionRole;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,8 @@ public class TeamPosition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int teamPositionId;
+    @Column(name = "team_position_id")
+    private Integer teamPositionId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
@@ -20,18 +21,31 @@ public class TeamPosition {
     @Column(name = "position_name", nullable = false, length = 30)
     private String positionName;
 
-    @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    public TeamPosition() {
-
+    // ===== Enum 정의 =====
+    public enum TeamPositionRole {
+        TEAM_MEMBER,
+        TEAM_LEADER,
+        DEPT_LEADER,
+        HR_MEMBER,
+        HR_LEADER,
+        CEO
     }
 
+    // ===== 기본 생성자 =====
+    public TeamPosition() {
+    }
+
+    // ===== 생성자 =====
     public TeamPosition(TeamPositionRole role, String positionName) {
         this.role = role;
         this.positionName = positionName;
     }
 
+    // ===== Getter & Setter =====
     public int getTeamPositionId() {
         return teamPositionId;
     }
@@ -40,25 +54,25 @@ public class TeamPosition {
         return role;
     }
 
-    public String getPositionName() {
-        return positionName;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public void setRole(TeamPositionRole role) {
         this.role = role;
+    }
+
+    public String getPositionName() {
+        return positionName;
     }
 
     public void setPositionName(String positionName) {
         this.positionName = positionName;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     @Override
     public String toString() {
-        return "TeamPosition{" +
+        return "TeamPositions{" +
                 "teamPositionId=" + teamPositionId +
                 ", role=" + role +
                 ", positionName='" + positionName + '\'' +
@@ -66,3 +80,4 @@ public class TeamPosition {
                 '}';
     }
 }
+

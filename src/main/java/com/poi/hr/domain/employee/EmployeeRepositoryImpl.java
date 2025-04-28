@@ -31,15 +31,15 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
         for (Object[] row : results) {
             Employee emp = new Employee();
             emp.setEmployeeId(((Number) row[0]).intValue());
-            emp.setEmpNumber((String) row[1]);
-            emp.setName((String) row[2]);
+            emp.setEmployeeNumber((String) row[1]);
+            emp.setEmployeeName((String) row[2]);
             emp.setGender((String) row[3]);
             emp.setAddress((String) row[4]);
             emp.setEmail((String) row[5]);
             emp.setPassword((String) row[6]);
             emp.setPhone((String) row[7]);
-            emp.setIdentity((String) row[8]);
-            emp.setStatus((String) row[9]);
+            emp.setEmployeeIdentity((String) row[8]);
+            emp.setEmployeeStatus((String) row[9]);
 
             emp.setHireDate(row[10] != null ? ((java.sql.Date) row[10]).toLocalDate() : null);
             emp.setRetireDate(row[11] != null ? ((java.sql.Date) row[11]).toLocalDate() : null);

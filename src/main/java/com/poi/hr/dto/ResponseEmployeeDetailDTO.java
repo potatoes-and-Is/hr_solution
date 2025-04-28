@@ -3,16 +3,16 @@ package com.poi.hr.dto;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-public class EmployeeDetailDTO {
+public class ResponseEmployeeDetailDTO {
 
     private int employeeId;
-    private String empNumber;
-    private String name;
+    private String employeeNumber;
+    private String employeeName;
     private String gender;
     private String address;
     private String email;
     private String phone;
-    private String identity;
+    private String employeeIdentity;
     private String status;
     private String hireDate;
     private String retireDate;
@@ -20,23 +20,26 @@ public class EmployeeDetailDTO {
     private String positionName;
     private String levelName;
 
-    public EmployeeDetailDTO(int employeeId, String empNumber, String name, String gender,
-                             String address, String email, String phone, String identity, String status,
-                             String hireDate, String retireDate, String deptName, String positionName, String levelName) {
+    public ResponseEmployeeDetailDTO(int employeeId, String employeeNumber, String employeeName, String gender,
+                                     String address, String email, String phone, String employeeIdentity, String status,
+                                     String hireDate, String retireDate, String deptName, String positionName, String levelName) {
         this.employeeId = employeeId;
-        this.empNumber = empNumber;
-        this.name = name;
+        this.employeeNumber = employeeNumber;
+        this.employeeName = employeeName;
         this.gender = gender;
         this.address = address;
         this.email = email;
         this.phone = phone;
-        this.identity = identity;
+        this.employeeIdentity = employeeIdentity;
         this.status = status;
         this.hireDate = hireDate;
         this.retireDate = retireDate;
         this.deptName = deptName;
         this.positionName = positionName;
         this.levelName = levelName;
+    }
+
+    public ResponseEmployeeDetailDTO(String employeeName, String deptName, String positionName, String phone, String email) {
     }
 
     public int getEmployeeId() {
@@ -47,20 +50,20 @@ public class EmployeeDetailDTO {
         this.employeeId = employeeId;
     }
 
-    public String getEmpNumber() {
-        return empNumber;
+    public String getEmployeeNumber() {
+        return employeeNumber;
     }
 
-    public void setEmpNumber(String empNumber) {
-        this.empNumber = empNumber;
+    public void setEmployeeNumber(String employeeNumber) {
+        this.employeeNumber = employeeNumber;
     }
 
-    public String getName() {
-        return name;
+    public String getEmployeeName() {
+        return employeeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
     public String getGender() {
@@ -95,12 +98,12 @@ public class EmployeeDetailDTO {
         this.phone = phone;
     }
 
-    public String getIdentity() {
-        return identity;
+    public String getEmployeeIdentity() {
+        return employeeIdentity;
     }
 
-    public void setIdentity(String identity) {
-        this.identity = identity;
+    public void setEmployeeIdentity(String employeeIdentity) {
+        this.employeeIdentity = employeeIdentity;
     }
 
     public String getStatus() {

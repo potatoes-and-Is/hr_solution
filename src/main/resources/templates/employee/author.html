@@ -67,6 +67,7 @@
 
 <!-- JS 스크립트 추가 영역 -->
 <th:block layout:fragment="scripts">
+  <script src="/js/common.js"></script>
   <script src="/js/button.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -76,32 +77,33 @@
                 const tbody = document.getElementById('employeeTableBody');
                 data.forEach(employee => {
                   const row = `
-                                <tr>
-                                    <td>${employee.name}</td>
-                                    <td>${employee.deptName}</td>
-                                    <td>${employee.levelName}</td>
-                                    <td>${employee.hireDate}</td>
-                                    <td>${employee.phone}</td>
-                                    <td><button class="edit-btn" data-id="${employee,id}">수정</button></td>
-                                </tr>`;
+                    <tr>
+                      <td>${employee.employeeName}</td>
+                      <td>${employee.deptName}</td>
+                      <td>${employee.levelName}</td>
+                      <td>${employee.hireDate}</td>
+                      <td>${employee.phone}</td>
+                      <td>
+                        <button class="update-btn" data-id="${employee.employeeId}">수정</button>
+                      </td>
+                    </tr>`;
                   tbody.insertAdjacentHTML('beforeend', row);
                 });
               })
               .catch(error => console.error('직원 목록 불러오기 실패:', error));
     });
 
-    document.querySelectorAll('.toggle-btn').forEach(button => {
-      button.addEventListener('click', () => {
-        const submenu = button.nextElementSibling;
-        if (submenu && submenu.classList.contains('submenu')) {
-          submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
-        }
-      });
+    document.getElementById('openPopup').addEventListener('click', function() {
+      openCenteredPopup('/author/popup', '직원 등록', 800, 600);
     });
 
-    document.addEventListener()
+    document.addEventListener('click', function(e) {
+      if(e.target && e.target.classList.contains('update-btn')) {
+        const employeeId = e.target.dataset.id;
+        openCenteredPopup(`/author/employee/update/${employeeId}`, '직원 수정', 800, 600);
+      }
+    });
   </script>
 </th:block>
 </body>
 </html>
-

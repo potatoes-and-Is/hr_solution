@@ -3,13 +3,13 @@ package com.poi.hr.dto;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-public class EmployeeDTO {
+public class ResponseEmployeeDTO {
     private String employeeName;
     private String deptName;
     private String positionName;
     private String levelName;
 
-    public EmployeeDTO(String employeeName, String deptName, String positionName, String levelName) {
+    public ResponseEmployeeDTO(String employeeName, String deptName, String positionName, String levelName) {
         this.employeeName = employeeName;
         this.deptName = deptName;
         this.positionName = positionName;

@@ -1,8 +1,7 @@
 package com.poi.hr.controller;
 
-import com.poi.hr.domain.employee.Depts;
-import com.poi.hr.dto.DeptDTO;
-import com.poi.hr.repository.DeptRepository;
+import com.poi.hr.dto.ResponseDeptDTO;
+import com.poi.hr.repository.DeptsRepository;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,16 +14,16 @@ import java.util.List;
 @Validated
 public class DeptController {
 
-    private final DeptRepository deptRepository;
+    private final DeptsRepository deptsRepository;
 
-    public DeptController(DeptRepository deptRepository) {
-        this.deptRepository = deptRepository;
+    public DeptController(DeptsRepository deptsRepository) {
+        this.deptsRepository = deptsRepository;
     }
 
     @GetMapping("/list")
-    public List<DeptDTO> getAllDept() {
-        return deptRepository.findAll().stream()
-                .map(dept -> new DeptDTO(dept.getDeptId(), dept.getDept_name()))
+    public List<ResponseDeptDTO> getAllDept() {
+        return deptsRepository.findAll().stream()
+                .map(dept -> new ResponseDeptDTO(dept.getDeptId(), dept.getDept_name()))
                 .toList();
     }
 }

@@ -1,15 +1,15 @@
-### 직원 정보 수정 요청 (PATCH)
-PATCH http://localhost:8080/author/2
+PATCH http://localhost:8080/author/14
 Content-Type: application/json
 
 {
-  "name": "박성리",
+  "employeeName": "박성리",
   "address": "서울특별시 강남구 테헤란로 123",
   "email": "seongri.park@example.com",
   "phone": "010-2222-3333",
-  "identity": "900101-1234567",
-  "status": "ACTIVE",
+  "employeeIdentity": "900101-1234567",
+  "employeeStatus": "ACTIVE",
   "password": "newSecurePassword123!",
   "gender": "M",
-  "level": 2
+  "levelId": 3
 }
+

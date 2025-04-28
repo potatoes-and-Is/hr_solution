@@ -1,7 +1,9 @@
 package com.poi.hr.controller;
 
 import com.poi.hr.domain.employee.Employee;
-import com.poi.hr.dto.EmployeeUpdateDTO;
+import com.poi.hr.dto.ResponseEmployeeDTO;
+import com.poi.hr.dto.ResponseEmployeeDetailDTO;
+import com.poi.hr.dto.UpdateEmployeeDTO;
 import com.poi.hr.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,15 +52,35 @@ public class AuthorEmployeeController {
 
     // 직원 수정
     @PatchMapping("/{employeeId}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable("employeeId") int employeeId,
-                                                   @Validated @RequestBody Employee employee) {
-        Employee updatedEmployee = employeeService.updateEmployee(employeeId, employee);
-        return ResponseEntity.ok(updatedEmployee);
+    public ResponseEntity<String> updateEmployee(
+            @PathVariable(name = "employeeId") Integer employeeId,
+            @Validated @RequestBody UpdateEmployeeDTO employeeDto) {
+
+        employeeService.updateEmployee(employeeId, employeeDto);
+        return ResponseEntity.ok("수정 완료");
+    }
+    // 상세 조회
+    @GetMapping("/{employeeId}")
+    public ResponseEntity<ResponseEmployeeDetailDTO> getEmployeeDetail(@PathVariable("employeeId") int employeeId) {
+        System.out.println("Employee ID: " + employeeId); // 디버깅용
+        // 서비스 호출
+        ResponseEmployeeDetailDTO responseEmployeeDetailDTO = employeeService.getEmployeeById(employeeId);
+
+        // 반환
+        return ResponseEntity.ok(responseEmployeeDetailDTO);
     }
 
     //직원 추가 창 팝업
     @GetMapping("/popup")
     public String employeePopupPage() {
+        return "employee/employee";
+    }
+
+    // 직원 수정 창 팝업
+    @GetMapping("/employee/update/{employeeId}")
+    public String showUpdatePopup(@PathVariable("employeeId") int employeeId, Model model) {
+        System.out.println("수정 페이지 진입, ID = " + employeeId);
+        model.addAttribute("employeeId", employeeId);
         return "employee/employee";
     }
 }

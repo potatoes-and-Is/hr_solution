@@ -1,6 +1,6 @@
 package com.poi.hr.controller;
 
-import com.poi.hr.domain.employee.Levels;
+import com.poi.hr.domain.employee.Level;
 import com.poi.hr.repository.LevelRepository;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,7 @@ public class LevelController {
     }
 
     @GetMapping("/list")
-    public List<Levels> getAllLevels() {
+    public List<Level> getAllLevels() {
         return levelRepository.findAll();
     }
 }

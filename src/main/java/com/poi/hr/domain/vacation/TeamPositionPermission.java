@@ -1,5 +1,6 @@
 package com.poi.hr.domain.vacation;
 
+import com.poi.hr.domain.employee.TeamPosition;
 import jakarta.persistence.*;
 
 @Entity
