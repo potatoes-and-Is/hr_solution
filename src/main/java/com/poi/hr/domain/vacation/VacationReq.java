@@ -19,13 +19,13 @@ public class VacationReq extends ApprovalDoc {
     private LocalDate vacReqEndDate;
 
     @Column(name = "vac_use_days", nullable = false)
-    private int vacUseDays;
+    private Double vacUseDays;
 
     public VacationReq() {
 
     }
 
-    public VacationReq(Employee employee, DocType docType, String approvalTitle, String approvalContent, String approvalReason, VacationType vacationType, LocalDate vacReqStartDate, LocalDate vacReqEndDate, int vacUseDays) {
+    public VacationReq(Employee employee, DocType docType, String approvalTitle, String approvalContent, String approvalReason, VacationType vacationType, LocalDate vacReqStartDate, LocalDate vacReqEndDate, Double vacUseDays) {
         super(employee, docType, approvalTitle, approvalContent, approvalReason);
         this.vacationType = vacationType;
         this.vacReqStartDate = vacReqStartDate;
@@ -45,7 +45,7 @@ public class VacationReq extends ApprovalDoc {
         return vacReqEndDate;
     }
 
-    public int getVacUseDays() {
+    public Double getVacUseDays() {
         return vacUseDays;
     }
 
@@ -57,7 +57,7 @@ public class VacationReq extends ApprovalDoc {
         this.vacReqEndDate = vacReqEndDate;
     }
 
-    public void setVacUseDays(int vacUseDays) {
+    public void setVacUseDays(Double vacUseDays) {
         this.vacUseDays = vacUseDays;
     }
 

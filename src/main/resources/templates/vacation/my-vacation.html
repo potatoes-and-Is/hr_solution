@@ -203,16 +203,16 @@
         // 시작일, 사용일수 변경 시 종료일 자동 계산
         function calculateEndDate() {
             const startDate = startDateInput.value;
-            const days = parseInt(vacUseDaysSelect.value);
+            const days = parseInt(vacUseDaysInput.value);
 
             if (startDate && days) {
                 const start = new Date(startDate);
                 start.setDate(start.getDate() + (days - 1));
                 endDateInput.value = start.toISOString().split('T')[0];
             }
+            startDateInput.addEventListener('change', calculateEndDate);
+            vacUseDaysInput.addEventListener('change', calculateEndDate);
         }
-        startDateInput.addEventListener('change', calculateEndDate);
-        vacUseDaysSelect.addEventListener('change', calculateEndDate);
     });
 
     //휴가 신청하기 모달 - 휴가 유형 출력(페이지 로드될 때)

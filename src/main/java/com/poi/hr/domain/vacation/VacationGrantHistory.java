@@ -23,7 +23,7 @@ public class VacationGrantHistory {
     private VacationType vacationType;
 
     @Column(name = "granted_days", nullable = false)
-    private int grantedDays;
+    private Double grantedDays;
 
     @Column(name = "grant_date", nullable = false)
     private LocalDate grantDate;
@@ -41,7 +41,7 @@ public class VacationGrantHistory {
 
     }
 
-    public VacationGrantHistory(Employee employee, VacationType vacationType, int grantedDays, LocalDate grantDate, String grantType, String grantComment) {
+    public VacationGrantHistory(Employee employee, VacationType vacationType, Double grantedDays, LocalDate grantDate, String grantType, String grantComment) {
         this.employee = employee;
         this.vacationType = vacationType;
         this.grantedDays = grantedDays;
@@ -62,7 +62,7 @@ public class VacationGrantHistory {
         return vacationType;
     }
 
-    public int getGrantedDays() {
+    public Double getGrantedDays() {
         return grantedDays;
     }
 
@@ -90,7 +90,7 @@ public class VacationGrantHistory {
         this.vacationType = vacationType;
     }
 
-    public void setGrantedDays(int grantedDays) {
+    public void setGrantedDays(Double grantedDays) {
         this.grantedDays = grantedDays;
     }
 
