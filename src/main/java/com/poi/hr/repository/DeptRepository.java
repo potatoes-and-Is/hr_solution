@@ -11,4 +11,6 @@ public interface DeptRepository extends JpaRepository<Dept, Integer> {
 
     Optional<Dept> findByDeptName(String deptName);
     Optional<Dept> findByDeptCode(String deptCode);
+
+    Optional<Dept> findByDeptId(int deptId);
 }

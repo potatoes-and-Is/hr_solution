@@ -94,6 +94,11 @@ public class DeptController {
             return ResponseEntity.ok(updatedDept);
         }
     }
+
+    // 부서 삭제
+    @DeleteMapping("/department/delete/{deptId}")
+    public ResponseEntity<DeptDTO> getDeptById(@PathVariable("deptId") int deptId){
+        deptService.deleteDept(deptId);
+        return ResponseEntity.noContent().build();
+    }
 }
-
-
