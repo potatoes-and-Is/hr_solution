@@ -1,6 +1,4 @@
 package com.poi.hr.domain.employee;
-
-import com.poi.hr.domain.employee.Employee;
 import com.poi.hr.repository.EmployeeRepositoryCustom;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

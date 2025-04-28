@@ -1,5 +1,8 @@
 package com.poi.hr.dto;
 
+import org.springframework.validation.annotation.Validated;
+
+@Validated
 public class EmployeeDTO {
     private String employeeName;
     private String deptName;

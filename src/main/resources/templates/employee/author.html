@@ -82,7 +82,7 @@
                                     <td>${employee.levelName}</td>
                                     <td>${employee.hireDate}</td>
                                     <td>${employee.phone}</td>
-                                    <td>수정</td>
+                                    <td><button class="edit-btn" data-id="${employee,id}">수정</button></td>
                                 </tr>`;
                   tbody.insertAdjacentHTML('beforeend', row);
                 });
@@ -98,6 +98,8 @@
         }
       });
     });
+
+    document.addEventListener()
   </script>
 </th:block>
 </body>

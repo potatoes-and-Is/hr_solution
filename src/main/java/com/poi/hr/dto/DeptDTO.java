@@ -1,7 +1,10 @@
 package com.poi.hr.dto;
 
+import org.springframework.validation.annotation.Validated;
+
+@Validated
 public class DeptDTO {
-    private int deptId;
+    private Integer deptId;
     private String deptName;
 
     public DeptDTO(int deptId, String deptName) {

@@ -52,6 +52,12 @@ public class Employee {
     private int level;
 
     @Transient
+    private Integer deptId;
+
+    @Transient
+    private Integer positionId;
+
+    @Transient
     private String deptName;
 
     @Transient
@@ -209,6 +215,22 @@ public class Employee {
 
     public void setLevelName(String levelName) {
         this.levelName = levelName;
+    }
+
+    public Integer getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
+    }
+
+    public Integer getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(Integer positionId) {
+        this.positionId = positionId;
     }
 
     @Override

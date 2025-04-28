@@ -1,6 +1,7 @@
 package com.poi.hr.controller;
 
 import com.poi.hr.domain.employee.Employee;
+import com.poi.hr.dto.EmployeeUpdateDTO;
 import com.poi.hr.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +33,6 @@ public class AuthorEmployeeController {
         return "employee/author";  // templates/employee.html 호출
     }
 
-    //직원 추가 창 팝업
-    @GetMapping("/popup")
-    public String employeePopupPage() {
-        return "employee/employee";
-    }
-
     // 직원 리스트 출력
     @GetMapping("/list")
     @ResponseBody
@@ -53,4 +48,17 @@ public class AuthorEmployeeController {
         return ResponseEntity.status(201).body(savedEmployee);
     }
 
+    // 직원 수정
+    @PatchMapping("/{employeeId}")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable("employeeId") int employeeId,
+                                                   @Validated @RequestBody Employee employee) {
+        Employee updatedEmployee = employeeService.updateEmployee(employeeId, employee);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    //직원 추가 창 팝업
+    @GetMapping("/popup")
+    public String employeePopupPage() {
+        return "employee/employee";
+    }
 }
