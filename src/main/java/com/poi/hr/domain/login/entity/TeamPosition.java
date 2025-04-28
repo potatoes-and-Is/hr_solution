@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "team_positions")
@@ -25,6 +27,9 @@ public class TeamPosition {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDate createdAt;
+
+    @OneToMany(mappedBy = "teamPosition", fetch = FetchType.LAZY)
+    private List<TeamPositionPermission> permissions = new ArrayList<>();
 
     public TeamPosition() {
     }
@@ -48,6 +53,10 @@ public class TeamPosition {
 
     public LocalDate getCreatedAt() {
         return createdAt;
+    }
+
+    public List<TeamPositionPermission> getPermissions() {
+        return permissions;
     }
 
     @Override

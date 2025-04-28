@@ -19,5 +19,24 @@ public class TeamPositionPermission {
     @JoinColumn(name = "ui_permission_id")
     private UiPermission uiPermission;
 
+    public int getTeamPositionPermissionId() {
+        return teamPositionPermissionId;
+    }
 
+    public TeamPosition getTeamPosition() {
+        return teamPosition;
+    }
+
+    public UiPermission getUiPermission() {
+        return uiPermission;
+    }
+
+    @Override
+    public String toString() {
+        return "TeamPositionPermission{" +
+                "teamPositionPermissionId=" + teamPositionPermissionId +
+                ", teamPosition=" + teamPosition +
+                ", uiPermission=" + uiPermission +
+                '}';
+    }
 }

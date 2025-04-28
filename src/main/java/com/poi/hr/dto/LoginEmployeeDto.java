@@ -2,6 +2,7 @@ package com.poi.hr.dto;
 
 
 import com.poi.hr.domain.common.Role;
+import com.poi.hr.domain.login.entity.TeamPositionPermission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ public class LoginEmployeeDto {
     private String employeeNumber;
     private String password;
     private Role employeeRole;
+    private List<TeamPositionPermission> permissions;
 
     public LoginEmployeeDto() {
     }

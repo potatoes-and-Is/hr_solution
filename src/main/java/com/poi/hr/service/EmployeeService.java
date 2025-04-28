@@ -4,6 +4,7 @@ package com.poi.hr.service;
 import com.poi.hr.domain.common.Role;
 import com.poi.hr.domain.login.entity.DepPositionEmployee;
 import com.poi.hr.domain.login.entity.Employee;
+import com.poi.hr.domain.login.entity.TeamPositionPermission;
 import com.poi.hr.dto.LoginEmployeeDto;
 import com.poi.hr.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,9 +92,15 @@ public class EmployeeService {
 
         return employee.map(u -> {
             Role role = null;
+            List<TeamPositionPermission> permissions = null;
+
             for (DepPositionEmployee dpe : u.getDepPositionEmployees()) {
                 role = dpe.getTeamPosition().getRole();
-                break; // 첫 번째만 가져온다고 가정
+                permissions = dpe.getTeamPosition().getPermissions(); // 권한 리스트 가져오기
+                for (TeamPositionPermission permission : permissions) {
+                    System.out.println("권한: " + permission.toString());
+                }
+                break; // 직책 첫 번째만 가져온다고 가정
             }
 
             return new LoginEmployeeDto(
