@@ -2,10 +2,12 @@ package com.poi.hr.service;
 
 import com.poi.hr.domain.attendance.Attend;
 import com.poi.hr.domain.attendance.AttendStatus;
+import com.poi.hr.domain.employee.Employee;
 import com.poi.hr.dto.AttendDTO;
 import com.poi.hr.repository.AttendRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,11 +24,11 @@ public class AttendService {
     }
 
     // 출근 시간 기록
+    @Transactional
     public void recordCheckIn(int employeeId, LocalTime checkInTime){
-
         LocalDate today = LocalDate.now();
 
-        Optional<Attend> findAttend = attendRepository.findByEmployeeIdAndAttendDate(employeeId, today);
+        Optional<Attend> findAttend = attendRepository.findByEmployeeEmployeeIdAndAttendDate(employeeId, today);
 
         if(findAttend.isPresent()){
             throw new IllegalArgumentException("이미 출근기록이 존재합니다.");
@@ -34,11 +36,11 @@ public class AttendService {
 
         Attend attend = new Attend();
 
-        // 직원 id
         attend.setAttendDate(today);
         attend.setCheckInTime(checkInTime);
         attend.setCheckInStatus('Y');
         attend.setAttendStatus(calculateCheckInTime(checkInTime)); // 정상 or 지각
+        attend.setEmployee(new Employee(employeeId));
 
         attendRepository.save(attend);
     }

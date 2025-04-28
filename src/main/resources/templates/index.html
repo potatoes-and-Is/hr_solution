@@ -102,13 +102,15 @@
         function checkIn() {
             alert("출근 시간이 등록되었습니다: " + new Date().toLocaleString());
             const button = document.getElementById("checkInButton");
-            button.disabled = true; // 버튼 비활성화
-
             const now = new Date();
             const formatTime = now.toLocaleTimeString();
-            document.getElementById("checkInButton").textContent = `출근 완료 ${formatTime}`;
 
-            fetch('/api/attendance/check-in', {
+            button.disabled = true; // 버튼 비활성화
+            button.textContent = `출근 완료 ${formatTime}`;
+
+            const checkInTime = now.toTimeString().split(' ')[0];
+
+            fetch('http://localhost:8080/api/attendance/check-in', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -117,9 +119,21 @@
                 },
                 body: JSON.stringify({
                     // employeeId: 'EMPLOYEE_ID', // 실제 직원 ID로 대체 (시큐리티 : principal)
-                    checkInTime: now.toISOString() // ISO 형식으로 전송
+                    checkInTime: checkInTime
                 })
             })
+                .then(response => {
+                    if(!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .catch(error => {
+                    console.error("에러:", error);
+                    alert("출근 요청 실패:" + error.message);
+                    button.disabled = false;
+                    button.textContent = "출근하기";
+                })
         }
 
         function checkOut() {

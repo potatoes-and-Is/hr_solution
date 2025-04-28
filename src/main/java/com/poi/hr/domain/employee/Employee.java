@@ -56,6 +56,10 @@ public class Employee {
 
     }
 
+    public Employee(int employeeId) {
+        this.employeeId = employeeId;
+    }
+
     public Employee(String employeeNumber, String employeeName, String gender, String address, String email, String password, String phone, String employeeIdentity, String employeeStatus, Level level, LocalDate hireDate, LocalDate retireDate) {
         this.employeeNumber = employeeNumber;
         this.employeeName = employeeName;

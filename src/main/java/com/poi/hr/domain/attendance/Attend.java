@@ -55,8 +55,8 @@ public class Attend {
         this.attendDate = attendDate;
         this.checkInTime = checkInTime;
         this.checkInStatus = checkInStatus;
-        this.checkOutStatus = checkOutStatus;
         this.attendStatus = attendStatus;
+        this.employee = employee;
     }
 
     public int getAttendId() {

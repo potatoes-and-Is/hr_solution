@@ -1,6 +1,7 @@
 package com.poi.hr.controller;
 
 import com.poi.hr.dto.AttendDTO;
+import com.poi.hr.dto.CheckInDTO;
 import com.poi.hr.service.AttendService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,19 +28,18 @@ public class AttendController {
     // @AuthenticationPrincipal AuthDetails authDetails
     // 출근 시간 기록
     @PostMapping("/check-in")
-    public ResponseEntity<String> checkIn(@RequestBody AttendDTO attendDTO, Principal principal) {
+    public ResponseEntity<String> checkIn(@RequestBody CheckInDTO checkInDTO/*, Principal principal*/) {
 
         logger.info("checkIn 등록 - controller");
         try {
-            int employeeId = Integer.parseInt(principal.getName());
-            attendService.recordCheckIn(employeeId, attendDTO.getCheckInTime());
+            // int employeeId = Integer.parseInt(principal.getName());
+            int employeeId = 4; // 임시 Id
+            attendService.recordCheckIn(employeeId, checkInDTO.getCheckInTime());
             return ResponseEntity.ok("success");
         }catch (Exception e){
             return ResponseEntity.status(500).body("fail");
         }
 
     }
-
-
 
 }
