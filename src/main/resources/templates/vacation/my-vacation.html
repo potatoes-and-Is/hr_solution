@@ -169,7 +169,7 @@
                     <!-- Modal Footer -->
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                        <button class="btn btn-primary" id="submitVacationRequest">결재 상신하기</button>
+                        <button class="btn btn-primary" id="submitVacationRequest">결재문서 올리기</button>
                     </div>
 
                 </div>
@@ -215,7 +215,7 @@
         vacUseDaysSelect.addEventListener('change', calculateEndDate);
     });
 
-    //휴가 신청하기 눌렀을 때 휴가유형 조회
+    //휴가 신청하기 모달 - 휴가 유형 출력(페이지 로드될 때)
     document.addEventListener('DOMContentLoaded', function() {
         fetch('/poihr/api/vacation/types')
             .then(response => response.json())
@@ -230,6 +230,42 @@
                 });
             })
             .catch(error => console.error('휴가유형 가져오기를 실패하였습니다.', error));
+    });
+
+    //휴가 신청하기 모달 - 결재 등록으로 데이터 전송
+    document.getElementById('submitVacationRequest').addEventListener('click', function () {
+        const form = document.getElementById('vacationRequestForm');
+
+        //form 입력값 가져오기
+        const requestData = {
+            vacTypeID: form.vacType.value,
+            vacUseDays: form.vacUseDays.value,
+            startDate: form.startDate.value,
+            endDate: form.endDate.value,
+            reason: form.reason.value,
+        };
+
+        fetch('/poihr/api/vacation/vac-req/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('서버 오류');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('휴가 신청이 정상적으로 상신되었습니다.');
+                location.reload(); //목록 갱신
+            })
+            .catch(error => {
+                console.error('휴가 신청 실패:', error);
+                alert('휴가 신청에 실패했습니다. 다시 시도해주세요.');
+            });
     });
 </script>
 
