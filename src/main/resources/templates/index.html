@@ -61,8 +61,10 @@
         <!-- "000님, 반가워요!"와 날짜 -->
         <div class="row justify-content-start mb-4">
             <div class="col-md-10">
-                <h1 class="greeting-text text-gray-800" th:text="${userName} + '님, 반가워요!'">사용자님, 반가워요!</h1>
-                <p class="date-text" th:text="${currentDateTime}">2025.04.22(화) 20:30</p>
+<!--                <h1 class="greeting-text text-gray-800" th:text="${userName} + '님, 반가워요!'">사용자님, 반가워요!</h1>-->
+                <h1 class="greeting-text text-gray-800" th:text="${userName} + ' ' + ${userRole} + '님 반가워요!'">사용자님, 반가워요!</h1>
+<!--                <p class="date-text" th:text="${currentDateTime}">2025.04.22(화) 20:30</p>-->
+                <p id="currentDateTime" class="date-text" th:text="${currentDateTime}">2025.04.22(화) 20:30:00</p>
             </div>
         </div>
 
@@ -169,7 +171,34 @@
 </div>
 
 <th:block layout:fragment="scripts">
-    <!-- 페이지별 추가 스크립트 -->
+    <script>
+        window.onload = function() {
+            function updateCurrentDateTime() {
+                const now = new Date();
+
+                const year = now.getFullYear();
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const date = now.getDate().toString().padStart(2, '0');
+                const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+                const day = dayNames[now.getDay()];
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+
+                const formattedDateTime = `${year}.${month}.${date}(${day}) ${hours}:${minutes}:${seconds}`;
+
+                const currentDateTimeElement = document.getElementById('currentDateTime');
+                if (currentDateTimeElement) {
+                    currentDateTimeElement.textContent = formattedDateTime;
+                }
+            }
+
+            updateCurrentDateTime(); // 🔥 첫 로딩 시 바로 실행
+            setInterval(updateCurrentDateTime, 1000); // 🔥 1초마다 갱신
+        }
+    </script>
 </th:block>
+
+
 </body>
 </html>
