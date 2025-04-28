@@ -28,4 +28,9 @@ public class MyVacationController {
 
         return "vacation/my-vacation";
     }
+
+    @GetMapping("/request")
+    public String getRequestVacation(Model model) {
+
+    }
 }
