@@ -18,7 +18,7 @@ public class AttendanceFixReq extends ApprovalDoc {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "attend_id")
-    private Attend attend;
+    private int attendId;
 
     @Column(name = "req_check_in_time")
     private LocalTime reqCheckInTime;
@@ -30,15 +30,14 @@ public class AttendanceFixReq extends ApprovalDoc {
 
     }
 
-    public AttendanceFixReq(Employee employee, DocType docType, String approvalTitle, String approvalContent, String approvalReason, Attend attend, LocalTime reqCheckInTime, LocalTime reqCheckOutTime) {
+    public AttendanceFixReq(Employee employee, DocType docType, String approvalTitle, String approvalContent, String approvalReason, LocalTime reqCheckInTime, LocalTime reqCheckOutTime) {
         super(employee, docType, approvalTitle, approvalContent, approvalReason);
-        this.attend = attend;
         this.reqCheckInTime = reqCheckInTime;
         this.reqCheckOutTime = reqCheckOutTime;
     }
 
-    public Attend getAttend() {
-        return attend;
+    public int getAttendId() {
+        return attendId;
     }
 
     public LocalTime getReqCheckInTime() {
@@ -47,10 +46,6 @@ public class AttendanceFixReq extends ApprovalDoc {
 
     public LocalTime getReqCheckOutTime() {
         return reqCheckOutTime;
-    }
-
-    public void setAttend(Attend attend) {
-        this.attend = attend;
     }
 
     public void setReqCheckInTime(LocalTime reqCheckInTime) {
@@ -64,7 +59,7 @@ public class AttendanceFixReq extends ApprovalDoc {
     @Override
     public String toString() {
         return "AttendanceFixReq{" +
-                "attendId=" + (attend != null ? attend.getAttendId() : null) +
+                "attendId=" + attendId +
                 ", reqCheckInTime=" + reqCheckInTime +
                 ", reqCheckOutTime=" + reqCheckOutTime +
                 '}';

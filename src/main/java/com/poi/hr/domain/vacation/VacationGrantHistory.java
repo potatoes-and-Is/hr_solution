@@ -12,7 +12,7 @@ public class VacationGrantHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vac_grant_id")
-    private Integer vacGrantId;
+    private int vacGrantId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
@@ -50,7 +50,7 @@ public class VacationGrantHistory {
         this.grantComment = grantComment;
     }
 
-    public Integer getVacGrantId() {
+    public int getVacGrantId() {
         return vacGrantId;
     }
 

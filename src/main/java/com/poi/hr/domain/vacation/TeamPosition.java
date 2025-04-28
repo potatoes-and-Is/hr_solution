@@ -11,7 +11,7 @@ public class TeamPosition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer teamPositionId;
+    private int teamPositionId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
@@ -32,7 +32,7 @@ public class TeamPosition {
         this.positionName = positionName;
     }
 
-    public Integer getTeamPositionId() {
+    public int getTeamPositionId() {
         return teamPositionId;
     }
 

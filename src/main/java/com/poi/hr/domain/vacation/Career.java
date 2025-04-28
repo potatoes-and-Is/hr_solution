@@ -11,7 +11,7 @@ public class Career {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "career_id")
-    private Integer careerId;
+    private int careerId;
 
     @Column(name = "previous_company", nullable = false, length = 50)
     private String previousCompany;
@@ -48,7 +48,7 @@ public class Career {
         this.employee = employee;
     }
 
-    public Integer getCareerId() {
+    public int getCareerId() {
         return careerId;
     }
 
@@ -114,7 +114,7 @@ public class Career {
                 ", retireReason='" + retireReason + '\'' +
                 ", createdBy='" + createdBy + '\'' +
                 ", createdAt=" + createdAt +
-                ", employee=" + employee +
+                ", employeeId=" + (employee != null ? employee.getEmployeeId() : null) +
                 '}';
     }
 }

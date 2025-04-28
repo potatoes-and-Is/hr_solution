@@ -13,7 +13,7 @@ public class Attend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attend_id")
-    private Integer attendId;
+    private int attendId;
 
     @Column(name = "attend_date", nullable = false)
     private LocalDate attendDate;
@@ -49,7 +49,7 @@ public class Attend {
         this.employee = employee;
     }
 
-    public Integer getAttendId() {
+    public int getAttendId() {
         return attendId;
     }
 

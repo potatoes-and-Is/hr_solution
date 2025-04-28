@@ -12,7 +12,7 @@ public class VacationPolicy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "policy_id")
-    private Integer policyId;
+    private int policyId;
 
     @Column(name = "level_id", nullable = false)
     private int levelId;
@@ -40,7 +40,7 @@ public class VacationPolicy {
         this.policyCycle = policyCycle;
     }
 
-    public Integer getPolicyId() {
+    public int getPolicyId() {
         return policyId;
     }
 

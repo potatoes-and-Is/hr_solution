@@ -11,7 +11,7 @@ public class VacationType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vac_type_id", nullable = false)
-    private Integer vacTypeId;
+    private int vacTypeId;
 
     @Column(name = "vac_type_code", nullable = false, length = 30)
     private String vacTypeCode;
@@ -34,7 +34,7 @@ public class VacationType {
         this.isPaid = isPaid;
     }
 
-    public Integer getVacTypeId() {
+    public int getVacTypeId() {
         return vacTypeId;
     }
 

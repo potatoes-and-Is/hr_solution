@@ -12,7 +12,7 @@ public class Qualification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qualification_id")
-    private Integer qualificationId;
+    private int qualificationId;
 
     @Column(name = "qualification_name", length = 30)
     private String qualificationName;
@@ -49,7 +49,7 @@ public class Qualification {
         this.employee = employee;
     }
 
-    public Integer getQualificationId() {
+    public int getQualificationId() {
         return qualificationId;
     }
 

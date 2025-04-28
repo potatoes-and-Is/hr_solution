@@ -13,7 +13,7 @@ public class ApprovalHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "approval_history_id")
-    private Integer approvalHistoryId;
+    private int approvalHistoryId;
 
     @Column(name = "approval_comment", length = 255)
     private String approvalComment;
@@ -39,7 +39,7 @@ public class ApprovalHistory {
         this.approvalLine = approvalLine;
     }
 
-    public Integer getApprovalHistoryId() {
+    public int getApprovalHistoryId() {
         return approvalHistoryId;
     }
 

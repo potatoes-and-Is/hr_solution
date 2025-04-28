@@ -9,7 +9,7 @@ public class UiPermission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ui_permission_id")
-    private Integer uiPermissionId;
+    private int uiPermissionId;
 
     @Column(name = "permission_role", nullable = false, length = 255)
     private String permissionRole;
@@ -26,7 +26,7 @@ public class UiPermission {
         this.permissionName = permissionName;
     }
 
-    public Integer getUiPermissionId() {
+    public int getUiPermissionId() {
         return uiPermissionId;
     }
 

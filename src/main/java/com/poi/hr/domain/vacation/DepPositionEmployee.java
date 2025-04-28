@@ -9,7 +9,7 @@ public class DepPositionEmployee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dpe_id")
-    private Integer dpeId;
+    private int dpeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_position_id")
@@ -33,7 +33,7 @@ public class DepPositionEmployee {
         this.employee = employee;
     }
 
-    public Integer getDpeId() {
+    public int getDpeId() {
         return dpeId;
     }
 
@@ -67,7 +67,7 @@ public class DepPositionEmployee {
                 "dpeId=" + dpeId +
                 ", teamPosition=" + (teamPosition != null ? teamPosition.getTeamPositionId() : null) +
                 ", dept=" + (dept != null ? dept.getDeptId() : null) +
-                ", employee=" + (employee != null ? employee.getEmployeeId() : null) +
+                ", employeeId=" + (employee != null ? employee.getEmployeeId() : null) +
                 '}';
     }
 }

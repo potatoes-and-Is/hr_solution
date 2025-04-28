@@ -16,7 +16,7 @@ public class VacationBalance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vac_balance_id")
-    private Integer vacBalanceId;
+    private int vacBalanceId;
 
     @Column(name = "vac_count", nullable = false)
     private int vacCount;
@@ -51,7 +51,7 @@ public class VacationBalance {
         this.vacationType = vacationType;
     }
 
-    public Integer getVacBalanceId() {
+    public int getVacBalanceId() {
         return vacBalanceId;
     }
 
@@ -111,8 +111,8 @@ public class VacationBalance {
                 ", usedVacCount=" + usedVacCount +
                 ", remainVacCount=" + remainVacCount +
                 ", year=" + year +
-                ", employee=" + employee +
-                ", vacationType=" + vacationType +
+                ", employeeId=" + (employee != null ? employee.getEmployeeId() : null) +
+                ", vacationTypeId=" + (vacationType != null ? vacationType.getVacTypeId() : null) +
                 '}';
     }
 }

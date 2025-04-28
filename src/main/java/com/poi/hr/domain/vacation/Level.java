@@ -11,7 +11,7 @@ public class Level {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "level_id")
-    private Integer levelId;
+    private int levelId;
 
     @Column(name = "level_code", nullable = false, length = 50)
     private String levelCode;
@@ -35,7 +35,7 @@ public class Level {
         this.createdBy = createdBy;
     }
 
-    public Integer getLevelId() {
+    public int getLevelId() {
         return levelId;
     }
 

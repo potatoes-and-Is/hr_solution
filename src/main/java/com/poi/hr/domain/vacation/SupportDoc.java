@@ -11,7 +11,7 @@ public class SupportDoc {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "support_doc_id")
-    private Integer supportDocId;
+    private int supportDocId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approval_doc_id")
@@ -40,7 +40,7 @@ public class SupportDoc {
         this.fileSavePath = fileSavePath;
     }
 
-    public Integer getSupportDocId() {
+    public int getSupportDocId() {
         return supportDocId;
     }
 

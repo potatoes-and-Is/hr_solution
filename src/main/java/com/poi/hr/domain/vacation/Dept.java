@@ -13,7 +13,7 @@ public class Dept {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dept_id")
-    private Integer deptId;
+    private int deptId;
 
     @Column(name = "dept_code", nullable = false, length = 30)
     private String deptCode;
@@ -59,7 +59,7 @@ public class Dept {
         this.parentDept = parentDept;
     }
 
-    public Integer getDeptId() {
+    public int getDeptId() {
         return deptId;
     }
 

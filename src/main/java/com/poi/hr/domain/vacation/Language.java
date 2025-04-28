@@ -12,7 +12,7 @@ public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "language_id")
-    private Integer languageId;
+    private int languageId;
 
     @Column(name = "language_name", length = 100)
     private String languageName;
@@ -53,7 +53,7 @@ public class Language {
         this.employee = employee;
     }
 
-    public Integer getLanguageId() {
+    public int getLanguageId() {
         return languageId;
     }
 

@@ -11,7 +11,7 @@ public class ApprovalLine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "approval_line_id")
-    private Integer approvalLineId;
+    private int approvalLineId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approval_doc_id")
@@ -41,7 +41,7 @@ public class ApprovalLine {
         this.approvalLineOrder = approvalLineOrder;
     }
 
-    public Integer getApprovalLineId() {
+    public int getApprovalLineId() {
         return approvalLineId;
     }
 

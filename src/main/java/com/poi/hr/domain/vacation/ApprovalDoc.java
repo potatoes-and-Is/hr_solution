@@ -2,19 +2,21 @@ package com.poi.hr.domain.vacation;
 
 import com.poi.hr.domain.vacation.enums.ApprovalDocStatus;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Approval_docs")
+@EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.JOINED)
-public class ApprovalDoc {
+@Table(name = "Approval_docs")
+public abstract class ApprovalDoc {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "approval_doc_id")
-    private Integer approvalDocId;
+    private int approvalDocId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
@@ -40,8 +42,9 @@ public class ApprovalDoc {
     @Column(name = "approval_date")
     private LocalDate approvalDate;
 
+    @CreatedDate
     @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     public ApprovalDoc() {
 
@@ -56,7 +59,7 @@ public class ApprovalDoc {
         this.approvalDocStatus = ApprovalDocStatus.PENDING; // 생성시 기본 상태
     }
 
-    public Integer getApprovalDocId() {
+    public int getApprovalDocId() {
         return approvalDocId;
     }
 
@@ -88,7 +91,7 @@ public class ApprovalDoc {
         return approvalDate;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 

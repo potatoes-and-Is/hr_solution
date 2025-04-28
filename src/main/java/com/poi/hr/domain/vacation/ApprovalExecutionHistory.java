@@ -11,7 +11,7 @@ public class ApprovalExecutionHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "execution_id")
-    private Integer executionId;
+    private int executionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approval_doc_id")
@@ -44,7 +44,7 @@ public class ApprovalExecutionHistory {
         this.comment = comment;
     }
 
-    public Integer getExecutionId() {
+    public int getExecutionId() {
         return executionId;
     }
 
