@@ -10,37 +10,40 @@ import java.util.List;
 public class Employee {
 
     @Id
-    @Column(name = "employee_id", nullable = false)
+    @Column(name = "employee_id")
     private int employeeId;
 
-    @Column(name = "employee_name", nullable = false)
+    @Column(name = "employee_name", nullable = false, length = 30)
     private String employeeName;
 
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender", nullable = false, length = 30)
     private String gender;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "address", nullable = false, length = 255)
+    private String address;
+
+    @Column(name = "email", nullable = false, length = 255)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    @Column(name = "phone", nullable = false)
+    @Column(name = "phone", nullable = false, length = 50)
     private String phone;
 
-    @Column(name = "employee_identity", nullable = false)
+    @Column(name = "employee_identity", nullable = false, length = 50)
     private String employeeIdentity;
 
-    @Column(name = "employee_status", nullable = false)
+    @Column(name = "employee_status", nullable = false, length = 30)
     private String employeeStatus;
 
     @Column(name = "hire_date", nullable = false)
     private LocalDate hireDate;
 
-    @Column(name = "retire_date", nullable = false)
+    @Column(name = "retire_date")
     private LocalDate retireDate;
 
-    @Column(name = "employee_number", nullable = false)
+    @Column(name = "employee_number", nullable = false, unique = true, length = 30)
     private String employeeNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -165,6 +168,14 @@ public class Employee {
 
     public void setLevel(Level level) {
         this.level = level;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public void setDepPositionEmployees(List<DepPositionEmployee> depPositionEmployees) {

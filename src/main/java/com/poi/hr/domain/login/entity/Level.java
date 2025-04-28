@@ -10,29 +10,28 @@ public class Level {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "level_id", nullable = false)
+    @Column(name = "level_id")
     private Integer levelId;
 
-    @Column(name = "level_code", nullable = false, unique = true)
+    @Column(name = "level_code", nullable = false, length = 50, unique = true)
     private String levelCode;
 
-    @Column(name = "level_name", nullable = false)
+    @Column(name = "level_name", nullable = false, length = 50)
     private String levelName;
 
-    @Column(name = "created_by", nullable = false)
+    @Column(name = "created_by", nullable = false, length = 30)
     private String createdBy;
 
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)
+    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)
     private LocalDateTime createdAt;
 
     public Level() {
     }
 
-    public Level(String levelCode, String levelName, String createdBy, LocalDateTime createdAt) {
+    public Level(String levelCode, String levelName, String createdBy) {
         this.levelCode = levelCode;
         this.levelName = levelName;
         this.createdBy = createdBy;
-        this.createdAt = createdAt;
     }
 
     public Integer getLevelId() {

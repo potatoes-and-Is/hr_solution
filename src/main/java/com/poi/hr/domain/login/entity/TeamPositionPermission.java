@@ -8,7 +8,7 @@ public class TeamPositionPermission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "team_position_permission_id", nullable = false)
+    @Column(name = "team_position_permission_id")
     private int teamPositionPermissionId;
 
     @ManyToOne

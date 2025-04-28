@@ -2,8 +2,6 @@ package com.poi.hr.domain.login.entity;
 
 import jakarta.persistence.*;
 
-import java.io.Serializable;
-
 @Entity
 @Table(name = "dep_position_employees")
 public class DepPositionEmployee{
@@ -48,5 +46,16 @@ public class DepPositionEmployee{
 
     public TeamPosition getTeamPosition() {
         return teamPosition;
+    }
+
+
+    @Override
+    public String toString() {
+        return "DepPositionEmployee{" +
+                "dpeId=" + dpeId +
+                ", employee=" + employee +
+                ", dept=" + dept +
+                ", teamPosition=" + teamPosition +
+                '}';
     }
 }

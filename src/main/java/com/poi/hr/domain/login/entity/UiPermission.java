@@ -8,13 +8,13 @@ public class UiPermission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ui_permission_id", nullable = false)
+    @Column(name = "ui_permission_id")
     private int uiPermissionId;
 
-    @Column(name = "permission_role", nullable = false)
+    @Column(name = "permission_role", nullable = false, length = 255)
     private String permissionRole;
 
-    @Column(name = "permission_name", nullable = false)
+    @Column(name = "permission_name", nullable = false, length = 50)
     private String permissionName;
 
     public UiPermission() {

@@ -14,10 +14,10 @@ public class TeamPosition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "team_position_id", nullable = false)
+    @Column(name = "team_position_id")
     private int teamPositionId;
 
-    @Column(name = "position_name", nullable = false)
+    @Column(name = "position_name", nullable = false, length = 30)
     private String positionName;
 
     @Enumerated(EnumType.STRING)
@@ -25,7 +25,7 @@ public class TeamPosition {
     private Role role;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private LocalDate createdAt;
 
     @OneToMany(mappedBy = "teamPosition", fetch = FetchType.LAZY)
