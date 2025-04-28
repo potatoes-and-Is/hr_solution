@@ -4,6 +4,7 @@ import com.poi.hr.domain.dept.Dept;
 import com.poi.hr.domain.employee.DepPositionEmployee;
 import com.poi.hr.dto.DeptDTO;
 import com.poi.hr.repository.DepPositionEmployeeRepository;
+import com.poi.hr.repository.DeptRepository;
 import com.poi.hr.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,14 @@ public class DeptController {
     private static final Logger logger = Logger.getLogger(DeptController.class.getName());
     private final DeptService deptService;
     private final DepPositionEmployeeRepository depPositionEmployeeRepository;
+    private final DeptRepository deptRepository;
 
     @Autowired
     public DeptController(DeptService deptService,
-                          DepPositionEmployeeRepository depPositionEmployeeRepository) {
+                          DepPositionEmployeeRepository depPositionEmployeeRepository, DeptRepository deptRepository) {
         this.deptService = deptService;
         this.depPositionEmployeeRepository = depPositionEmployeeRepository;
+        this.deptRepository = deptRepository;
     }
 
     // 부서 리스트 트리 형태로 보여줌
@@ -68,9 +71,9 @@ public class DeptController {
 
     // 부서 추가
     @PostMapping("/department/add")
-    public ResponseEntity<DeptDTO> addDepartment(@Validated @RequestBody DeptDTO departmentDto) {
+    public ResponseEntity<DeptDTO> addDepartment(@Validated @RequestBody DeptDTO deptDTO) {
 
-        DeptDTO saveDepartment = deptService.addDepartment(departmentDto);
+        DeptDTO saveDepartment = deptService.addDepartment(deptDTO);
 
         if(saveDepartment == null) {
             return ResponseEntity.status(500).body(null);
@@ -79,8 +82,18 @@ public class DeptController {
         }
     }
 
+    // 부서 수정
+    @PatchMapping("/department/update/{deptId}")
+    public ResponseEntity<DeptDTO> updateDepartment(@PathVariable("deptId") int deptId, @Validated @RequestBody DeptDTO deptDTO) {
 
+        DeptDTO updatedDept = deptService.updateDept(deptId, deptDTO.getDeptName());
 
+        if (updatedDept == null) {
+            return ResponseEntity.status(500).body(null);
+        } else {
+            return ResponseEntity.ok(updatedDept);
+        }
+    }
 }
 
 
