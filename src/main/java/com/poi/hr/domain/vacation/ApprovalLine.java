@@ -1,5 +1,6 @@
 package com.poi.hr.domain.vacation;
 
+import com.poi.hr.domain.employee.Employee;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

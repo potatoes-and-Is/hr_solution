@@ -17,7 +17,7 @@ public class Attend {
     private int attendId;
 
     @Column(name = "attend_date", nullable = false)
-    private LocalDateTime attendDate;
+    private LocalDate attendDate;
 
     @Column(name = "check_in_time")
     private LocalTime checkInTime;
@@ -25,18 +25,18 @@ public class Attend {
     @Column(name = "check_out_time")
     private LocalTime checkOutTime;
 
-    @Column(name = "check_in_status")
-    private char checkInStatus;
+    @Column(name = "check_in_status", length = 1)
+    private char checkInStatus = 'N';
 
-    @Column(name = "check_out_status")
-    private char checkOutStatus;
+    @Column(name = "check_out_status", length = 1)
+    private char checkOutStatus = 'N';
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "attend_status")
+    @Column(name = "attend_status", nullable = false)
     private AttendStatus attendStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
     public Attend() {}
@@ -51,36 +51,76 @@ public class Attend {
         this.employee = employee;
     }
 
+    public Attend(LocalDate attendDate, LocalTime checkInTime, char checkInStatus, AttendStatus attendStatus, Employee employee) {
+        this.attendDate = attendDate;
+        this.checkInTime = checkInTime;
+        this.checkInStatus = checkInStatus;
+        this.checkOutStatus = checkOutStatus;
+        this.attendStatus = attendStatus;
+    }
+
     public int getAttendId() {
         return attendId;
+    }
+
+    public void setAttendId(int attendId) {
+        this.attendId = attendId;
     }
 
     public LocalDate getAttendDate() {
         return attendDate;
     }
 
+    public void setAttendDate(LocalDate attendDate) {
+        this.attendDate = attendDate;
+    }
+
     public LocalTime getCheckInTime() {
         return checkInTime;
+    }
+
+    public void setCheckInTime(LocalTime checkInTime) {
+        this.checkInTime = checkInTime;
     }
 
     public LocalTime getCheckOutTime() {
         return checkOutTime;
     }
 
+    public void setCheckOutTime(LocalTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
     public char getCheckInStatus() {
         return checkInStatus;
+    }
+
+    public void setCheckInStatus(char checkInStatus) {
+        this.checkInStatus = checkInStatus;
     }
 
     public char getCheckOutStatus() {
         return checkOutStatus;
     }
 
+    public void setCheckOutStatus(char checkOutStatus) {
+        this.checkOutStatus = checkOutStatus;
+    }
+
     public AttendStatus getAttendStatus() {
         return attendStatus;
     }
 
+    public void setAttendStatus(AttendStatus attendStatus) {
+        this.attendStatus = attendStatus;
+    }
+
     public Employee getEmployee() {
         return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     @Override

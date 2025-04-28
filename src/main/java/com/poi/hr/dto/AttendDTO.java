@@ -3,6 +3,7 @@ package com.poi.hr.dto;
 import com.poi.hr.domain.attendance.AttendStatus;
 import com.poi.hr.domain.employee.Employee;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -10,7 +11,7 @@ public class AttendDTO {
 
     private Integer attendId;
 
-    private LocalDateTime attendDate;
+    private LocalDate attendDate;
 
     private LocalTime checkInTime;
 
@@ -26,7 +27,7 @@ public class AttendDTO {
 
     public AttendDTO() {}
 
-    public AttendDTO(Integer attendId, LocalDateTime attendDate, LocalTime checkInTime, LocalTime checkOutTime, char checkInStatus, char checkOutStatus, AttendStatus attendStatus, Employee employee) {
+    public AttendDTO(Integer attendId, LocalDate attendDate, LocalTime checkInTime, LocalTime checkOutTime, char checkInStatus, char checkOutStatus, AttendStatus attendStatus, Employee employee) {
         this.attendId = attendId;
         this.attendDate = attendDate;
         this.checkInTime = checkInTime;
@@ -45,11 +46,11 @@ public class AttendDTO {
         this.attendId = attendId;
     }
 
-    public LocalDateTime getAttendDate() {
+    public LocalDate getAttendDate() {
         return attendDate;
     }
 
-    public void setAttendDate(LocalDateTime attendDate) {
+    public void setAttendDate(LocalDate attendDate) {
         this.attendDate = attendDate;
     }
 

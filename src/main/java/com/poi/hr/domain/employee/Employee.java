@@ -1,5 +1,6 @@
 package com.poi.hr.domain.employee;
 
+import com.poi.hr.domain.vacation.Level;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
-    private Integer employeeId;
+    private int employeeId;
 
     @Column(name = "employee_number", nullable = false, unique = true, length = 30)
     private String employeeNumber;
@@ -70,7 +71,7 @@ public class Employee {
         this.retireDate = retireDate;
     }
 
-    public Integer getEmployeeId() {
+    public int getEmployeeId() {
         return employeeId;
     }
 
@@ -189,7 +190,7 @@ public class Employee {
                 ", employeeStatus='" + employeeStatus + '\'' +
                 ", hireDate=" + hireDate +
                 ", retireDate=" + retireDate +
-                ", level=" + level +
+                ", levelId=" + (level != null ? level.getLevelId() : null) +
                 '}';
     }
 }

@@ -24,12 +24,20 @@ public class AttendController {
     }
 
     // 출근 버튼 눌렀을 때 넘겨줘야 하는 정보 : employee_id / 출,퇴근 시간 /
-
+    // @AuthenticationPrincipal AuthDetails authDetails
     // 출근 시간 기록
     @PostMapping("/check-in")
-    public ResponseEntity<AttendDTO> checkIn(@RequestBody AttendDTO attendDTO, Principal principal) {
-        String employeeId = principal.getName();
-        attendService.recordCheckIn(attendDTO);
+    public ResponseEntity<String> checkIn(@RequestBody AttendDTO attendDTO, Principal principal) {
+
+        logger.info("checkIn 등록 - controller");
+        try {
+            int employeeId = Integer.parseInt(principal.getName());
+            attendService.recordCheckIn(employeeId, attendDTO.getCheckInTime());
+            return ResponseEntity.ok("success");
+        }catch (Exception e){
+            return ResponseEntity.status(500).body("fail");
+        }
+
     }
 
 

@@ -7,14 +7,14 @@ public enum AttendStatus {
     EARLY_LEAVE("조퇴"),
     VACATION("휴가");
 
-    private String value;
+    private final String displayName;
 
-    AttendStatus(String value) {
-        this.value = value;
+    AttendStatus(String displayName) {
+        this.displayName = displayName;
     }
 
-    public String getValue() {
-        return value;
+    public String getDisplayName() {
+        return displayName;
     }
 
 }

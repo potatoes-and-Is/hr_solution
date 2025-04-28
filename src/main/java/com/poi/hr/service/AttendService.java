@@ -1,10 +1,15 @@
 package com.poi.hr.service;
 
 import com.poi.hr.domain.attendance.Attend;
+import com.poi.hr.domain.attendance.AttendStatus;
 import com.poi.hr.dto.AttendDTO;
 import com.poi.hr.repository.AttendRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Optional;
 
 @Service
 public class AttendService {
@@ -17,7 +22,49 @@ public class AttendService {
     }
 
     // 출근 시간 기록
-    public void recordCheckIn(AttendDTO attendDTO){
-        Attend attend =  attendRepository.save();
+    public void recordCheckIn(int employeeId, LocalTime checkInTime){
+
+        LocalDate today = LocalDate.now();
+
+        Optional<Attend> findAttend = attendRepository.findByEmployeeIdAndAttendDate(employeeId, today);
+
+        if(findAttend.isPresent()){
+            throw new IllegalArgumentException("이미 출근기록이 존재합니다.");
+        }
+
+        Attend attend = new Attend();
+
+        // 직원 id
+        attend.setAttendDate(today);
+        attend.setCheckInTime(checkInTime);
+        attend.setCheckInStatus('Y');
+        attend.setAttendStatus(calculateCheckInTime(checkInTime)); // 정상 or 지각
+
+        attendRepository.save(attend);
+    }
+
+    // 출근 시간 체크 (정상 or 지각)
+    public AttendStatus calculateCheckInTime(LocalTime checkInTime){
+        LocalTime checkIn = LocalTime.of(9, 0);
+        if(checkInTime.isAfter(checkIn)){
+            return AttendStatus.LATE;
+        } else {
+            return AttendStatus.WORK;
+        }
+
+    }
+
+    // 출근 상태 체크(정상, 지각, 조퇴)
+    public AttendStatus calculateAttendStatus(LocalTime checkInTime, LocalTime checkOutTime){
+
+        LocalTime checkIn = LocalTime.of(9, 0); // 9시 출근 기준
+        LocalTime checkOut = LocalTime.of(18, 0);
+        if(checkInTime.isAfter(checkIn)){
+            return AttendStatus.LATE;
+        } else if(checkOutTime.isBefore(checkOut)) {
+            return AttendStatus.EARLY_LEAVE;
+        } else {
+            return AttendStatus.WORK;
+        }
     }
 }
