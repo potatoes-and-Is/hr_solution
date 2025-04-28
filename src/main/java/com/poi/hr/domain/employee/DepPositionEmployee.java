@@ -1,11 +1,11 @@
-package com.poi.hr.domain.hr;
+package com.poi.hr.domain.employee;
 
-import com.poi.hr.domain.department.Department;
-import com.poi.hr.domain.employee.Employee;
+import com.poi.hr.domain.dept.Dept;
+import com.poi.hr.domain.hr.TeamPosition;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "dep_position_employees")
+@Table(name = "Dep_position_employees")
 public class DepPositionEmployee {
 
     @Id
@@ -15,7 +15,7 @@ public class DepPositionEmployee {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id")
-    private Department department;
+    private Dept dept;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
@@ -29,9 +29,8 @@ public class DepPositionEmployee {
     public DepPositionEmployee() {
     }
 
-    public DepPositionEmployee(Integer dpeId, Department department, Employee employee, TeamPosition teamPosition) {
-        this.dpeId = dpeId;
-        this.department = department;
+    public DepPositionEmployee(Dept department, Employee employee, TeamPosition teamPosition) {
+        this.dept = department;
         this.employee = employee;
         this.teamPosition = teamPosition;
     }
@@ -44,12 +43,12 @@ public class DepPositionEmployee {
         this.dpeId = dpeId;
     }
 
-    public Department getDepartment() {
-        return department;
+    public Dept getDepartment() {
+        return dept;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setDepartment(Dept dept) {
+        this.dept = dept;
     }
 
     public Employee getEmployee() {

@@ -1,13 +1,14 @@
 package com.poi.hr.repository;
 
+import com.poi.hr.domain.dept.Dept;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface DepartmentRepository extends JpaRepository<Department, Integer> {
+public interface DeptRepository extends JpaRepository<Dept, Integer> {
 
-    Optional<Department> findByDeptName(String deptName);
-    Optional<Department> findByDeptCode(String deptCode);
+    Optional<Dept> findByDeptName(String deptName);
+    Optional<Dept> findByDeptCode(String deptCode);
 }

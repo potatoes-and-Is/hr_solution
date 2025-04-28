@@ -1,0 +1,86 @@
+package com.poi.hr.controller;
+
+import com.poi.hr.domain.dept.Dept;
+import com.poi.hr.domain.employee.DepPositionEmployee;
+import com.poi.hr.dto.DeptDTO;
+import com.poi.hr.repository.DepPositionEmployeeRepository;
+import com.poi.hr.service.DeptService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+@Controller
+@Validated
+public class DeptController {
+
+    private static final Logger logger = Logger.getLogger(DeptController.class.getName());
+    private final DeptService deptService;
+    private final DepPositionEmployeeRepository depPositionEmployeeRepository;
+
+    @Autowired
+    public DeptController(DeptService deptService,
+                          DepPositionEmployeeRepository depPositionEmployeeRepository) {
+        this.deptService = deptService;
+        this.depPositionEmployeeRepository = depPositionEmployeeRepository;
+    }
+
+    // 부서 리스트 트리 형태로 보여줌
+    @GetMapping("/departmentInfo")
+    public String departmentInfo(Model model) {
+        List<DeptDTO> flatList = deptService.getDepartmentList();
+        List<DeptDTO> deptTree = deptService.buildDeptTree(flatList);
+        model.addAttribute("deptTree", deptTree);
+        return "department/departmentInfo";
+    }
+
+    // 부서 리스트 데이터 넘겨줌
+    @GetMapping("/department")
+    public ResponseEntity<List<DeptDTO>> getAllDepartments() {
+        List<DeptDTO> departmentList = deptService.getDepartmentList();
+        return ResponseEntity.ok(departmentList);
+    }
+
+
+    // 특정 부서 소속된 직원 조회
+    @ResponseBody
+    @GetMapping("/department/{deptId}/employees")
+    public List<EmployeeResponse> getEmployeesByDepartment(@PathVariable Integer deptId) {
+        List<DepPositionEmployee> dpeList = deptService.getEmployeesByDeptId(deptId);
+
+        return dpeList.stream()
+                .map(dpe -> new EmployeeResponse(
+                        dpe.getEmployee().getEmployeeName(),
+                        dpe.getEmployee().getEmployeeNumber(),
+                        dpe.getTeamPosition().getPositionName()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public record EmployeeResponse(String employeeName, String employeeNumber, String teamPositionName) {
+    }
+
+    // 부서 추가
+    @PostMapping("/department/add")
+    public ResponseEntity<DeptDTO> addDepartment(@Validated @RequestBody DeptDTO departmentDto) {
+
+        DeptDTO saveDepartment = deptService.addDepartment(departmentDto);
+
+        if(saveDepartment == null) {
+            return ResponseEntity.status(500).body(null);
+        } else {
+            return ResponseEntity.ok().body(saveDepartment);
+        }
+    }
+
+
+
+}
+
+

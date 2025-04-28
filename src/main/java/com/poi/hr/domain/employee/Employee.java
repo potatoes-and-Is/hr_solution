@@ -1,6 +1,5 @@
 package com.poi.hr.domain.employee;
 
-import com.poi.hr.domain.hr.DepPositionEmployee;
 import com.poi.hr.domain.hr.Level;
 import jakarta.persistence.*;
 
@@ -12,8 +11,10 @@ import java.util.List;
 public class Employee {
 
     @Id
-    @Column(name = "employee_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "employee_id")
     private int employeeId;
+
 
     @Column(name = "employee_name", nullable = false)
     private String employeeName;

@@ -1,9 +1,10 @@
 package com.poi.hr.service;
 
+import com.poi.hr.domain.dept.Dept;
 import com.poi.hr.domain.employee.DepPositionEmployee;
-import com.poi.hr.dto.DepartmentDto;
+import com.poi.hr.dto.DeptDTO;
 import com.poi.hr.repository.DepPositionEmployeeRepository;
-import com.poi.hr.repository.DepartmentRepository;
+import com.poi.hr.repository.DeptRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,26 +14,26 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
-public class DepartmentService {
+public class DeptService {
 
-    private static final Logger logger = Logger.getLogger(DepartmentService.class.getName());
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(DepartmentService.class);
+    private static final Logger logger = Logger.getLogger(DeptService.class.getName());
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(DeptService.class);
 
-    private final DepartmentRepository departmentRepository;
+    private final DeptRepository deptRepository;
     private final DepPositionEmployeeRepository depPositionEmployeeRepository;
 
     @Autowired
-    public DepartmentService(DepartmentRepository departmentRepository, DepPositionEmployeeRepository depPositionEmployeeRepository) {
-        this.departmentRepository = departmentRepository;
+    public DeptService(DeptRepository deptRepository, DepPositionEmployeeRepository depPositionEmployeeRepository) {
+        this.deptRepository = deptRepository;
         this.depPositionEmployeeRepository = depPositionEmployeeRepository;
     }
 
     // 부서 정보 가져오기
-    public List<DepartmentDto> getDepartmentList() {
-        List<Department> departments = departmentRepository.findAll();
+    public List<DeptDTO> getDepartmentList() {
+        List<Dept> departments = deptRepository.findAll();
 
         return departments.stream()
-                .map(dept -> new DepartmentDto(
+                .map(dept -> new DeptDTO(
                         dept.getDeptId(),
                         dept.getDeptCode(),
                         dept.getDeptName(),
@@ -44,19 +45,19 @@ public class DepartmentService {
     }
 
     // 부서 트리 형태로
-    public List<DepartmentDto> buildDeptTree(List<DepartmentDto> flatList) {
-        Map<Integer, DepartmentDto> map = new HashMap<>();
-        List<DepartmentDto> roots = new ArrayList<>();
+    public List<DeptDTO> buildDeptTree(List<DeptDTO> flatList) {
+        Map<Integer, DeptDTO> map = new HashMap<>();
+        List<DeptDTO> roots = new ArrayList<>();
 
-        for (DepartmentDto dto : flatList) {
+        for (DeptDTO dto : flatList) {
             map.put(dto.getDeptId(), dto);
         }
 
-        for (DepartmentDto dto : flatList) {
+        for (DeptDTO dto : flatList) {
             if (dto.getParentDeptId() == null) {
                 roots.add(dto);
             } else {
-                DepartmentDto parent = map.get(dto.getParentDeptId());
+                DeptDTO parent = map.get(dto.getParentDeptId());
                 if (parent != null) {
                     parent.getChildren().add(dto);
                 }
@@ -72,27 +73,28 @@ public class DepartmentService {
     }
 
     // 부서 등록하기
-    public DepartmentDto addDepartment(DepartmentDto departmentDto){
+    public DeptDTO addDepartment(DeptDTO departmentDto){
 
-        Optional<Department> findName = departmentRepository.findByDeptName(departmentDto.getDeptName());
-        Optional<Department> findCode = departmentRepository.findByDeptCode(departmentDto.getDeptCode());
+        Optional<Dept> findName = deptRepository.findByDeptName(departmentDto.getDeptName());
+        Optional<Dept> findCode = deptRepository.findByDeptCode(departmentDto.getDeptCode());
 
         if(findName.isPresent() || findCode.isPresent()){
             throw new IllegalArgumentException("이미 존재하는 부서입니다." + departmentDto.getDeptCode() + departmentDto.getDeptName());
         }
 
-        Department department = new Department(departmentDto.getDeptName(), departmentDto.getDeptCode());
+        Dept department = new Dept(departmentDto.getDeptName(), departmentDto.getDeptCode());
 
 
         if (departmentDto.getParentDeptId() != null) {
-            Department parentDept = departmentRepository.findById(departmentDto.getParentDeptId())
+            Dept parentDept = deptRepository.findById(departmentDto.getParentDeptId())
                     .orElseThrow(() -> new IllegalArgumentException("상위 부서를 찾을 수 없습니다."));
             department.setParentDeptId(parentDept);
         }
 
-        Department saveDepartment = departmentRepository.save(department);
+        Dept saveDepartment = deptRepository.save(department);
 
-        return new DepartmentDto(saveDepartment.getDeptName(), saveDepartment.getDeptCode());
+        return new DeptDTO(saveDepartment.getDeptName(), saveDepartment.getDeptCode());
     }
+
 }
 
