@@ -1,7 +1,6 @@
 package com.poi.hr.service;
 
-import com.poi.hr.domain.department.Department;
-import com.poi.hr.domain.hr.DepPositionEmployee;
+import com.poi.hr.domain.employee.DepPositionEmployee;
 import com.poi.hr.dto.DepartmentDto;
 import com.poi.hr.repository.DepPositionEmployeeRepository;
 import com.poi.hr.repository.DepartmentRepository;
@@ -9,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -73,6 +69,30 @@ public class DepartmentService {
     // 부서별 직원리스트 불러오기
     public List<DepPositionEmployee> getEmployeesByDeptId(Integer deptId) {
         return depPositionEmployeeRepository.findByDeptId(deptId);
+    }
+
+    // 부서 등록하기
+    public DepartmentDto addDepartment(DepartmentDto departmentDto){
+
+        Optional<Department> findName = departmentRepository.findByDeptName(departmentDto.getDeptName());
+        Optional<Department> findCode = departmentRepository.findByDeptCode(departmentDto.getDeptCode());
+
+        if(findName.isPresent() || findCode.isPresent()){
+            throw new IllegalArgumentException("이미 존재하는 부서입니다." + departmentDto.getDeptCode() + departmentDto.getDeptName());
+        }
+
+        Department department = new Department(departmentDto.getDeptName(), departmentDto.getDeptCode());
+
+
+        if (departmentDto.getParentDeptId() != null) {
+            Department parentDept = departmentRepository.findById(departmentDto.getParentDeptId())
+                    .orElseThrow(() -> new IllegalArgumentException("상위 부서를 찾을 수 없습니다."));
+            department.setParentDeptId(parentDept);
+        }
+
+        Department saveDepartment = departmentRepository.save(department);
+
+        return new DepartmentDto(saveDepartment.getDeptName(), saveDepartment.getDeptCode());
     }
 }
 
