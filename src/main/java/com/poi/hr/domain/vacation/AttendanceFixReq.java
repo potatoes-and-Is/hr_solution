@@ -18,7 +18,7 @@ public class AttendanceFixReq extends ApprovalDoc {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "attend_id")
-    private int attendId;
+    private Attend attend;
 
     @Column(name = "req_check_in_time")
     private LocalTime reqCheckInTime;
@@ -36,8 +36,8 @@ public class AttendanceFixReq extends ApprovalDoc {
         this.reqCheckOutTime = reqCheckOutTime;
     }
 
-    public int getAttendId() {
-        return attendId;
+    public Attend getAttend() {
+        return attend;
     }
 
     public LocalTime getReqCheckInTime() {
@@ -59,7 +59,7 @@ public class AttendanceFixReq extends ApprovalDoc {
     @Override
     public String toString() {
         return "AttendanceFixReq{" +
-                "attendId=" + attendId +
+                "attendId=" + (attend != null ? attend.getAttendId() : null) +
                 ", reqCheckInTime=" + reqCheckInTime +
                 ", reqCheckOutTime=" + reqCheckOutTime +
                 '}';
