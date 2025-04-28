@@ -189,6 +189,77 @@
         }
       }
 
+      let selectedDeptId = null;
+      let selectedDeptName = null;
+
+      function selectDepartment(checkbox) {
+        const allCheckboxes = document.getElementsByName('deptCheckbox');
+        allCheckboxes.forEach(cb => {
+          if (cb !== checkbox) {
+            cb.checked = false;
+          }
+        });
+
+        if (checkbox.checked) {
+          selectedDeptId = checkbox.value;
+
+          selectedDeptName = checkbox.parentElement.querySelector('.dept-name').textContent;
+
+        } else {
+          selectedDeptId = null;
+          selectedDeptName = null;
+        }
+      }
+
+      // 부서 수정
+      function updateDepartment() {
+        if (!selectedDeptId) {
+          alert('수정할 부서를 선택하세요.');
+          return;
+        }
+
+        document.getElementById('oldDeptName').value = selectedDeptName;
+        document.getElementById('newDeptName').value = "";
+
+        const modal = new bootstrap.Modal(document.getElementById('updateDepartmentModal'));
+        modal.show();
+      }
+
+      function saveUpdateDepartment() {
+        const deptId = $('#selectedDeptId').val();
+        const newDeptName = document.getElementById('newDeptName').value;
+
+        if (!selectedDeptId) {
+          alert('수정할 부서를 선택하세요.');
+          return;
+        }
+
+        if (!newDeptName) {
+          alert('새 부서명을 입력하세요.');
+          return;
+        }
+
+        $.ajax({
+          url: '/department/update/' + selectedDeptId,
+          type: 'PATCH',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            deptId: deptId,
+            deptName: newDeptName
+          }),
+          success: function(response) {
+            alert('부서명이 성공적으로 수정되었습니다!');
+            location.reload();
+          },
+          error: function(error) {
+            alert('이미 사용중인 부서명입니다.');
+            console.error(error);
+          }
+        });
+
+        $('#updateDepartmentModal').modal('hide');
+      }
+
 
     </script>
   </th:block>
@@ -214,6 +285,7 @@
           <th:block th:each="dept : ${deptTree}">
             <li>
               <div>
+                <input type="checkbox" name="deptCheckbox" th:value="${dept.deptId}" onchange="selectDepartment(this)">
                 <span class="toggle" onclick="toggleChildren(this)">▶</span>
                 <span class="dept-name"
                       th:text="${dept.deptName}"
@@ -225,6 +297,7 @@
                 <th:block th:each="child : ${dept.children}">
                   <li>
                     <div>
+                      <input type="checkbox" name="deptCheckbox" th:value="${child.deptId}" onchange="selectDepartment(this)">
                       <span class="toggle" onclick="toggleChildren(this)">▶</span>
                       <span class="dept-name"
                             th:text="${child.deptName}"
@@ -276,11 +349,11 @@
             <form id="addDepartmentForm">
               <div class="mb-3">
                 <label for="deptCode" class="form-label">부서코드</label>
-                <input type="text" class="form-control" id="deptCode" placeholder="부서코드 입력">
+                <input type="text" class="form-control" id="deptName" placeholder="부서코드 입력">
               </div>
               <div class="mb-3">
                 <label for="deptName" class="form-label">부서명</label>
-                <input type="text" class="form-control" id="deptName" placeholder="부서명 입력">
+                <input type="text" class="form-control" id="deptCode" placeholder="부서명 입력">
               </div>
               <div class="mb-3">
                 <label for="parentDeptId" class="form-label">상위 부서 선택</label>
@@ -301,6 +374,39 @@
       </div>
     </div>
 
+    <!-- ✅ 부서 수정 모달 -->
+    <div class="modal fade" id="updateDepartmentModal" tabindex="-1" aria-labelledby="updateDepartmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateDepartmentModalLabel">부서 수정</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="updateDepartmentForm">
+              <div class="mb-3">
+                <label for="oldDeptName" class="form-label">현재 부서명</label>
+                <input type="text" class="form-control" id="oldDeptName" readonly>
+              </div>
+              <div class="mb-3">
+                <label for="newDeptName" class="form-label">새 부서명</label>
+                <input type="text" class="form-control" id="newDeptName" placeholder="새 부서명 입력">
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-primary" onclick="saveUpdateDepartment()">수정</button>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -309,6 +415,7 @@
   <th:block th:each="dept : ${deptList}">
     <li>
       <div>
+        <input type="checkbox" name="deptCheckbox" th:value="${dept.deptId}" onchange="selectDepartment(this)">
         <span class="toggle" onclick="toggleChildren(this)">▶</span>
         <span class="dept-name"
               th:text="${dept.deptName}"

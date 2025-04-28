@@ -8,6 +8,7 @@ import com.poi.hr.repository.DeptRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -21,6 +22,7 @@ public class DeptService {
 
     private final DeptRepository deptRepository;
     private final DepPositionEmployeeRepository depPositionEmployeeRepository;
+
 
     @Autowired
     public DeptService(DeptRepository deptRepository, DepPositionEmployeeRepository depPositionEmployeeRepository) {
@@ -95,6 +97,24 @@ public class DeptService {
 
         return new DeptDTO(saveDepartment.getDeptName(), saveDepartment.getDeptCode());
     }
+
+    // 부서 수정하기
+    public DeptDTO updateDept(Integer deptId, String deptName) {
+
+        Dept dept = deptRepository.findById(deptId)
+                .orElseThrow(() -> new IllegalArgumentException("수정할 부서가 존재하지 않습니다."));
+
+        Optional<Dept> findDept = deptRepository.findByDeptName(deptName);
+        if(findDept.isPresent()) {
+            throw new IllegalArgumentException("이미 사용중인 부서명입니다.");
+        }
+
+        dept.setDeptName(deptName);
+        Dept saveDept = deptRepository.save(dept);
+
+        return new DeptDTO(saveDept.getDeptId(), saveDept.getDeptCode(), saveDept.getDeptName());
+    }
+
 
 }
 

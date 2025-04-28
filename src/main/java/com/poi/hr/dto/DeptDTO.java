@@ -42,6 +42,9 @@ public class DeptDTO {
         this.deptName = deptName;
     }
 
+    public DeptDTO(int deptId, String deptCode, String deptName) {
+    }
+
     public Integer getDeptId() {
         return deptId;
     }
