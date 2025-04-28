@@ -1,7 +1,7 @@
 package com.poi.hr.dto;
 
 import com.poi.hr.domain.attendance.AttendStatus;
-import com.poi.hr.domain.employee.Employee;
+import com.poi.hr.domain.login.entity.Employee;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -1,9 +1,9 @@
-package com.poi.hr.domain.vacation;
+package com.poi.hr.domain.login.entity;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Ui_permissions")
+@Table(name = "ui_permissions")
 public class UiPermission {
 
     @Id
@@ -18,7 +18,6 @@ public class UiPermission {
     private String permissionName;
 
     public UiPermission() {
-
     }
 
     public UiPermission(String permissionRole, String permissionName) {
@@ -36,14 +35,6 @@ public class UiPermission {
 
     public String getPermissionName() {
         return permissionName;
-    }
-
-    public void setPermissionRole(String permissionRole) {
-        this.permissionRole = permissionRole;
-    }
-
-    public void setPermissionName(String permissionName) {
-        this.permissionName = permissionName;
     }
 
     @Override

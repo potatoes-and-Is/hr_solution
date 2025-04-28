@@ -1,8 +1,7 @@
 package com.poi.hr.domain.attendance;
 
-import com.poi.hr.domain.employee.Employee;
+import com.poi.hr.domain.login.entity.Employee;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -133,7 +132,7 @@ public class Attend {
                 ", checkInStatus=" + checkInStatus +
                 ", checkOutStatus=" + checkOutStatus +
                 ", attendStatus=" + attendStatus +
-                ", employee=" + employee +
+                ", employeeId=" + (employee != null ? employee.getEmployeeId() : null) +
                 '}';
     }
 }

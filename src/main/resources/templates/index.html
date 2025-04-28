@@ -37,6 +37,9 @@
                 font-size: 1.2rem;
                 padding: 15px;
             }
+            .calendar-table {
+                width: 100%;
+            }
             /* 제목 스타일 */
             .greeting-text {
                 font-size: 2rem;
@@ -60,6 +63,10 @@
             <div class="col-md-10">
                 <h1 class="greeting-text text-gray-800" th:text="${userName} + '님, 반가워요!'"></h1>
                 <p class="date-text" th:text="${currentDateTime}"></p>
+<!--                <h1 class="greeting-text text-gray-800" th:text="${userName} + '님, 반가워요!'">사용자님, 반가워요!</h1>-->
+                <h1 class="greeting-text text-gray-800" th:text="${userName} + ' ' + ${userRole} + '님 반가워요!'">사용자님, 반가워요!</h1>
+<!--                <p class="date-text" th:text="${currentDateTime}">2025.04.22(화) 20:30</p>-->
+                <p id="currentDateTime" class="date-text" th:text="${currentDateTime}">2025.04.22(화) 20:30:00</p>
             </div>
         </div>
 
@@ -71,8 +78,8 @@
                     <div class="card-body">
                         <h5 class="attendance-title text-left">출퇴근</h5>
                         <div class="d-flex justify-content-start">
-                            <button class="btn btn-primary custom-btn mr-3" id="checkInButton" onclick="checkIn()" style="background-color: #1cc88a; border-color:#1cc88a">출근하기</button>
-                            <button class="btn btn-primary custom-btn" id="checkOutButton" onclick="checkOut()" style="background-color: #e74a3b; border-color:#e74a3b">퇴근하기</button>
+                            <button class="btn btn-primary custom-btn mr-3" onclick="checkIn()" style="background-color: #1cc88a; border-color:#1cc88a">출근하기</button>
+                            <button class="btn btn-primary custom-btn" onclick="checkOut()" style="background-color: #e74a3b; border-color:#e74a3b">퇴근하기</button>
                         </div>
                     </div>
                 </div>
@@ -154,6 +161,32 @@
                     checkOutTime: now.toISOString()
                 })
             })
+        }
+    </script>
+    <script>
+        window.onload = function() {
+            function updateCurrentDateTime() {
+                const now = new Date();
+
+                const year = now.getFullYear();
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const date = now.getDate().toString().padStart(2, '0');
+                const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+                const day = dayNames[now.getDay()];
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+
+                const formattedDateTime = `${year}.${month}.${date}(${day}) ${hours}:${minutes}:${seconds}`;
+
+                const currentDateTimeElement = document.getElementById('currentDateTime');
+                if (currentDateTimeElement) {
+                    currentDateTimeElement.textContent = formattedDateTime;
+                }
+            }
+
+            updateCurrentDateTime(); // 🔥 첫 로딩 시 바로 실행
+            setInterval(updateCurrentDateTime, 1000); // 🔥 1초마다 갱신
         }
     </script>
 </th:block>

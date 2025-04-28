@@ -1,19 +1,19 @@
-package com.poi.hr.domain.vacation;
+package com.poi.hr.domain.login.entity;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Levels")
+@Table(name = "levels")
 public class Level {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "level_id")
-    private int levelId;
+    private Integer levelId;
 
-    @Column(name = "level_code", nullable = false, length = 50)
+    @Column(name = "level_code", nullable = false, length = 50, unique = true)
     private String levelCode;
 
     @Column(name = "level_name", nullable = false, length = 50)
@@ -22,10 +22,9 @@ public class Level {
     @Column(name = "created_by", nullable = false, length = 30)
     private String createdBy;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false, insertable = false)
     private LocalDateTime createdAt;
 
-    //기본생성자
     public Level() {
     }
 
@@ -35,36 +34,44 @@ public class Level {
         this.createdBy = createdBy;
     }
 
-    public int getLevelId() {
+    public Integer getLevelId() {
         return levelId;
+    }
+
+    public void setLevelId(Integer levelId) {
+        this.levelId = levelId;
     }
 
     public String getLevelCode() {
         return levelCode;
     }
 
-    public String getLevelName() {
-        return levelName;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public void setLevelCode(String levelCode) {
         this.levelCode = levelCode;
+    }
+
+    public String getLevelName() {
+        return levelName;
     }
 
     public void setLevelName(String levelName) {
         this.levelName = levelName;
     }
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
