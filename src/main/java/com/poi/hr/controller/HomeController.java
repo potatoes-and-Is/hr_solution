@@ -23,4 +23,11 @@ public class HomeController {
         return "index";
     }
 
+    /* 출퇴근 탭 */
+    @GetMapping("/attendanceList")
+    public String attendanceList(Model model) {
+        model.addAttribute("title", "Attendance List");
+        return "attendance/attendanceList";
+    }
+
 }
