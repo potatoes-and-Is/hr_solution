@@ -139,17 +139,10 @@
                                 </select>
                             </div>
 
-                            <!-- 사용일수 먼저 선택 -->
+                            <!-- 휴가사용일수 (숫자 입력) -->
                             <div class="form-group">
                                 <label for="vacUseDays">휴가사용일수</label>
-                                <select class="form-control" id="vacUseDays" name="vacUseDays" required>
-                                    <option value="">-- 사용일수 선택 --</option>
-                                    <option value="1">1일</option>
-                                    <option value="2">2일</option>
-                                    <option value="3">3일</option>
-                                    <option value="4">4일</option>
-                                    <option value="5">5일</option>
-                                </select>
+                                <input type="number" class="form-control" id="vacUseDays" name="vacUseDays" step="0.25" min="0.25" required>
                             </div>
 
                             <!-- 시작일 -->
@@ -158,10 +151,10 @@
                                 <input type="date" class="form-control" id="startDate" name="startDate" required>
                             </div>
 
-                            <!-- 종료일 (자동 계산) -->
+                            <!-- 종료일 (자동 계산, 수정 가능) -->
                             <div class="form-group">
                                 <label for="endDate">휴가종료일</label>
-                                <input type="date" class="form-control" id="endDate" name="endDate" readonly>
+                                <input type="date" class="form-control" id="endDate" name="endDate">
                             </div>
 
                             <!-- 사유 -->
@@ -189,10 +182,25 @@
 <th:block layout:fragment="scripts">
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const vacTypeSelect = document.getElementById('vacType');
         const startDateInput = document.getElementById('startDate');
-        const vacUseDaysSelect = document.getElementById('vacUseDays');
+        const vacUseDaysInput = document.getElementById('vacUseDays');
         const endDateInput = document.getElementById('endDate');
 
+        //휴가유형에 따라 기본 사용일수 설정
+        vacTypeSelect.addEventListener('change', function () {
+           const selectedType = vacTypeSelect.options[vacTypeSelect.selectedIndex].text;
+
+            if (selectedType.includes('반반차')) {
+                vacUseDaysInput.value = 0.25;
+            } else if (selectedType.includes('반차')) {
+                vacUseDaysInput.value = 0.5;
+            } else {
+                vacUseDaysInput.value = 1;
+            }
+        });
+
+        // 시작일, 사용일수 변경 시 종료일 자동 계산
         function calculateEndDate() {
             const startDate = startDateInput.value;
             const days = parseInt(vacUseDaysSelect.value);
@@ -205,6 +213,23 @@
         }
         startDateInput.addEventListener('change', calculateEndDate);
         vacUseDaysSelect.addEventListener('change', calculateEndDate);
+    });
+
+    //휴가 신청하기 눌렀을 때 휴가유형 조회
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/poihr/api/vacation/types')
+            .then(response => response.json())
+            .then(data => {
+                const vacationTypeSelect = document.getElementById('vacType');
+
+                data.forEach(type => {
+                    const option = document.createElement('option');
+                    option.value = type.vacTypeId;
+                    option.text = type.vacTypeName;
+                    vacationTypeSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('휴가유형 가져오기를 실패하였습니다.', error));
     });
 </script>
 
