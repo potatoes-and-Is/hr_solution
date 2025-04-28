@@ -55,7 +55,7 @@
             <div>
                 <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="yearDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span th:text="${selectedYear}">2025</span> 년도
+                        <span th:text="${selectedYear}"></span> 년도
                     </button>
                     <div class="dropdown-menu" aria-labelledby="yearDropdown">
                         <a class="dropdown-item" th:each="year : ${years}" th:href="@{/vacation/my(year=${year})}" th:text="${year}">2025</a>
@@ -64,6 +64,7 @@
             </div>
             <div>
                 <button class="btn btn-success" data-toggle="modal" data-target="#vacationRequestModal">휴가 신청하기</button>
+                <button class="btn btn-danger ml-2" id="cancelVacationButton">신청한 휴가 취소하기</button>
             </div>
         </div>
 
@@ -175,6 +176,22 @@
                 </div>
             </div>
         </div>
+
+        <!-- 간단한 페이징 -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">이전</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">다음</a>
+                </li>
+            </ul>
+        </nav>
+
 
     </div>
 </div>

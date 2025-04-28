@@ -3,12 +3,12 @@ package com.poi.hr.dto.vacation;
 public class VacationBalanceDTO {
 
     private Integer vacBalanceId;
-    private int vacCount;
-    private int usedVacCount;
-    private int remainVacCount;
+    private Double vacCount;
+    private Double usedVacCount;
+    private Double remainVacCount;
     private Integer year;
 
-    public VacationBalanceDTO(Integer vacBalanceId, int vacCount, int usedVacCount, int remainVacCount, Integer year) {
+    public VacationBalanceDTO(Integer vacBalanceId, Double vacCount, Double usedVacCount, Double remainVacCount, Integer year) {
         this.vacBalanceId = vacBalanceId;
         this.vacCount = vacCount;
         this.usedVacCount = usedVacCount;
@@ -20,15 +20,15 @@ public class VacationBalanceDTO {
         return vacBalanceId;
     }
 
-    public int getVacCount() {
+    public Double getVacCount() {
         return vacCount;
     }
 
-    public int getUsedVacCount() {
+    public Double getUsedVacCount() {
         return usedVacCount;
     }
 
-    public int getRemainVacCount() {
+    public Double getRemainVacCount() {
         return remainVacCount;
     }
 
