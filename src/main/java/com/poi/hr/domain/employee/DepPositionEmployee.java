@@ -1,17 +1,16 @@
-package com.poi.hr.domain.employee;
+package com.poi.hr.domain.login.entity;
 
-import com.poi.hr.domain.dept.Dept;
-import com.poi.hr.domain.hr.TeamPosition;
+import com.poi.hr.domain.login.entity.Employee;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "dep_position_employees")
-public class DepPositionEmployee {
+public class DepPositionEmployee{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dpe_id")
-    private Integer dpeId;
+    private int dpeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
@@ -28,7 +27,7 @@ public class DepPositionEmployee {
     public DepPositionEmployee() {
     }
 
-    public DepPositionEmployee(Dept dept, Employee employee, TeamPosition teamPosition) {
+    public DepPositionEmployee( Employee employee, Dept dept, TeamPosition teamPosition) {
         this.employee = employee;
         this.dept = dept;
         this.teamPosition = teamPosition;
@@ -46,13 +45,10 @@ public class DepPositionEmployee {
         return dept;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
     public TeamPosition getTeamPosition() {
         return teamPosition;
     }
+
 
     @Override
     public String toString() {

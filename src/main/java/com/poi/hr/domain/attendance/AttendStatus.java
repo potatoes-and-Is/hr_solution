@@ -1,7 +1,8 @@
-package com.poi.hr.domain.vacation.enums;
+package com.poi.hr.domain.attendance;
 
 public enum AttendStatus {
-    WORK("정상 출근"),
+
+    WORK("정상"),
     LATE("지각"),
     EARLY_LEAVE("조퇴"),
     VACATION("휴가");
@@ -15,4 +16,5 @@ public enum AttendStatus {
     public String getDisplayName() {
         return displayName;
     }
+
 }
