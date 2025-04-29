@@ -346,7 +346,7 @@
         </ul>
       </div>
     </div>
-
+  </div>
     <!-- ✅ 직원 테이블 카드 -->
     <div class="card shadow mb-4" style="width: 1200px; height: 550px; margin-left: 20px;">
       <div class="card-body">
@@ -453,7 +453,6 @@
               th:onclick="|fetchEmployees(${dept.deptId})|"
               style="cursor: pointer;"></span>
       </div>
-
       <ul th:if="${#lists.size(dept.children) > 0}" class="hidden">
         <th:block th:replace="this :: renderTree(deptList=${dept.children})"></th:block>
       </ul>
