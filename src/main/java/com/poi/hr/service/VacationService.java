@@ -1,13 +1,18 @@
 package com.poi.hr.service;
 
 import com.poi.hr.domain.vacation.VacationBalance;
+import com.poi.hr.domain.vacation.VacationGrantHistory;
+import com.poi.hr.domain.vacation.VacationReq;
 import com.poi.hr.dto.vacation.MyVacationListDTO;
 import com.poi.hr.dto.vacation.VacationBalanceDTO;
 import com.poi.hr.dto.vacation.VacationTypeResDTO;
+import com.poi.hr.repository.vacation.VacationGrantHistoryRepository;
 import com.poi.hr.repository.vacation.VacationRepository;
+import com.poi.hr.repository.vacation.VacationReqRepository;
 import com.poi.hr.repository.vacation.VacationTypeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,10 +21,14 @@ public class VacationService {
 
     private final VacationRepository vacationRepository;
     private final VacationTypeRepository vacationTypeRepository;
+    private final VacationGrantHistoryRepository vacationGrantHistoryRepository;
+    private final VacationReqRepository vacationReqRepository;
 
-    public VacationService(VacationRepository vacationRepository, VacationTypeRepository vacationTypeRepository) {
+    public VacationService(VacationRepository vacationRepository, VacationTypeRepository vacationTypeRepository, VacationGrantHistoryRepository vacationGrantHistoryRepository, VacationReqRepository vacationReqRepository) {
         this.vacationRepository = vacationRepository;
         this.vacationTypeRepository = vacationTypeRepository;
+        this.vacationGrantHistoryRepository = vacationGrantHistoryRepository;
+        this.vacationReqRepository = vacationReqRepository;
     }
 
     //대시보드 - 휴가정보 가져오기
@@ -56,16 +65,44 @@ public class VacationService {
         return vacationRepository.findAvailableYearsByEmployeeId(employeeId);
     }
 
+
     //휴가 리스트 가져오기
     public List<MyVacationListDTO> getMyVacationList(int employeeId, int year) {
-        // 1. 지급(+) 내역 조회 (vacation_grant_histories 테이블)
-        // 2. 차감(-) 내역 조회 (vacation_reqs 테이블, 승인된 것만)
-        // 3. 둘 다 합쳐서 DTO로 변환
-        // 4. return
+        List<MyVacationListDTO> result = new ArrayList<>();
 
-        // 일단 계획만 세웠음 추가구현필요!!
-        return null;
+        // 1. 지급 내역 가져오기
+        List<VacationGrantHistory> grants = vacationGrantHistoryRepository.findByEmployeeIdAndYear(employeeId, year);
+        for (VacationGrantHistory grant : grants) {
+            MyVacationListDTO dto = new MyVacationListDTO(
+                    (long) grant.getVacGrantId(),
+                    "지급",
+                    grant.getVacationType().getVacTypeName(),
+                    grant.getGrantDate().toString(),
+                    grant.getGrantDate().toString(),
+                    grant.getGrantedDays(),
+                    "지급완료"
+            );
+            result.add(dto);
+        }
+
+        // 2. 차감 내역 가져오기
+        List<VacationReq> reqs = vacationReqRepository.findByEmployeeIdAndYear(employeeId, year);
+        for (VacationReq req : reqs) {
+            MyVacationListDTO dto = new MyVacationListDTO(
+                    (long) req.getApprovalDocId(),
+                    "차감",
+                    req.getVacationType().getVacTypeName(),
+                    req.getVacReqStartDate().toString(),
+                    req.getVacReqEndDate().toString(),
+                    req.getVacUseDays(),
+                    req.getApprovalDocStatus().getDisplayName()
+            );
+            result.add(dto);
+        }
+
+        return result;
     }
+
 
 
 }

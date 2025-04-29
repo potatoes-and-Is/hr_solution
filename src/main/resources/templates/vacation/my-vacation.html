@@ -33,19 +33,20 @@
             <div class="col-md-4">
                 <div class="summary-box bg-total">
                     <div>총 부여된 휴가</div>
-                    <div class="h2" th:text="${vacationInfo.vacCount} + '일'"></div>
+                    <div class="h2" th:text="${(vacationInfo.vacCount % 1 == 0) ? vacationInfo.vacCount.intValue() + '일' : vacationInfo.vacCount + '일'}"></div>
+
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="summary-box bg-used">
                     <div>사용한 휴가</div>
-                    <div class="h2" th:text="${vacationInfo.usedVacCount} + '일'"></div>
+                    <div class="h2" th:text="${(vacationInfo.usedVacCount % 1 == 0) ? vacationInfo.usedVacCount.intValue() + '일' : vacationInfo.usedVacCount + '일'}"></div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="summary-box bg-remaining">
                     <div>사용 가능한 휴가</div>
-                    <div class="h2" th:text="${vacationInfo.remainVacCount} + '일'"></div>
+                    <div class="h2" th:text="${(vacationInfo.remainVacCount % 1 == 0) ? vacationInfo.remainVacCount.intValue() + '일' : vacationInfo.remainVacCount + '일'}"></div>
                 </div>
             </div>
         </div>
@@ -91,17 +92,17 @@
                             <tbody>
                             <tr th:each="vacation, stat : ${vacations}">
                                 <td>
-                                    <input type="checkbox" name="vacationIds" th:value="${vacation.vacationId}" th:disabled="${vacation.status != '대기중'}">
+                                    <input type="checkbox" name="vacationIds" th:value="${vacation.id}" th:disabled="${vacation.approvalStatus != '대기중'}">
                                 </td>
-                                <td th:text="${vacation.type}">연차</td>
-                                <td th:text="${vacation.startDate}">2025-04-03</td>
-                                <td th:text="${vacation.endDate}">2025-04-04</td>
-                                <td th:text="${vacation.totalDays} + '일'">2일</td>
-                                <td th:text="'-' + ${vacation.totalDays} + '일'">-2일</td> <!-- 지급/차감은 일단 차감으로 표현 -->
+                                <td th:text="${vacation.vacationType}"></td>
+                                <td th:text="${vacation.startDate}"></td>
+                                <td th:text="${vacation.endDate}"></td>
+                                <td th:text="${#numbers.formatDecimal(vacation.days, 0, 0)} + '일'"></td>
+                                <td th:text="${vacation.division == '지급' ? '+' : '-'} + (${vacation.days % 1 == 0} ? ${vacation.days.intValue()} : ${vacation.days}) + '일'"></td>
                                 <td>
-                                    <span th:if="${vacation.status == '승인완료'}" class="badge badge-success">승인완료</span>
-                                    <span th:if="${vacation.status == '대기중'}" class="badge badge-warning">대기중</span>
-                                    <span th:if="${vacation.status == '반려'}" class="badge badge-danger">반려</span>
+                                    <span th:if="${vacation.approvalStatus == '승인완료'}" class="badge badge-success">승인완료</span>
+                                    <span th:if="${vacation.approvalStatus == '대기중'}" class="badge badge-warning">대기중</span>
+                                    <span th:if="${vacation.approvalStatus == '반려'}" class="badge badge-danger">반려</span>
                                 </td>
                             </tr>
                             <tr th:if="${#lists.isEmpty(vacations)}">
@@ -178,19 +179,19 @@
         </div>
 
         <!-- 간단한 페이징 -->
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">이전</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">다음</a>
-                </li>
-            </ul>
-        </nav>
+<!--        <nav aria-label="Page navigation example">-->
+<!--            <ul class="pagination justify-content-center">-->
+<!--                <li class="page-item disabled">-->
+<!--                    <a class="page-link" href="#" tabindex="-1">이전</a>-->
+<!--                </li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                <li class="page-item">-->
+<!--                    <a class="page-link" href="#">다음</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </nav>-->
 
 
     </div>
@@ -204,9 +205,29 @@
         const vacUseDaysInput = document.getElementById('vacUseDays');
         const endDateInput = document.getElementById('endDate');
 
-        //휴가유형에 따라 기본 사용일수 설정
+        function calculateEndDate() {
+            const startDate = startDateInput.value;
+            const days = parseFloat(vacUseDaysInput.value);
+
+            if (startDate && days) {
+                const start = new Date(startDate);
+                start.setDate(start.getDate() + (days - 1));
+                endDateInput.value = start.toISOString().split('T')[0];
+            }
+        }
+
+        // 이벤트 등록은 DOMContentLoaded 시점에 바로 해줘야 함
+        startDateInput.addEventListener('change', calculateEndDate);
+        vacUseDaysInput.addEventListener('change', calculateEndDate);
+
+        // (추가) 기본 값이 있으면 처음에도 계산할 수 있도록
+        if (startDateInput.value && vacUseDaysInput.value) {
+            calculateEndDate();
+        }
+
+        // 휴가유형 변경 이벤트
         vacTypeSelect.addEventListener('change', function () {
-           const selectedType = vacTypeSelect.options[vacTypeSelect.selectedIndex].text;
+            const selectedType = vacTypeSelect.options[vacTypeSelect.selectedIndex].text;
 
             if (selectedType.includes('반반차')) {
                 vacUseDaysInput.value = 0.25;
@@ -215,22 +236,10 @@
             } else {
                 vacUseDaysInput.value = 1;
             }
+            calculateEndDate(); // 휴가 유형 변경 후에도 종료일 다시 계산
         });
-
-        // 시작일, 사용일수 변경 시 종료일 자동 계산
-        function calculateEndDate() {
-            const startDate = startDateInput.value;
-            const days = parseInt(vacUseDaysInput.value);
-
-            if (startDate && days) {
-                const start = new Date(startDate);
-                start.setDate(start.getDate() + (days - 1));
-                endDateInput.value = start.toISOString().split('T')[0];
-            }
-            startDateInput.addEventListener('change', calculateEndDate);
-            vacUseDaysInput.addEventListener('change', calculateEndDate);
-        }
     });
+
 
     //휴가 신청하기 모달 - 휴가 유형 출력(페이지 로드될 때)
     document.addEventListener('DOMContentLoaded', function() {

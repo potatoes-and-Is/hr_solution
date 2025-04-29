@@ -39,16 +39,16 @@ public class MyVacationController {
         VacationBalanceDTO vacationInfo = vacationService.getTotalVacationInfo(employeeId, year);
 
         //3. 휴가 상세 리스트 가져오기
-        List<MyVacationListDTO> vacaionList = vacationService.getMyVactionList(employeeId, year);
+        List<MyVacationListDTO> vacaionList = vacationService.getMyVacationList(employeeId, year);
 
         //4. 연도 선택용 year 리스트
         List<Integer> years = vacationService.getAvailableYears(employeeId);
 
         //5. 모델에 담기
         model.addAttribute("vacationInfo", vacationInfo);
-//        model.addAttribute("vacaionList", vacaionList);
+        model.addAttribute("vacations", vacaionList);
         model.addAttribute("years", years);
-//        model.addAttribute("selectedYear", year);
+        model.addAttribute("selectedYear", year);
 
         return "vacation/my-vacation";
     }
