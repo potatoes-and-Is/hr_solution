@@ -71,30 +71,76 @@
   <script src="/js/button.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      let employeesData = [];
+      let employeesData = []; // 전체 직원 데이터를 저장할 변수
 
-
+      // 최초 전체 직원 불러오기
       fetch('/author/list')
               .then(response => response.json())
               .then(data => {
-                const tbody = document.getElementById('employeeTableBody');
-                data.forEach(employee => {
-                  const row = `
-                    <tr>
-                      <td>${employee.employeeName}</td>
-                      <td>${employee.deptName}</td>
-                      <td>${employee.levelName}</td>
-                      <td>${employee.hireDate}</td>
-                      <td>${employee.phone}</td>
-                      <td>
-                        <button class="update-btn" data-id="${employee.employeeId}">수정</button>
-                      </td>
-                    </tr>`;
-                  tbody.insertAdjacentHTML('beforeend', row);
-                });
+                employeesData = data;
+                renderTable(employeesData); // 테이블 렌더링
               })
               .catch(error => console.error('직원 목록 불러오기 실패:', error));
+
+      // 직원 추가 버튼
+      document.getElementById('openPopup').addEventListener('click', function() {
+        openCenteredPopup('/author/popup', '직원 등록', 800, 600);
+      });
+
+      // 수정 버튼 (동적 이벤트)
+      document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('update-btn')) {
+          const employeeId = e.target.dataset.id;
+          openCenteredPopup(`/author/employee/update/${employeeId}`, '직원 수정', 800, 600);
+        }
+      });
+
+      // 검색 버튼 클릭
+      document.getElementById('searchBtn').addEventListener('click', function() {
+        const keyword = document.getElementById('searchInput').value.trim();  // 검색어
+        const option = document.getElementById('searchOption').value;          // 이름, 부서, 직급 중 선택
+
+        if (!keyword) {
+          renderTable(employeesData); // 검색어 없으면 전체 출력
+          return;
+        }
+
+        const filtered = employeesData.filter(employee => {
+          if (option === '이름') {
+            return employee.employeeName.includes(keyword);
+          } else if (option === '부서') {
+            return employee.deptName.includes(keyword);
+          } else if (option === '직급') {
+            return employee.levelName.includes(keyword);
+          }
+          return false;
+        });
+
+        renderTable(filtered);
+      });
+
     });
+
+    // 테이블 렌더링 함수
+    function renderTable(data) {
+      const tbody = document.getElementById('employeeTableBody');
+      tbody.innerHTML = ''; // 기존 데이터 초기화
+
+      data.forEach(employee => {
+        const row = `
+      <tr>
+        <td>${employee.employeeName}</td>
+        <td>${employee.deptName}</td>
+        <td>${employee.levelName}</td>
+        <td>${employee.hireDate}</td>
+        <td>${employee.phone}</td>
+        <td>
+          <button class="update-btn" data-id="${employee.employeeId}">수정</button>
+        </td>
+      </tr>`;
+        tbody.insertAdjacentHTML('beforeend', row);
+      });
+    }
 
     document.getElementById('openPopup').addEventListener('click', function() {
       openCenteredPopup('/author/popup', '직원 등록', 800, 600);
