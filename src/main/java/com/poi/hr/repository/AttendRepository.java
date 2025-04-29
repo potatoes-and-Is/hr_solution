@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface AttendRepository extends JpaRepository<Attend, Integer> {
 
     Optional<Attend> findByEmployeeEmployeeIdAndAttendDate(int employeeEmployeeId, LocalDate attendDate);
+    Optional<Attend> findCheckOutStatusByEmployeeEmployeeIdAndAttendDate(int employeeEmployeeId, LocalDate attendDate);
     List<Attend> findAllByEmployeeEmployeeId(int employeeEmployeeId);
 
 }

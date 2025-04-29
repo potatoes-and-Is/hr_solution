@@ -6,6 +6,10 @@ public class CheckOutDTO {
 
     private LocalTime checkOutTime = LocalTime.now();
 
+    public CheckOutDTO(LocalTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
     public LocalTime getCheckOutTime() {
         return checkOutTime;
     }

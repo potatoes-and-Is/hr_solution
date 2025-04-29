@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -49,8 +50,8 @@ public class AttendController {
     }
 
     // 출근 기록 조회
-    @GetMapping("/today")
-    public ResponseEntity<CheckInDTO> getTodayAttendance(@AuthenticationPrincipal UserDetails userDetails) {
+    @GetMapping("/todayCheckIn")
+    public ResponseEntity<CheckInDTO> getTodayCheckIn(@AuthenticationPrincipal UserDetails userDetails) {
 
         logger.info("checkIn 확인 - controller");
 
@@ -80,6 +81,31 @@ public class AttendController {
         } catch(Exception e) {
             return ResponseEntity.status(500).body("fail");
         }
+    }
+
+    // 퇴근 기록 조회
+    @GetMapping("/todayCheckOut")
+    public ResponseEntity<CheckOutDTO> getTodayCheckOut(@AuthenticationPrincipal UserDetails userDetails) {
+        logger.info("checkOut 확인 - controller");
+        AuthDetails authDetails = (AuthDetails) userDetails;
+        int employeeId = ((AuthDetails) userDetails).getLoginEmployeeDto().getEmployeeId();
+
+        Optional<Attend> isCheckOut = attendService.getTodayCheckOut(employeeId);
+        if(isCheckOut.get().getCheckOutStatus() == 'Y'){
+            Attend att = isCheckOut.get();
+            return ResponseEntity.ok(new CheckOutDTO(att.getCheckOutTime()));
+        } else {
+            return ResponseEntity.ok(null);
+        }
+    }
+
+    // 출퇴근 정정 폼 제출
+    @PostMapping("/attend-req/save")
+    public ResponseEntity<String> saveAttendFixDoc(@RequestBody Map<String, Object> request) {
+
+        // 결재 등록 함수 호출 필요
+
+        return ResponseEntity.ok("success");
     }
 
 

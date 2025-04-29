@@ -105,7 +105,7 @@
     <!-- 버튼 클릭 시 알림 기능 -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            fetch('api/attendance/today', {
+            fetch('api/attendance/todayCheckIn', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -113,14 +113,32 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    const button = document.getElementById("checkInButton");
+                    const checkInButton = document.getElementById("checkInButton");
 
                     if(data) {
-                        button.disabled = true;
-                        button.textContent = `출근 완료 ${data.checkInTime}`;
+                        checkInButton.disabled = true;
+                        checkInButton.textContent = `출근 완료 ${data.checkInTime}`;
                     }
+
+                    return fetch('api/attendance/todayCheckOut', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            const checkOutButton = document.getElementById('checkOutButton');
+
+                            if(data) {
+                                checkOutButton.disabled = true;
+                                checkOutButton.textContent = `퇴근 완료 ${data.checkOutTime}`;
+                            }
+                        })
                 })
         })
+
+
         // 출근하기 버튼 click
         function checkIn() {
             alert("출근 시간이 등록되었습니다: " + new Date().toLocaleString());

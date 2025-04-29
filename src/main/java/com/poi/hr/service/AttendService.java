@@ -27,9 +27,12 @@ public class AttendService {
 
     // 오늘의 근무 가져오기
     public Optional<Attend> getTodayAttendance(int employeeId) {
-        LocalDate today = LocalDate.now();
+        return attendRepository.findByEmployeeEmployeeIdAndAttendDate(employeeId, LocalDate.now());
+    }
 
-        return attendRepository.findByEmployeeEmployeeIdAndAttendDate(employeeId, today);
+    // 오늘의 퇴근 기록 가져오기
+    public Optional<Attend> getTodayCheckOut(int employeeId) {
+        return attendRepository.findCheckOutStatusByEmployeeEmployeeIdAndAttendDate(employeeId, LocalDate.now());
     }
 
     // 출근 등록
@@ -90,8 +93,8 @@ public class AttendService {
     // 출근 상태 체크(정상, 지각, 조퇴)
     public AttendStatus calculateAttendStatus(LocalTime checkInTime, LocalTime checkOutTime){
 
-        LocalTime checkIn = LocalTime.of(10, 0); // 9시 출근 기준
-        LocalTime checkOut = LocalTime.of(19, 0); // 6시 퇴근 기준
+        LocalTime checkIn = LocalTime.of(9, 30); // 9시반 출근 기준
+        LocalTime checkOut = LocalTime.of(18, 30); // 6시반 퇴근 기준
         if(checkOutTime.isBefore(checkOut)){
             return AttendStatus.EARLY_LEAVE;
         } else if(checkInTime.isAfter(checkIn)) {
