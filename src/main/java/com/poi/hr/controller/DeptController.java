@@ -54,7 +54,7 @@ public class DeptController {
     // 특정 부서 소속된 직원 조회
     @ResponseBody
     @GetMapping("/department/{deptId}/employees")
-    public List<EmployeeResponse> getEmployeesByDepartment(@PathVariable Integer deptId) {
+    public List<EmployeeResponse> getEmployeesByDepartment(@PathVariable("deptId") Integer deptId) {
         List<DepPositionEmployee> dpeList = deptService.getEmployeesByDeptId(deptId);
 
         return dpeList.stream()
@@ -64,6 +64,14 @@ public class DeptController {
                         dpe.getTeamPosition().getPositionName()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    public DepPositionEmployeeRepository getDepPositionEmployeeRepository() {
+        return depPositionEmployeeRepository;
+    }
+
+    public DeptRepository getDeptRepository() {
+        return deptRepository;
     }
 
     public record EmployeeResponse(String employeeName, String employeeNumber, String teamPositionName) {

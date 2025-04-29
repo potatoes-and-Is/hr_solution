@@ -3,6 +3,7 @@ package com.poi.hr.repository;
 import com.poi.hr.domain.employee.DepPositionEmployee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -12,6 +13,6 @@ public interface DepPositionEmployeeRepository extends JpaRepository<DepPosition
             "JOIN FETCH dpe.employee e " +
             "JOIN FETCH dpe.teamPosition tp " +
             "WHERE dpe.dept.deptId = :deptId")
-    List<DepPositionEmployee> findByDeptId(Integer deptId);
+    List<DepPositionEmployee> findByDeptId(@Param("deptId") Integer deptId);
 }
 

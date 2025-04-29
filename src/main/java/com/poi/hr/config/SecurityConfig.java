@@ -1,7 +1,7 @@
 package com.poi.hr.config;
 
 import com.poi.hr.config.handler.AuthFailHandler;
-import com.poi.hr.domain.common.Role;
+import com.poi.hr.domain.vacation.enums.TeamPositionRole;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,8 +37,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/login", "/auth/fail").permitAll()
                 .requestMatchers("/").hasAnyAuthority(
-                        Arrays.stream(Role.values())
-                                .map(Role::name)
+                        Arrays.stream(TeamPositionRole.values())
+                                .map(TeamPositionRole::name)
                                 .toArray(String[]::new))
                 .anyRequest().authenticated()
 

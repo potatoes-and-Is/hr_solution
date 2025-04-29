@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,43 +15,42 @@ public class Dept {
     @Column(name = "dept_id")
     private int deptId;
 
-    @Column(name = "dept_code")
+    @Column(name = "dept_code", nullable = false, length = 30)
     private String deptCode;
 
-    @Column(name = "dept_name")
+    @Column(name = "dept_name", nullable = false, length = 30)
     private String deptName;
 
-    @Column(name = "created_by")
+    @Column(name = "created_by", nullable = false, length = 30)
     private String createdBy;
 
-    @Column(name = "created_at")
-    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_by")
+    @Column(name = "updated_by", length = 30)
     private String updatedBy;
 
-    @Column(name = "updated_at")
-    @CreationTimestamp
+    @Column(name = "updated_at", nullable = false, insertable = false, updatable = false)
     private LocalDateTime updatedAt;
 
+    //상위 부서 (parent_dept_id)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_dept_id", referencedColumnName = "dept_id")
-    private Dept parentDeptId;
+    @JoinColumn(name = "parent_dept_id")
+    private Dept parentDept;
 
-    // 하위 부서 리스트 (OneToMany 관계)
-    @OneToMany(mappedBy = "parentDeptId", fetch = FetchType.LAZY)
-    private List<Dept> childDept;
+    //하위 부서 (양방향 관계 맺기 | self-join 시 필수)
+    @OneToMany(mappedBy = "parentDept", fetch = FetchType.LAZY)
+    private List<Dept> childDepts = new ArrayList<>();
 
     public Dept() {
     }
 
-    public Dept(String deptCode, String deptName, String createdBy, LocalDateTime createdAt, String updatedBy, LocalDateTime updatedAt, Dept parentDeptId, List<Dept> childDept) {
+    public Dept(String deptCode, String deptName, String createdBy, String updatedBy, Dept parentDept) {
         this.deptCode = deptCode;
         this.deptName = deptName;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
-        this.parentDeptId = parentDeptId;
+        this.parentDept = parentDept;
     }
 
     public Dept(String deptCode, String deptName) {
@@ -114,20 +114,20 @@ public class Dept {
         this.updatedAt = updatedAt;
     }
 
-    public Dept getParentDeptId() {
-        return parentDeptId;
+    public Dept getParentDept() {
+        return parentDept;
     }
 
-    public void setParentDeptId(Dept parentDeptId) {
-        this.parentDeptId = parentDeptId;
+    public void setParentDept(Dept parentDept) {
+        this.parentDept = parentDept;
     }
 
-    public List<Dept> getChildDept() {
-        return childDept;
+    public List<Dept> getChildDepts() {
+        return childDepts;
     }
 
-    public void setChildDept(List<Dept> childDept) {
-        this.childDept = childDept;
+    public void setChildDepts(List<Dept> childDepts) {
+        this.childDepts = childDepts;
     }
 
     @Override
@@ -140,7 +140,7 @@ public class Dept {
                 ", createdAt=" + createdAt +
                 ", updatedBy='" + updatedBy + '\'' +
                 ", updatedAt=" + updatedAt +
-                ", parentDeptId=" + parentDeptId +
+                ", parentDept=" + parentDept +
                 '}';
     }
 }

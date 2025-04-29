@@ -1,10 +1,10 @@
 package com.poi.hr.service;
 
 
-import com.poi.hr.domain.common.Role;
-import com.poi.hr.domain.login.entity.DepPositionEmployee;
-import com.poi.hr.domain.login.entity.Employee;
-import com.poi.hr.domain.login.entity.TeamPositionPermission;
+import com.poi.hr.domain.vacation.enums.TeamPositionRole;
+import com.poi.hr.domain.employee.DepPositionEmployee;
+import com.poi.hr.domain.employee.Employee;
+import com.poi.hr.domain.vacation.TeamPositionPermission;
 import com.poi.hr.dto.LoginEmployeeDto;
 import com.poi.hr.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +70,7 @@ public class EmployeeService {
         Optional<Employee> employee = employeeRepository.findById(id);
 
         return employee.map(u -> {
-            Role role = null;
+            TeamPositionRole role = null;
             List<TeamPositionPermission> permissions = null;
             for (DepPositionEmployee dpe : u.getDepPositionEmployees()) {
                 role = dpe.getTeamPosition().getRole();
@@ -95,7 +94,7 @@ public class EmployeeService {
         Optional<Employee> employee = employeeRepository.findByEmployeeNumber(username);
 
         return employee.map(u -> {
-            Role role = null;
+            TeamPositionRole role = null;
             List<TeamPositionPermission> permissions = null;
 
             for (DepPositionEmployee dpe : u.getDepPositionEmployees()) {

@@ -1,10 +1,7 @@
 package com.poi.hr.controller;
 
 import com.poi.hr.auth.model.AuthDetails;
-import com.poi.hr.dto.LoginEmployeeDto;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +21,7 @@ public class HomeController {
 
         AuthDetails authDetails = (AuthDetails) userDetails;
         model.addAttribute("userName", authDetails.getEmployeeName()); // 이름
-        model.addAttribute("userRole", authDetails.getLoginEmployeeDto().getEmployeeRole().getRole()); // 직책(팀장, 팀원 등)
+        model.addAttribute("userRole", authDetails.getLoginEmployeeDto().getEmployeeRole().getRoleName()); // 직책(팀장, 팀원 등)
 
         // 현재 시간 (yyyy.MM.dd(E) HH:mm:ss)
         String currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd(E) HH:mm:ss"));
