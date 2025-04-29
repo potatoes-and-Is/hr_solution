@@ -1,5 +1,7 @@
 package com.poi.hr.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.poi.hr.domain.hr.Level;
 
 import java.time.LocalDate;

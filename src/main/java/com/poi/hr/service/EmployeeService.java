@@ -54,7 +54,7 @@ public class EmployeeService {
         return employees;
     }
 
-    @jakarta.transaction.Transactional
+    @Transactional
     public Employee save(EmployeeRequestDTO employee) {
 
         Level level = levelAPIRepository.findById(employee.getLevelId())

@@ -4,6 +4,8 @@ import com.poi.hr.domain.employee.Employee;
 import com.poi.hr.dto.EmployeeRequestDTO;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class EmployeeMapper {
 
@@ -18,7 +20,7 @@ public class EmployeeMapper {
         employee.setPhone(dto.getPhone());
         employee.setEmployeeIdentity(dto.getEmployeeIdentity());
         employee.setEmployeeStatus(dto.getStatus());
-        employee.setHireDate(dto.getHireDate());
+        employee.setHireDate(dto.getHireDate() != null ? dto.getHireDate() : LocalDate.now());
         employee.setRetireDate(dto.getRetireDate());
         employee.setEmployeeNumber(dto.getEmployeeNumber());
         employee.setLevel(dto.getLevel());

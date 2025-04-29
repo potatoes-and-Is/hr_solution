@@ -95,7 +95,7 @@
                 document.getElementById('statusSelect').value = data.status;
                 document.getElementById('levelSelect').value = data.levelId;
                 document.getElementById('deptSelect').value = data.deptId;
-                document.getElementById('positionSelect').value = data.teamPositionId;
+                document.getElementById('positionSelect').value = data.positionId;
               })
               .catch(error => console.error('직원 정보 로드 실패:', error));
     }
@@ -106,7 +106,7 @@
         email: document.getElementById('email').value,
         levelId: document.getElementById('levelSelect').value,
         deptId: document.getElementById('deptSelect').value,
-        teamPositionId: document.getElementById('positionSelect').value,
+        positionId: document.getElementById('positionSelect').value,
         gender: document.getElementById('genderSelect').value,
         status: document.getElementById('statusSelect').value,
         employeeIdentity: document.getElementById('identity').value,
@@ -162,10 +162,10 @@
             .then(response => response.json())
             .then(data => {
               const deptSelect = document.getElementById('deptSelect');
-              data.forEach(depts => {
+              data.forEach(dept => {
                 const option = document.createElement('option');
-                option.value = depts.deptId;
-                option.text = depts.deptName;
+                option.value = dept.deptId;
+                option.text = dept.deptName;
                 deptSelect.appendChild(option);
               });
             });
@@ -176,7 +176,7 @@
               const posSelect = document.getElementById('positionSelect');
               data.forEach(pos => {
                 const option = document.createElement('option');
-                option.value = pos.positionId;
+                option.value = pos.teamPositionId;
                 option.text = pos.positionName;
                 posSelect.appendChild(option);
               });
