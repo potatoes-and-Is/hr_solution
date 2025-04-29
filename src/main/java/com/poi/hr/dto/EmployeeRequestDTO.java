@@ -31,7 +31,7 @@ public class EmployeeRequestDTO {
 
     private Level level;
 
-    private int deptId;
+    private Integer deptId;
 
     private Integer positionId;
 
@@ -47,7 +47,7 @@ public class EmployeeRequestDTO {
         return employeeId;
     }
 
-    public void setEmployeeId(int employeeId) {
+    public void setEmployeeId(Integer employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -147,11 +147,11 @@ public class EmployeeRequestDTO {
         this.level = level;
     }
 
-    public int getDeptId() {
+    public Integer getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(int deptId) {
+    public void setDeptId(Integer deptId) {
         this.deptId = deptId;
     }
 
@@ -197,7 +197,26 @@ public class EmployeeRequestDTO {
 
     public EmployeeRequestDTO() {}
 
-    public EmployeeRequestDTO(int employeeId, String employeeNumber, String employeeName, String gender, String address, String email, String password, String phone, String employeeIdentity, String status, LocalDate hireDate, LocalDate retireDate, int deptId, Integer positionId, String deptName, String positionName, Integer levelId, String levelName) {
+    public EmployeeRequestDTO(
+            int employeeId,
+            String employeeNumber,
+            String employeeName,
+            String gender,
+            String address,
+            String email,
+            String password,
+            String phone,
+            String employeeIdentity,
+            String status,
+            LocalDate hireDate,
+            LocalDate retireDate,
+            Integer deptId,
+            Integer positionId,
+            String deptName,
+            String positionName,
+            Integer levelId,
+            String levelName
+    ) {
         this.employeeId = employeeId;
         this.employeeNumber = employeeNumber;
         this.employeeName = employeeName;

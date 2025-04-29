@@ -45,7 +45,6 @@ public class AuthorEmployeeController {
     // 직원 추가
     @PostMapping("/add")
     public ResponseEntity<Employee> saveEmployee(@Validated @RequestBody EmployeeRequestDTO employee) {
-//        employeeService.applyDefaultValues(employee);
         Employee savedEmployee = employeeService.save(employee);
         return ResponseEntity.status(201).body(savedEmployee);
     }
@@ -59,6 +58,7 @@ public class AuthorEmployeeController {
         employeeService.updateEmployee(employeeId, employeeDto);
         return ResponseEntity.ok("수정 완료");
     }
+
     // 상세 조회
     @GetMapping("/{employeeId}")
     public ResponseEntity<EmployeeRequestDTO> getEmployeeDetail(@PathVariable("employeeId") int employeeId) {

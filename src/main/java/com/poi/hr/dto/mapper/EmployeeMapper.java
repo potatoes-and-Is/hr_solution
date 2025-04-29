@@ -11,7 +11,7 @@ public class EmployeeMapper {
         Employee employee = new Employee(
                 dto.getEmployeeId(),
                 dto.getEmployeeNumber(),
-                dto.getPositionName(),
+                dto.getEmployeeName(),
                 dto.getGender(),
                 dto.getAddress(),
                 dto.getEmail(),

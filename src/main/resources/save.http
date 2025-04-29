@@ -2,7 +2,6 @@ POST http://localhost:8080/author/add
 Content-Type: application/json
 
 {
-  "employeeNumber": "EMP002",
   "employeeName": "김철수",
   "gender": "M",
   "address": "서울시 송파구",

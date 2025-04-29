@@ -116,8 +116,8 @@
         employeeName: document.getElementById('name').value
       };
 
-      const url = (mode === 'update') ? `/author/update/${employeeId}`  : '/author/add';
-      const method = (mode === 'update') ? 'POST' : 'POST';
+      const url = (mode === 'update') ? `/author/${employeeId}`  : '/author/add';
+      const method = (mode === 'update') ? 'PATCH' : 'POST';
 
       fetch(url, {
         method: method,

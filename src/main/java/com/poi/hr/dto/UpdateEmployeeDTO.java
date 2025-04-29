@@ -1,7 +1,5 @@
 package com.poi.hr.dto;
 
-import com.poi.hr.domain.employee.Employee;
-
 public class UpdateEmployeeDTO {
     private int employeeId;
     private String employeeName;
@@ -10,13 +8,17 @@ public class UpdateEmployeeDTO {
     private String address;
     private String employeeIdentity;
     private String password;
-    private String employeeStatus;
+    private String status;
+    private String gender;
+    private Integer levelId;
+    private Integer deptId;
+    private Integer positionId;
 
-    public UpdateEmployeeDTO() {
+    public UpdateEmployeeDTO() {}
 
-    }
-
-    public UpdateEmployeeDTO(int employeeId, String employeeName, String email, String phone, String address, String employeeIdentity, String password, String employeeStatus) {
+    public UpdateEmployeeDTO(int employeeId, String employeeName, String email, String phone, String address,
+                             String employeeIdentity, String password, String status,
+                             String gender, Integer levelId, Integer deptId, Integer positionId) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.email = email;
@@ -24,7 +26,11 @@ public class UpdateEmployeeDTO {
         this.address = address;
         this.employeeIdentity = employeeIdentity;
         this.password = password;
-        this.employeeStatus = employeeStatus;
+        this.status = status;
+        this.gender = gender;
+        this.levelId = levelId;
+        this.deptId = deptId;
+        this.positionId = positionId;
     }
 
     public int getEmployeeId() {
@@ -83,12 +89,45 @@ public class UpdateEmployeeDTO {
         this.password = password;
     }
 
-    public String getEmployeeStatus() {
-        return employeeStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public void setEmployeeStatus(String employeeStatus) {
-        this.employeeStatus = employeeStatus;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Integer getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(Integer levelId) {
+        this.levelId = levelId;
+    }
+
+    public Integer getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
+    }
+
+    public Integer getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(Integer positionId) {
+        this.positionId = positionId;
     }
 }
+
 

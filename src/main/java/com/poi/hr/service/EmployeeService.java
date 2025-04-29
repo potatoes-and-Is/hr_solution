@@ -2,14 +2,12 @@ package com.poi.hr.service;
 
 import com.poi.hr.domain.employee.*;
 import com.poi.hr.dto.EmployeeRequestDTO;
-import com.poi.hr.dto.ResponseAuthorDTO;
 import com.poi.hr.dto.UpdateEmployeeDTO;
 import com.poi.hr.dto.mapper.EmployeeMapper;
 import com.poi.hr.repository.*;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,6 +49,10 @@ public class EmployeeService {
 
         employee.setLevel(level);
 
+        int nextNumber = employeeRepository.findNextEmployeeNumber(); // ⭐ 숫자만 가져옴
+        String formattedEmployeeNumber = String.format("EMP" + "%03d", nextNumber); // 001, 002 형식
+        employee.setEmployeeNumber(formattedEmployeeNumber); // DTO에 설정
+
         Employee savedEmp = employeeRepository.save(employeeMapper.toEntity(employee));
 
         Integer deptId = employee.getDeptId();
@@ -69,24 +71,54 @@ public class EmployeeService {
         DepPositionEmployee dpe = new DepPositionEmployee(position, dept, savedEmp);
         dpEmployeeRepository.save(dpe);
 
+
         return savedEmp;
     }
 
 
     @Transactional
-    public Employee updateEmployee(int employeeId, UpdateEmployeeDTO updateData) {
-        Employee existingEmployee = employeeRepository.findById(employeeId)
+    public void updateEmployee(int employeeId, UpdateEmployeeDTO updateData) {
+        Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException("해당 ID의 직원이 없습니다: " + employeeId));
 
-        existingEmployee.setEmployeeName(updateData.getEmployeeName());
-        existingEmployee.setAddress(updateData.getAddress());
-        existingEmployee.setEmail(updateData.getEmail());
-        existingEmployee.setPassword(updateData.getPassword());
-        existingEmployee.setEmployeeIdentity(updateData.getEmployeeIdentity());
-        existingEmployee.setPhone(updateData.getPhone());
+        // 1. 기본 정보 업데이트
+        employee.setEmployeeName(updateData.getEmployeeName());
+        employee.setEmail(updateData.getEmail());
+        employee.setPhone(updateData.getPhone());
+        employee.setAddress(updateData.getAddress());
+        employee.setEmployeeIdentity(updateData.getEmployeeIdentity());
+        employee.setPassword(updateData.getPassword());
+        employee.setEmployeeStatus(updateData.getStatus()); // ⭐ 추가됨
+        employee.setGender(updateData.getGender());
 
-        return employeeRepository.save(existingEmployee);
+        // 2. 직급(Level) 변경
+        if (updateData.getLevelId() != null) {
+            Level level = levelRepository.findById(updateData.getLevelId())
+                    .orElseThrow(() -> new RuntimeException("해당 ID의 직급이 없습니다: " + updateData.getLevelId()));
+            employee.setLevel(level);
+        }
+
+        // 3. 부서/직책 변경 (DepPositionEmployee 테이블)
+        DepPositionEmployee dpe = dpEmployeeRepository.findByEmployee(employee)
+                .orElseThrow(() -> new RuntimeException("해당 직원의 부서-직책 연결이 없습니다: " + employeeId));
+
+        if (updateData.getDeptId() != null) {
+            Depts dept = deptsRepository.findById(updateData.getDeptId())
+                    .orElseThrow(() -> new RuntimeException("해당 ID의 부서가 없습니다: " + updateData.getDeptId()));
+            dpe.setDept(dept);
+        }
+
+        if (updateData.getPositionId() != null) {
+            TeamPosition position = teamPositionRepository.findById(updateData.getPositionId())
+                    .orElseThrow(() -> new RuntimeException("해당 ID의 직책이 없습니다: " + updateData.getPositionId()));
+            dpe.setTeamPosition(position);
+        }
+
+        // 4. 저장
+        employeeRepository.save(employee);
+        dpEmployeeRepository.save(dpe);
     }
+
 
     // 상세 조회 서비스 메서드
     public EmployeeRequestDTO getEmployeeById(int employeeId) {
@@ -94,24 +126,5 @@ public class EmployeeService {
         EmployeeRequestDTO employee = employeeRepository.getEmployeeDetail(employeeId);
 
         return employee;
-        // DTO로 변환하여 반환
-//        return new ResponseAuthorDTO(
-//                employee.getEmployeeId(),
-//                employee.getEmployeeNumber(),
-//                employee.getEmployeeName(),
-//                employee.getGender(),
-//                employee.getAddress(),
-//                employee.getEmail(),
-//                employee.getPhone(),
-//                employee.getEmployeeIdentity(),
-//                employee.getEmployeeStatus(),
-//                employee.getHireDate().toString(), // 날짜를 문자열로 변환
-//                employee.getRetireDate() != null ? employee.getRetireDate().toString() : null, // null 체크 후 날짜를 문자열로 변환
-//                employee.getDeptName(),
-//                employee.getPositionName(),
-//                employee.getLevelName(),
-//                employee.getPassword(),
-//                employee.getLevelId()
-//        );
     }
 }
