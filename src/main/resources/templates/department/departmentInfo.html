@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+  <th:block layout:fragment="head">
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 부서 트리 스타일 -->
+    <style>
+      ul.tree, .tree ul {
+        list-style: none;
+        margin-left: 1rem;
+        padding-left: 1rem;
+        position: relative;
+      }
+
+      .tree li {
+        position: relative;
+        margin: 0.3rem 0;
+      }
+
+      .tree .toggle {
+        cursor: pointer;
+        margin-right: 5px;
+        user-select: none;
+      }
+
+      .tree ul {
+        margin-left: 1.5rem;
+        padding-left: 0.5rem;
+      }
+
+      .tree ul.hidden {
+        display: none;
+      }
+
+      /* 버튼 스타일 */
+      .custom-btn {
+        font-size: 10px;
+        padding: 1px 2px;
+        color: black;
+        box-shadow: none;
+      }
+
+    </style>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <!-- 추가: Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+
+
+    <!-- ✅ 부서 토글, 검색, 직원 불러오기 스크립트 -->
+    <script>
+      function toggleChildren(element) {
+        const div = element.parentElement;
+        let next = div.nextSibling;
+        while (next && next.nodeType !== 1) { next = next.nextSibling; }
+        if (next && next.tagName === 'UL') {
+          next.classList.toggle('hidden');
+        }
+        element.textContent = (element.textContent === "▼") ? "▶" : "▼";
+      }
+
+      function filterDepartments() {
+        const input = document.getElementById("searchInput").value.toLowerCase();
+        const tree = document.getElementById("departmentTree");
+        const names = tree.querySelectorAll(".dept-name");
+
+        names.forEach(nameSpan => {
+          const li = nameSpan.closest("li");
+          if (nameSpan.textContent.toLowerCase().includes(input)) {
+            li.style.display = "block";
+            showParents(li);
+          } else {
+            li.style.display = "none";
+          }
+        });
+      }
+
+      function showParents(li) {
+        let parent = li.parentElement.closest("li");
+        while (parent) {
+          parent.style.display = "block";
+          parent = parent.parentElement.closest("li");
+        }
+      }
+
+      function fetchEmployees(deptId) {
+        $.ajax({
+          url: '/department/' + deptId + '/employees',
+          type: 'GET',
+          success: function (data) {
+            updateEmployeeTable(data);
+          },
+          error: function () {
+            alert('직원 정보를 불러오는 데 실패했습니다.');
+          }
+        });
+      }
+
+      function updateEmployeeTable(employees) {
+        const tbody = $('#employeeTableBody');
+        tbody.empty();
+
+        if (employees.length === 0) {
+          tbody.append('<tr><td colspan="3">직원이 없습니다.</td></tr>');
+        } else {
+          employees.forEach(function (emp) {
+            const row = '<tr>'
+                    + '<td>' + emp.employeeName + '</td>'
+                    + '<td>' + emp.employeeNumber + '</td>'
+                    + '<td>' + emp.teamPositionName + '</td>'
+                    + '</tr>';
+            tbody.append(row);
+          });
+        }
+      }
+      // 부서 추가 모달 표시 함수
+      function addDepartment() {
+        loadDepartments();
+        // Bootstrap 5 모달 표시
+        const modal = new bootstrap.Modal(document.getElementById('addDepartmentModal'));
+        modal.show();
+      }
+
+      function loadDepartments() {
+        $.ajax({
+          url: '/department', // 부서 목록 요청
+          type: 'GET',
+          success: function(departments) {
+            const select = document.getElementById('parentDeptId');
+            select.innerHTML = '<option value="">최상위 부서로 등록</option>'; // 기본값
+
+            departments.forEach(dept => {
+              const option = document.createElement('option');
+              option.value = dept.deptId;
+              option.textContent = dept.deptName;
+              select.appendChild(option);
+            });
+          },
+          error: function() {
+            alert('상위 부서 목록을 불러오는 데 실패했습니다.');
+          }
+        });
+      }
+
+      // 부서 저장 함수
+      function saveDepartment() {
+        const deptCode = document.getElementById('deptCode').value;
+        const deptName = document.getElementById('deptName').value;
+        const parentDeptIdElement = document.getElementById('parentDeptId');
+        const parentDeptId = parentDeptIdElement && parentDeptIdElement.value ? parentDeptIdElement.value : null;
+
+        if (!deptCode || !deptName) {
+          alert('부서코드와 부서명을 모두 입력해주세요.');
+          return;
+        }
+
+        $.ajax({
+                  url: '/department/add',
+                  type: 'POST',
+                  contentType: 'application/json',
+                  data: JSON.stringify({
+                    deptCode: deptCode,
+                    deptName: deptName,
+                    parentDeptId: parentDeptId
+                  }),
+                  success: function(response) {
+                    alert('부서가 성공적으로 추가되었습니다.');
+                    location.reload(); // 새로고침
+                  },
+                  error: function(error) {
+                    alert('이미 존재하는 부서입니다.');
+                    console.error(error);
+                  }
+                }
+        );
+        $('#addDepartmentModal').modal('hide');
+      }
+
+      function closeModal() {
+        const modalElement = document.getElementById('addDepartmentModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) {
+          modalInstance.hide();
+        }
+      }
+
+      let selectedDeptId = null;
+      let selectedDeptName = null;
+
+      function selectDepartment(checkbox) {
+        const allCheckboxes = document.getElementsByName('deptCheckbox');
+        allCheckboxes.forEach(cb => {
+          if (cb !== checkbox) {
+            cb.checked = false;
+          }
+        });
+
+        if (checkbox.checked) {
+          selectedDeptId = checkbox.value;
+
+          selectedDeptName = checkbox.parentElement.querySelector('.dept-name').textContent;
+
+        } else {
+          selectedDeptId = null;
+          selectedDeptName = null;
+        }
+      }
+
+      // 부서 수정
+      function updateDepartment() {
+        if (!selectedDeptId) {
+          alert('수정할 부서를 선택하세요.');
+          return;
+        }
+
+        document.getElementById('oldDeptName').value = selectedDeptName;
+        document.getElementById('newDeptName').value = "";
+
+        const modal = new bootstrap.Modal(document.getElementById('updateDepartmentModal'));
+        modal.show();
+      }
+
+      function saveUpdateDepartment() {
+        const deptId = $('#selectedDeptId').val();
+        const newDeptName = document.getElementById('newDeptName').value;
+
+        if (!selectedDeptId) {
+          alert('수정할 부서를 선택하세요.');
+          return;
+        }
+
+        if (!newDeptName) {
+          alert('새 부서명을 입력하세요.');
+          return;
+        }
+
+        $.ajax({
+          url: '/department/update/' + selectedDeptId,
+          type: 'PATCH',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            deptId: deptId,
+            deptName: newDeptName
+          }),
+          success: function(response) {
+            alert('부서명이 성공적으로 수정되었습니다!');
+            location.reload();
+          },
+          error: function(error) {
+            alert('이미 사용중인 부서명입니다.');
+            console.error(error);
+          }
+        });
+
+        $('#updateDepartmentModal').modal('hide');
+      }
+
+      // 부서 삭제
+      function deleteDepartment() {
+        if (!selectedDeptId) {
+          alert('삭제할 부서를 선택하세요.');
+          return;
+        }
+
+        const confirmDelete = confirm('정말로 삭제하시겠습니까?');
+
+        if (!confirmDelete) {
+          // 아니오 눌렀을 때
+          return;
+        }
+
+        // 예 눌렀을 때 삭제 요청
+        $.ajax({
+          url: '/department/delete/' + selectedDeptId,
+          type: 'DELETE',
+          success: function(response) {
+            alert('부서가 성공적으로 삭제되었습니다!');
+            location.reload();
+          },
+          error: function(error) {
+            alert('부서 삭제에 실패했습니다.');
+            console.error(error);
+          }
+        });
+      }
+
+    </script>
+  </th:block>
+</head>
+
+<body>
+<div layout:fragment="content">
+  <h1 class="h3 mb-4 text-gray-800">부서 및 직원</h1>
+
+  <div style="display: flex;">
+    <!-- ✅ 부서 트리 카드 -->
+    <div class="card shadow mb-4" style="width: 380px; height: 550px;">
+      <div class="card-body">
+        <div class="mb-3">
+          <input type="text" id="searchInput" class="form-control" placeholder="검색할 부서명을 입력하세요" onkeyup="filterDepartments()">
+          <div class="d-flex justify-content-start mt-2" style="gap: 10px;">
+            <button class="btn btn-outline-primary btn-sm" onclick="addDepartment()">부서추가</button>
+            <button class="btn btn-outline-success btn-sm" onclick="updateDepartment()">부서수정</button>
+            <button class="btn btn-outline-danger btn-sm" onclick="deleteDepartment()">부서삭제</button>
+          </div>
+        </div>
+        <ul class="tree" id="departmentTree">
+          <th:block th:each="dept : ${deptTree}">
+            <li>
+              <div>
+                <input type="checkbox" name="deptCheckbox" th:value="${dept.deptId}" onchange="selectDepartment(this)">
+                <span class="toggle" onclick="toggleChildren(this)">▶</span>
+                <span class="dept-name"
+                      th:text="${dept.deptName}"
+                      th:onclick="|fetchEmployees(${dept.deptId})|"
+                      style="cursor: pointer;"></span>
+              </div>
+
+              <ul th:if="${#lists.size(dept.children) > 0}" class="hidden">
+                <th:block th:each="child : ${dept.children}">
+                  <li>
+                    <div>
+                      <input type="checkbox" name="deptCheckbox" th:value="${child.deptId}" onchange="selectDepartment(this)">
+                      <span class="toggle" onclick="toggleChildren(this)">▶</span>
+                      <span class="dept-name"
+                            th:text="${child.deptName}"
+                            th:onclick="|fetchEmployees(${child.deptId})|"
+                            style="cursor: pointer;"></span>
+                    </div>
+
+                    <ul th:if="${#lists.size(child.children) > 0}" class="hidden">
+                      <th:block th:replace="this :: renderTree(deptList=${child.children})"></th:block>
+                    </ul>
+                  </li>
+                </th:block>
+              </ul>
+            </li>
+          </th:block>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ✅ 직원 테이블 카드 -->
+    <div class="card shadow mb-4" style="width: 1200px; height: 550px; margin-left: 20px;">
+      <div class="card-body">
+      <div class="card-body">
+        <h5>직원 목록</h5>
+        <table class="table">
+          <thead>
+          <tr>
+            <th>이름</th>
+            <th>사번</th>
+            <th>직책</th>
+          </tr>
+          </thead>
+          <tbody id="employeeTableBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ✅ 부서 추가 모달 -->
+    <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="addDepartmentModalLabel">부서등록</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="addDepartmentForm">
+              <div class="mb-3">
+                <label for="deptCode" class="form-label">부서코드</label>
+                  <input type="text" class="form-control" id="deptName" placeholder="부서코드 입력">
+              </div>
+              <div class="mb-3">
+                <label for="deptName" class="form-label">부서명</label>
+                <input type="text" class="form-control" id="deptCode" placeholder="부서명 입력">
+              </div>
+              <div class="mb-3">
+                <label for="parentDeptId" class="form-label">상위 부서 선택</label>
+                <select class="form-control" id="parentDeptId">
+                  <option value="">최상위 부서로 등록</option>
+                  <!-- 여기에 서버에서 가져온 부서 목록이 자동 추가될 예정 -->
+                </select>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-primary" onclick="saveDepartment()">저장</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ 부서 수정 모달 -->
+    <div class="modal fade" id="updateDepartmentModal" tabindex="-1" aria-labelledby="updateDepartmentModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateDepartmentModalLabel">부서 수정</h5>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="updateDepartmentForm">
+              <div class="mb-3">
+                <label for="oldDeptName" class="form-label">현재 부서명</label>
+                <input type="text" class="form-control" id="oldDeptName" readonly>
+              </div>
+              <div class="mb-3">
+                <label for="newDeptName" class="form-label">새 부서명</label>
+                <input type="text" class="form-control" id="newDeptName" placeholder="새 부서명 입력">
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-primary" onclick="saveUpdateDepartment()">수정</button>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ✅ 재귀 렌더링용 프래그먼트 -->
+<th:block th:fragment="renderTree(deptList)">
+  <th:block th:each="dept : ${deptList}">
+    <li>
+      <div>
+        <input type="checkbox" name="deptCheckbox" th:value="${dept.deptId}" onchange="selectDepartment(this)">
+        <span class="toggle" onclick="toggleChildren(this)">▶</span>
+        <span class="dept-name"
+              th:text="${dept.deptName}"
+              th:onclick="|fetchEmployees(${dept.deptId})|"
+              style="cursor: pointer;"></span>
+      </div>
+
+      <ul th:if="${#lists.size(dept.children) > 0}" class="hidden">
+        <th:block th:replace="this :: renderTree(deptList=${dept.children})"></th:block>
+      </ul>
+    </li>
+  </th:block>
+</th:block>
+<!-- ✅ jQuery 추가 (AJAX용) -->
+</body>
+</html>

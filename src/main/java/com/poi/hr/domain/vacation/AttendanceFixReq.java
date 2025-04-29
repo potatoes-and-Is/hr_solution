@@ -1,7 +1,7 @@
 package com.poi.hr.domain.vacation;
 
 import com.poi.hr.domain.attendance.Attend;
-import com.poi.hr.domain.login.entity.Employee;
+import com.poi.hr.domain.employee.Employee;
 import jakarta.persistence.*;
 
 import java.time.LocalTime;

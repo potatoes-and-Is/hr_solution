@@ -1,11 +1,9 @@
 package com.poi.hr.dto;
 
-import com.poi.hr.domain.attendance.Attend;
 import com.poi.hr.domain.attendance.AttendStatus;
-import com.poi.hr.domain.login.entity.Employee;
+import com.poi.hr.domain.employee.Employee;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class AttendDTO {

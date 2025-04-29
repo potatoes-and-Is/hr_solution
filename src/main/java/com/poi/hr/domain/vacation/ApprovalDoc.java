@@ -1,6 +1,6 @@
 package com.poi.hr.domain.vacation;
 
-import com.poi.hr.domain.login.entity.Employee;
+import  com.poi.hr.domain.employee.Employee;
 import com.poi.hr.domain.vacation.enums.ApprovalDocStatus;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;

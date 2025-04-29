@@ -1,6 +1,6 @@
 package com.poi.hr.domain.vacation;
 
-import com.poi.hr.domain.login.entity.Employee;
+import com.poi.hr.domain.employee.Employee;
 import jakarta.persistence.*;
 
 @Entity
@@ -20,13 +20,13 @@ public class VacationBalance {
     private int vacBalanceId;
 
     @Column(name = "vac_count", nullable = false)
-    private int vacCount;
+    private Double vacCount;
 
     @Column(name = "used_vac_count", nullable = false)
-    private int usedVacCount;
+    private Double usedVacCount;
 
     @Column(name = "remain_vac_count", nullable = false)
-    private int remainVacCount;
+    private Double remainVacCount;
 
     @Column(name = "year")
     private Integer year;
@@ -43,7 +43,7 @@ public class VacationBalance {
 
     }
 
-    public VacationBalance(int vacCount, int usedVacCount, int remainVacCount, Integer year, Employee employee, VacationType vacationType) {
+    public VacationBalance(Double vacCount, Double usedVacCount, Double remainVacCount, Integer year, Employee employee, VacationType vacationType) {
         this.vacCount = vacCount;
         this.usedVacCount = usedVacCount;
         this.remainVacCount = remainVacCount;
@@ -56,15 +56,15 @@ public class VacationBalance {
         return vacBalanceId;
     }
 
-    public int getVacCount() {
+    public Double getVacCount() {
         return vacCount;
     }
 
-    public int getUsedVacCount() {
+    public Double getUsedVacCount() {
         return usedVacCount;
     }
 
-    public int getRemainVacCount() {
+    public Double getRemainVacCount() {
         return remainVacCount;
     }
 
@@ -80,15 +80,15 @@ public class VacationBalance {
         return vacationType;
     }
 
-    public void setVacCount(int vacCount) {
+    public void setVacCount(Double vacCount) {
         this.vacCount = vacCount;
     }
 
-    public void setUsedVacCount(int usedVacCount) {
+    public void setUsedVacCount(Double usedVacCount) {
         this.usedVacCount = usedVacCount;
     }
 
-    public void setRemainVacCount(int remainVacCount) {
+    public void setRemainVacCount(Double remainVacCount) {
         this.remainVacCount = remainVacCount;
     }
 

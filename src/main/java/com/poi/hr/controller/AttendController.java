@@ -2,11 +2,8 @@ package com.poi.hr.controller;
 
 import com.poi.hr.auth.model.AuthDetails;
 import com.poi.hr.domain.attendance.Attend;
-import com.poi.hr.domain.login.entity.Employee;
-import com.poi.hr.dto.AttendDTO;
 import com.poi.hr.dto.CheckInDTO;
 import com.poi.hr.dto.CheckOutDTO;
-import com.poi.hr.dto.ResponseCheckInDTO;
 import com.poi.hr.service.AttendService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Map;
 import java.util.Optional;
 

@@ -1,8 +1,8 @@
 package com.poi.hr.dto;
 
 
-import com.poi.hr.domain.common.Role;
-import com.poi.hr.domain.login.entity.TeamPositionPermission;
+import com.poi.hr.domain.vacation.enums.TeamPositionRole;
+import com.poi.hr.domain.vacation.TeamPositionPermission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +13,13 @@ public class LoginEmployeeDto {
     private String employeeName;
     private String employeeNumber;
     private String password;
-    private Role employeeRole;
-
+    private TeamPositionRole employeeRole;
     private List<TeamPositionPermission> permissions;
 
     public LoginEmployeeDto() {
     }
 
-    public LoginEmployeeDto(int employeeId, String employeeName, String employeeNumber, String password, Role role, List<TeamPositionPermission> permissions) {
+    public LoginEmployeeDto(int employeeId, String employeeName, String employeeNumber, String password, TeamPositionRole role, List<TeamPositionPermission> permissions) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.employeeNumber = employeeNumber;
@@ -30,8 +29,8 @@ public class LoginEmployeeDto {
     }
 
     public List<String> getRoles() {
-        if (this.employeeRole.getRole().length() > 0) {
-            return List.of(this.employeeRole.getRole());
+        if (this.employeeRole.getRoleName().length() > 0) {
+            return List.of(this.employeeRole.getRoleName());
         }
         return new ArrayList<>();
     }
@@ -60,11 +59,11 @@ public class LoginEmployeeDto {
         this.password = password;
     }
 
-    public Role getEmployeeRole() {
+    public TeamPositionRole getEmployeeRole() {
         return employeeRole;
     }
 
-    public void setEmployeeRole(Role employeeRole) {
+    public void setEmployeeRole(TeamPositionRole employeeRole) {
         this.employeeRole = employeeRole;
     }
 
@@ -89,8 +88,7 @@ public class LoginEmployeeDto {
         return "LoginEmployeeDto{" +
                 "employeeNumber='" + employeeNumber + '\'' +
                 ", password='" + password + '\'' +
-                ", employeeRole=" + employeeRole + '\'' +
-                ", employeeId=" + employeeId +
+                ", employeeRole=" + employeeRole +
                 '}';
     }
 }

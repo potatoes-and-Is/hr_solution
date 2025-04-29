@@ -1,5 +1,6 @@
 package com.poi.hr.domain.vacation;
 
+import com.poi.hr.domain.hr.TeamPosition;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,11 +20,7 @@ public class TeamPositionPermission {
     @JoinColumn(name = "ui_permission_id")
     private UiPermission uiPermission;
 
-    public TeamPositionPermission() {
-
-    }
-
-    public int getTeampositionPermissionId() {
+    public int getTeamPositionPermissionId() {
         return teampositionPermissionId;
     }
 

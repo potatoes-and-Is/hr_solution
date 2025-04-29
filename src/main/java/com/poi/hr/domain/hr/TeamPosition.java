@@ -1,6 +1,7 @@
-package com.poi.hr.domain.login.entity;
+package com.poi.hr.domain.hr;
 
-import com.poi.hr.domain.common.Role;
+import com.poi.hr.domain.vacation.enums.TeamPositionRole;
+import com.poi.hr.domain.vacation.TeamPositionPermission;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,7 +23,7 @@ public class TeamPosition {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private Role role;
+    private TeamPositionRole role;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
@@ -34,7 +35,7 @@ public class TeamPosition {
     public TeamPosition() {
     }
 
-    public TeamPosition(String positionName, Role role) {
+    public TeamPosition(String positionName, TeamPositionRole role) {
         this.positionName = positionName;
         this.role = role;
     }
@@ -47,12 +48,17 @@ public class TeamPosition {
         return positionName;
     }
 
-    public Role getRole() {
+
+    public TeamPositionRole getRole() {
         return role;
     }
 
     public LocalDate getCreatedAt() {
         return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
     }
 
     public List<TeamPositionPermission> getPermissions() {
@@ -61,9 +67,9 @@ public class TeamPosition {
 
     @Override
     public String toString() {
-        return "TeamPositions{" +
+        return "TeamPosition{" +
                 "teamPositionId=" + teamPositionId +
-                ", PositionName='" + positionName + '\'' +
+                ", positionName='" + positionName + '\'' +
                 ", role=" + role +
                 ", createdAt=" + createdAt +
                 '}';

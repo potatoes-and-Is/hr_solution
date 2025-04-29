@@ -1,9 +1,8 @@
 package com.poi.hr.domain.attendance;
 
-import com.poi.hr.domain.login.entity.Employee;
+import com.poi.hr.domain.employee.Employee;
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
