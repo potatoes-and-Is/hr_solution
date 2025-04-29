@@ -4,7 +4,13 @@ import java.time.LocalTime;
 
 public class CheckInDTO {
 
-    private LocalTime checkInTime = LocalTime.now();
+    private LocalTime checkInTime;
+
+    public CheckInDTO() {}
+
+    public CheckInDTO(LocalTime checkInTime) {
+        this.checkInTime = checkInTime;
+    }
 
     public LocalTime getCheckInTime() {
         return checkInTime;

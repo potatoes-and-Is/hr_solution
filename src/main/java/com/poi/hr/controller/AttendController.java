@@ -1,16 +1,24 @@
 package com.poi.hr.controller;
 
+import com.poi.hr.auth.model.AuthDetails;
+import com.poi.hr.domain.attendance.Attend;
+import com.poi.hr.domain.login.entity.Employee;
 import com.poi.hr.dto.AttendDTO;
 import com.poi.hr.dto.CheckInDTO;
+import com.poi.hr.dto.CheckOutDTO;
+import com.poi.hr.dto.ResponseCheckInDTO;
 import com.poi.hr.service.AttendService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/attendance")
@@ -24,22 +32,56 @@ public class AttendController {
         this.attendService = attendService;
     }
 
-    // 출근 버튼 눌렀을 때 넘겨줘야 하는 정보 : employee_id / 출,퇴근 시간 /
-    // @AuthenticationPrincipal AuthDetails authDetails
-    // 출근 시간 기록
+    // 출근 등록
     @PostMapping("/check-in")
-    public ResponseEntity<String> checkIn(@RequestBody CheckInDTO checkInDTO/*, Principal principal*/) {
+    public ResponseEntity<String> checkIn(@RequestBody CheckInDTO checkInDTO, @AuthenticationPrincipal UserDetails userDetails) {
 
         logger.info("checkIn 등록 - controller");
         try {
-            // int employeeId = Integer.parseInt(principal.getName());
-            int employeeId = 4; // 임시 Id
+            AuthDetails authDetails = (AuthDetails) userDetails;
+            int employeeId = ((AuthDetails) userDetails).getLoginEmployeeDto().getEmployeeId(); // 직원 id
+
             attendService.recordCheckIn(employeeId, checkInDTO.getCheckInTime());
             return ResponseEntity.ok("success");
         }catch (Exception e){
             return ResponseEntity.status(500).body("fail");
         }
-
     }
 
+    // 출근 기록 조회
+    @GetMapping("/today")
+    public ResponseEntity<CheckInDTO> getTodayAttendance(@AuthenticationPrincipal UserDetails userDetails) {
+
+        logger.info("checkIn 확인 - controller");
+
+        AuthDetails authDetails = (AuthDetails) userDetails;
+        int employeeId = ((AuthDetails) userDetails).getLoginEmployeeDto().getEmployeeId();
+        Optional<Attend> isAttend = attendService.getTodayAttendance(employeeId);
+
+        if(isAttend.isPresent()){
+            Attend att = isAttend.get();
+            return ResponseEntity.ok(new CheckInDTO(att.getCheckInTime()));
+        } else {
+            return ResponseEntity.ok(null);
+        }
+    }
+
+    // 퇴근 등록
+    @PostMapping("/check-out")
+    public ResponseEntity<String> checkOut(@RequestBody CheckOutDTO checkOutDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        logger.info("checkOut 등록 - controller");
+
+        try {
+            AuthDetails authDetails = (AuthDetails) userDetails;
+            int employeeId = ((AuthDetails) userDetails).getLoginEmployeeDto().getEmployeeId();
+
+            attendService.recordCheckOut(employeeId, checkOutDTO.getCheckOutTime());
+            return ResponseEntity.ok("success");
+        } catch(Exception e) {
+            return ResponseEntity.status(500).body("fail");
+        }
+    }
+
+
 }
+

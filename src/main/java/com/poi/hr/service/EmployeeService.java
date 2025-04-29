@@ -71,16 +71,19 @@ public class EmployeeService {
 
         return employee.map(u -> {
             Role role = null;
+            List<TeamPositionPermission> permissions = null;
             for (DepPositionEmployee dpe : u.getDepPositionEmployees()) {
                 role = dpe.getTeamPosition().getRole();
                 break; // 첫 번째만 가져온다고 가정
             }
 
             return new LoginEmployeeDto(
+                    u.getEmployeeId(),
                     u.getEmployeeName(),
                     u.getEmployeeNumber(),
                     u.getPassword(),
-                    role
+                    role,
+                    permissions
             );
         }).orElse(null);
     }
@@ -96,17 +99,17 @@ public class EmployeeService {
             for (DepPositionEmployee dpe : u.getDepPositionEmployees()) {
                 role = dpe.getTeamPosition().getRole();
                 permissions = dpe.getTeamPosition().getPermissions(); // 권한 리스트 가져오기
-                for (TeamPositionPermission permission : permissions) {
-                    System.out.println("권한: " + permission.toString());
-                }
+                permissions.size();
                 break; // 직책 첫 번째만 가져온다고 가정
             }
 
             return new LoginEmployeeDto(
+                    u.getEmployeeId(),
                     u.getEmployeeName(),
                     u.getEmployeeNumber(),
                     u.getPassword(),
-                    role
+                    role,
+                    permissions
             );
         }).orElse(null);
     }

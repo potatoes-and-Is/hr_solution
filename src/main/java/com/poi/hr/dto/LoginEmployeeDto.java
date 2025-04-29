@@ -9,20 +9,24 @@ import java.util.List;
 
 public class LoginEmployeeDto {
 
+    private int employeeId;
     private String employeeName;
     private String employeeNumber;
     private String password;
     private Role employeeRole;
+
     private List<TeamPositionPermission> permissions;
 
     public LoginEmployeeDto() {
     }
 
-    public LoginEmployeeDto(String employeeName, String employeeNumber, String password, Role role) {
+    public LoginEmployeeDto(int employeeId, String employeeName, String employeeNumber, String password, Role role, List<TeamPositionPermission> permissions) {
+        this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.employeeNumber = employeeNumber;
         this.password = password;
         this.employeeRole = role;
+        this.permissions = permissions;
     }
 
     public List<String> getRoles() {
@@ -64,12 +68,29 @@ public class LoginEmployeeDto {
         this.employeeRole = employeeRole;
     }
 
+    public int getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public List<TeamPositionPermission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<TeamPositionPermission> permissions) {
+        this.permissions = permissions;
+    }
+
     @Override
     public String toString() {
         return "LoginEmployeeDto{" +
                 "employeeNumber='" + employeeNumber + '\'' +
                 ", password='" + password + '\'' +
-                ", employeeRole=" + employeeRole +
+                ", employeeRole=" + employeeRole + '\'' +
+                ", employeeId=" + employeeId +
                 '}';
     }
 }

@@ -61,8 +61,6 @@
         <!-- "000님, 반가워요!"와 날짜 -->
         <div class="row justify-content-start mb-4">
             <div class="col-md-10">
-                <h1 class="greeting-text text-gray-800" th:text="${userName} + '님, 반가워요!'"></h1>
-                <p class="date-text" th:text="${currentDateTime}"></p>
 <!--                <h1 class="greeting-text text-gray-800" th:text="${userName} + '님, 반가워요!'">사용자님, 반가워요!</h1>-->
                 <h1 class="greeting-text text-gray-800" th:text="${userName} + ' ' + ${userRole} + '님 반가워요!'">사용자님, 반가워요!</h1>
 <!--                <p class="date-text" th:text="${currentDateTime}">2025.04.22(화) 20:30</p>-->
@@ -78,8 +76,8 @@
                     <div class="card-body">
                         <h5 class="attendance-title text-left">출퇴근</h5>
                         <div class="d-flex justify-content-start">
-                            <button class="btn btn-primary custom-btn mr-3" onclick="checkIn()" style="background-color: #1cc88a; border-color:#1cc88a">출근하기</button>
-                            <button class="btn btn-primary custom-btn" onclick="checkOut()" style="background-color: #e74a3b; border-color:#e74a3b">퇴근하기</button>
+                            <button class="btn btn-primary custom-btn mr-3" id="checkInButton" onclick="checkIn()" style="background-color: #1cc88a; border-color:#1cc88a">출근하기</button>
+                            <button class="btn btn-primary custom-btn" id="checkOutButton" onclick="checkOut()" style="background-color: #e74a3b; border-color:#e74a3b">퇴근하기</button>
                         </div>
                     </div>
                 </div>
@@ -106,26 +104,39 @@
     <!-- 페이지별 추가 스크립트 -->
     <!-- 버튼 클릭 시 알림 기능 -->
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('api/attendance/today', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const button = document.getElementById("checkInButton");
+
+                    if(data) {
+                        button.disabled = true;
+                        button.textContent = `출근 완료 ${data.checkInTime}`;
+                    }
+                })
+        })
+        // 출근하기 버튼 click
         function checkIn() {
             alert("출근 시간이 등록되었습니다: " + new Date().toLocaleString());
             const button = document.getElementById("checkInButton");
             const now = new Date();
-            const formatTime = now.toLocaleTimeString();
-
-            button.disabled = true; // 버튼 비활성화
-            button.textContent = `출근 완료 ${formatTime}`;
-
             const checkInTime = now.toTimeString().split(' ')[0];
 
-            fetch('http://localhost:8080/api/attendance/check-in', {
+            button.disabled = true; // 버튼 비활성화
+            button.textContent = `출근 완료 ${checkInTime}`;
+
+            fetch('/api/attendance/check-in', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                    // 필요하면 인증 토큰 추가
-                    // 'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify({
-                    // employeeId: 'EMPLOYEE_ID', // 실제 직원 ID로 대체 (시큐리티 : principal)
                     checkInTime: checkInTime
                 })
             })
@@ -142,15 +153,15 @@
                     button.textContent = "출근하기";
                 })
         }
-
+        // 퇴근하기 버튼 click
         function checkOut() {
             alert("퇴근 시간이 등록되었습니다: " + new Date().toLocaleString());
             const button = document.getElementById("checkOutButton");
-            button.disabled = true; // 버튼 비활성화
-
             const now = new Date();
-            const formatTime = now.toLocaleTimeString();
-            document.getElementById("checkOutButton").textContent = `퇴근 완료 ${formatTime}`;
+            const checkOutTime = now.toTimeString().split(' ')[0];
+
+            button.disabled = true;
+            document.getElementById("checkOutButton").textContent = `퇴근 완료 ${checkOutTime}`;
 
             fetch('/api/attendance/check-out', {
                 method: 'POST',
@@ -158,9 +169,21 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    checkOutTime: now.toISOString()
+                    checkOutTime: checkOutTime
                 })
             })
+                .then(response => {
+                    if(!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .catch(error => {
+                    console.error("에러:", error);
+                    alert("퇴근 요청 실패:" + error.message);
+                    button.disabled = false;
+                    button.textContent = "퇴근하기";
+                })
         }
     </script>
     <script>

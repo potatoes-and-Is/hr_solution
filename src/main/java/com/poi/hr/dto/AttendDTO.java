@@ -1,5 +1,6 @@
 package com.poi.hr.dto;
 
+import com.poi.hr.domain.attendance.Attend;
 import com.poi.hr.domain.attendance.AttendStatus;
 import com.poi.hr.domain.login.entity.Employee;
 
@@ -25,6 +26,7 @@ public class AttendDTO {
 
     private Employee employee;
 
+
     public AttendDTO() {}
 
     public AttendDTO(Integer attendId, LocalDate attendDate, LocalTime checkInTime, LocalTime checkOutTime, char checkInStatus, char checkOutStatus, AttendStatus attendStatus, Employee employee) {
@@ -36,6 +38,15 @@ public class AttendDTO {
         this.checkOutStatus = checkOutStatus;
         this.attendStatus = attendStatus;
         this.employee = employee;
+    }
+
+    // attendList 를 위한 생성자
+    public AttendDTO(int attendId, LocalDate attendDate, LocalTime checkInTime, LocalTime checkOutTime, AttendStatus attendStatus) {
+        this.attendId = attendId;
+        this.attendDate = attendDate;
+        this.checkInTime = checkInTime;
+        this.checkOutTime = checkOutTime;
+        this.attendStatus = attendStatus;
     }
 
     public Integer getAttendId() {
