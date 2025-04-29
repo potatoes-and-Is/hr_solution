@@ -1,5 +1,6 @@
 package com.poi.hr.service;
 
+import com.poi.hr.domain.vacation.ApprovalDoc;
 import com.poi.hr.domain.vacation.VacationBalance;
 import com.poi.hr.domain.vacation.VacationGrantHistory;
 import com.poi.hr.domain.vacation.VacationReq;
@@ -11,6 +12,7 @@ import com.poi.hr.repository.vacation.VacationRepository;
 import com.poi.hr.repository.vacation.VacationReqRepository;
 import com.poi.hr.repository.vacation.VacationTypeRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +104,42 @@ public class VacationService {
 
         return result;
     }
+
+
+    /*
+    결재 승인 API (서비스 레이어) 에서
+    doc.setApprovalStatus(ApprovalStatus.APPROVED); 하고
+    vacationService.processApprovedVacation(doc); 로 호출 예정
+     */
+    /* 휴가 차감 */
+    @Transactional
+    public void processApprovedVacation(ApprovalDoc approvalDoc) {
+        // 1. 해당 결재문서에 연결된 휴가신청 내역 가져오기
+        VacationReq req = vacationReqRepository.findByApprovalDocId(approvalDoc.getApprovalDocId());
+
+        if (req == null) {
+            throw new RuntimeException("휴가신청 내역 없음");
+        }
+
+        VacationBalance balance = vacationRepository
+                .findVacationBalance(
+                    approvalDoc.getEmployee().getEmployeeId(),
+                    req.getVacationType().getVacTypeId(),
+                    req.getVacReqStartDate().getYear()
+                );
+
+        if (balance == null) {
+            throw new RuntimeException("잔여휴가 없음");
+        }
+
+        balance.setUsedVacCount(balance.getUsedVacCount() + req.getVacUseDays());
+        balance.setRemainVacCount(balance.getRemainVacCount() + req.getVacUseDays());
+    }
+
+
+
+
+
 
 
 

@@ -14,5 +14,7 @@ public interface VacationReqRepository extends JpaRepository<VacationReq, Intege
     @Query("SELECT r FROM VacationReq r WHERE r.employee.employeeId = :employeeId AND FUNCTION('YEAR', r.vacReqStartDate) = :year")
     List<VacationReq> findByEmployeeIdAndYear(@org.springframework.data.repository.query.Param("employeeId") Integer employeeId,
                                               @org.springframework.data.repository.query.Param("year") int year);
+
+    VacationReq findByApprovalDocId(Integer approvalDocId);
 }
 /* vacReqStart 기준으로 연도만 비교 */
