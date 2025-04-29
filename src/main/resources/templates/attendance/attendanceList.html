@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+    <th:block layout:fragment="head">
+        <!-- DataTables CSS -->
+        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">나의 출퇴근 내역</h1>
+    <p class="mb-4">출퇴근 시간 정정요청이 필요한 경우, 필요한 날짜의 체크박스를 눌러 정정요청 폼을 작성해주세요.</p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Attendance List</h6>
+            <button type="button" class="btn btn-primary" onclick="openModal()">
+                정정요청
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>선택</th>
+                        <th>일자</th>
+                        <th>출근시각</th>
+                        <th>퇴근시각</th>
+                        <th>상태</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="attend : ${attendList}">
+                        <td>
+                            <input type="checkbox" class="row-checkbox"
+                                   th:attr="data-id=${attend.attendId},
+                                            data-date=${attend.attendDate},
+                                            data-checkin=${attend.checkInTime},
+                                            data-checkout=${attend.checkOutTime},
+                                            data-status=${attend.attendStatus.getDisplayName()}"
+                                   onclick="handleCheckBox(this)">
+                        </td>
+                        <td th:text="${attend.attendDate}"></td>
+                        <td th:text="${attend.checkInTime}"></td>
+                        <td th:text="${attend.checkOutTime}"></td>
+                        <td th:text="${attend.attendStatus.getDisplayName()}"></td>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 출퇴근시간 정정 모달 -->
+    <div class="modal fade" id="attendanceFixModal" tabindex="-1" role="dialog" aria-labelledby="attendanceFixModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="attendanceFixModalLabel">출퇴근시간 정정 요청</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <form id="attendanceFixForm">
+                        <!-- 제출 시 attendId 사용 -->
+                        <input type="hidden" id="attendId" name="attendId">
+                        <!-- 변경대상 -->
+                        <div class="form-group">
+                            <label>출근 일자</label>
+                            <div class="form-row">
+                                <div class="col">
+                                    <input type="date" class="form-control" id="originAttendDate" readonly placeholder="출근일자">
+                                </div>
+                            </div><br>
+                            <label>기존 출퇴근시간</label>
+                            <div class="form-row">
+                                <div class="col">
+                                    <input type="time" class="form-control" id="originCheckInTime" readonly placeholder="기존 출근시간">
+                                </div>
+                                <div class="col">
+                                    <input type="time" class="form-control" id="originCheckOutTime" readonly placeholder="기존 퇴근시간">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 변경할 시간 -->
+                        <div class="form-group">
+                            <label>변경할 시간</label>
+                            <div class="form-row">
+                                <div class="col">
+                                    <input type="time" class="form-control" id="newCheckInTime" required>
+                                </div>
+                                <div class="col">
+                                    <input type="time" class="form-control" id="newCheckOutTime" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 사유 -->
+                        <div class="form-group">
+                            <label for="fixReason">사유</label>
+                            <textarea class="form-control" id="fixReason" rows="3" placeholder="정정 사유를 입력하세요" required></textarea>
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                    <button class="btn btn-primary" id="submitAttendanceFix" onclick="submitCorrectionForm()">결재문서 만들기</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<th:block layout:fragment="scripts">
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Page level custom scripts -->
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+        });
+
+        // 체크박스 단일 선택
+        function handleCheckBox(checkbox) {
+            // 다른 체크박스 해제
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(cb => {
+                if(cb !== checkbox) {
+                    cb.checked = false;
+                }
+            });
+        }
+
+        // 모달 열기 및 데이터 채우기
+        function openModal() {
+            const selectedCheckBox = document.querySelector('.row-checkbox:checked');
+            if(!selectedCheckBox) {
+                alert("정정 요청할 출퇴근 내역을 선택해주세요.");
+                return; // 모달 열지 않음
+            }
+
+            // 선택된 데이터 추출
+            let attendDate = selectedCheckBox.getAttribute('data-date');
+            let attendId = selectedCheckBox.getAttribute('data-id');
+            let checkInTime = selectedCheckBox.getAttribute('data-checkin');
+            let checkOutTime = selectedCheckBox.getAttribute('data-checkout') || ''; // 퇴근 시간이 없을 경우 대비
+
+            // 시간 형식 조정 (HH:mm:ss -> HH:mm)
+            if(checkInTime && checkInTime.includes(':')) {
+                checkInTime = checkInTime.substring(0,5);
+            }
+            if(checkOutTime && checkOutTime.includes(":")) {
+                checkOutTime = checkOutTime.substring(0,5);
+            }
+
+            // 모달 폼에 데이터 채우기
+            document.getElementById('attendId').value = attendId;
+            document.getElementById('originAttendDate').value = attendDate;
+            document.getElementById('originCheckInTime').value = checkInTime;
+            document.getElementById('originCheckOutTime').value = checkOutTime;
+            document.getElementById('newCheckInTime').value = checkInTime;
+            document.getElementById('newCheckOutTime').value = checkOutTime;
+
+            // 모달 열기
+            $('#attendanceFixModal').modal('show');
+        }
+
+        // 폼 제출 함수
+        function submitCorrectionForm() {
+            const form = document.getElementById('attendanceFixForm');
+            const formData = {
+                attendId: form.attendId.value,
+                newCheckInTime: form.newCheckInTime.value,
+                newCheckOutTime: form.newCheckOutTime.value,
+                fixReason: form.fixReason.value
+            };
+
+            fetch('/api/attendance/attend-req/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(data => {
+                    alert('정정 요청이 성공적으로 제출되었습니다.');
+                    $('#correctionModal').modal('hide'); // 모달 닫기
+                    form.reset(); // 폼 초기화
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('정정 요청 중 오류가 발생했습니다: ' + error.message);
+                });
+        }
+
+    </script>
+</th:block>
+</body>
+</html>
