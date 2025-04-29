@@ -1,0 +1,82 @@
+/* 기본적인 콘텐츠 스타일 */
+.content {
+    margin-bottom: 15px;
+}
+
+/* 레이블과 입력 필드의 스타일 */
+.content label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.content input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+/* 버튼 스타일 */
+#actionBtn {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+#actionBtn:hover {
+    background-color: #0056b3;
+}
+
+/* 선택 옵션 레이아웃 */
+select {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+/* 각 선택 옵션과 버튼을 일정 간격으로 정렬 */
+.options-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.options-container label {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.options-container select {
+    padding: 5px;
+    min-width: 100px;
+    font-size: 14px;
+}
+
+#actionBtn {
+    margin-top: 15px;
+    padding: 6px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
