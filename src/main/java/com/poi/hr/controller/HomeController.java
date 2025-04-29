@@ -21,11 +21,12 @@ public class HomeController {
 
         AuthDetails authDetails = (AuthDetails) userDetails;
         model.addAttribute("userName", authDetails.getEmployeeName()); // 이름
-        model.addAttribute("userRole", authDetails.getLoginEmployeeDto().getEmployeeRole().getRole()); // 직책(팀장, 팀원 등)
+        model.addAttribute("userRole", authDetails.getLoginEmployeeDto().getEmployeeRole().getRoleName()); // 직책(팀장, 팀원 등)
 
         // 현재 시간 (yyyy.MM.dd(E) HH:mm:ss)
         String currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd(E) HH:mm:ss"));
         model.addAttribute("currentDateTime", currentDateTime);
+
         return "index";
     }
 

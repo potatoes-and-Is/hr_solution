@@ -1,4 +1,4 @@
-package com.poi.hr.domain.login.entity;
+package com.poi.hr.domain.vacation;
 
 import jakarta.persistence.*;
 
@@ -35,6 +35,14 @@ public class UiPermission {
 
     public String getPermissionName() {
         return permissionName;
+    }
+
+    public void setPermissionRole(String permissionRole) {
+        this.permissionRole = permissionRole;
+    }
+
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
     }
 
     @Override

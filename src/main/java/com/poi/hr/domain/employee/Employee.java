@@ -1,5 +1,6 @@
-package com.poi.hr.domain.login.entity;
+package com.poi.hr.domain.employee;
 
+import com.poi.hr.domain.hr.Level;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.List;
 public class Employee {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
     private int employeeId;
 
@@ -56,7 +58,8 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String employeeName, String gender, String email, String password, String phone, String employeeIdentity, String employeeStatus, LocalDate hireDate, LocalDate retireDate, String employeeNumber, Level level) {
+    public Employee(int employeeId, String employeeName, String gender, String email, String password, String phone, String employeeIdentity, String employeeStatus, LocalDate hireDate, LocalDate retireDate, String employeeNumber, Level level, List<DepPositionEmployee> depPositionEmployees) {
+        this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.gender = gender;
         this.email = email;
@@ -68,6 +71,7 @@ public class Employee {
         this.retireDate = retireDate;
         this.employeeNumber = employeeNumber;
         this.level = level;
+        this.depPositionEmployees = depPositionEmployees;
     }
 
     public int getEmployeeId() {

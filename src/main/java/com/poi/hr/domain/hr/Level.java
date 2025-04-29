@@ -1,11 +1,11 @@
-package com.poi.hr.domain.login.entity;
+package com.poi.hr.domain.hr;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "levels")
+@Table(name = "Levels")
 public class Level {
 
     @Id

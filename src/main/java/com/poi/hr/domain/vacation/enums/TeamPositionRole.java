@@ -1,20 +1,21 @@
 package com.poi.hr.domain.vacation.enums;
 
 public enum TeamPositionRole {
-    TEAM_MEMBER("팀원"),
     TEAM_LEADER("팀장"),
+    TEAM_MEMBER("팀원"),
     DEPT_LEADER("부서장"),
-    HR_MEMBER("인사 팀원"),
-    HR_LEADER("인사 팀장"),
+    HR_MEMBER("인사팀장"),
+    HR_LEADER("인사팀원"),
     CEO("대표");
 
-    private final String displayName;
+    private final String roleName;
 
-    private TeamPositionRole(String displayName) {
-        this.displayName = displayName;
+    TeamPositionRole(String role) {
+        this.roleName = role;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getRoleName() {
+        return roleName;
     }
+
 }
