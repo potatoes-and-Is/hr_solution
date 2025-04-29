@@ -41,7 +41,7 @@ public class DeptService {
                         dept.getDeptName(),
                         dept.getCreatedBy(),
                         dept.getUpdatedBy(),
-                        dept.getParentDeptId() != null ? dept.getParentDeptId().getDeptId() : null
+                        dept.getParentDept() != null ? dept.getParentDept().getDeptId() : null
                 ))
                 .collect(Collectors.toList());
     }
@@ -80,17 +80,20 @@ public class DeptService {
         Optional<Dept> findName = deptRepository.findByDeptName(departmentDto.getDeptName());
         Optional<Dept> findCode = deptRepository.findByDeptCode(departmentDto.getDeptCode());
 
+
         if(findName.isPresent() || findCode.isPresent()){
             throw new IllegalArgumentException("이미 존재하는 부서입니다." + departmentDto.getDeptCode() + departmentDto.getDeptName());
         }
 
         Dept department = new Dept(departmentDto.getDeptName(), departmentDto.getDeptCode());
+        department.setCreatedBy("SYSTEM");
+        department.setUpdatedBy("SYSTEM");
 
 
         if (departmentDto.getParentDeptId() != null) {
             Dept parentDept = deptRepository.findById(departmentDto.getParentDeptId())
                     .orElseThrow(() -> new IllegalArgumentException("상위 부서를 찾을 수 없습니다."));
-            department.setParentDeptId(parentDept);
+            department.setParentDept(parentDept);
         }
 
         Dept saveDepartment = deptRepository.save(department);
