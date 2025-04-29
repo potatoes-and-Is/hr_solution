@@ -14,39 +14,39 @@ public class Depts {
     private int deptId;
 
     @Column(name = "dept_code")
-    private String dept_code;
+    private String deptCode;
 
     @Column(name = "dept_name")
-    private String dept_name;
+    private String deptName;
 
     @Column(name = "created_by")
-    private String created_by;
+    private String createdBy;
 
     @Column(name = "created_at")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_by")
-    private String updated_by;
+    private String updatedBy;
 
     @Column(name = "updated_at")
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
     @Column(name = "parent_dept_id")
-    private Integer parent_dept_id;
+    private Integer parentDeptId;
 
     public Depts() {
 
     }
 
-    public Depts(int deptId, String dept_code, String dept_name, String created_by, LocalDateTime created_at, String updated_by, LocalDateTime updated_at, int parent_dept_id) {
+    public Depts(int deptId, String deptCode, String deptName, String createdBy, LocalDateTime createdAt, String updatedBy, LocalDateTime updatedAt, Integer parentDeptId) {
         this.deptId = deptId;
-        this.dept_code = dept_code;
-        this.dept_name = dept_name;
-        this.created_by = created_by;
-        this.created_at = created_at;
-        this.updated_by = updated_by;
-        this.updated_at = updated_at;
-        this.parent_dept_id = parent_dept_id;
+        this.deptCode = deptCode;
+        this.deptName = deptName;
+        this.createdBy = createdBy;
+        this.createdAt = createdAt;
+        this.updatedBy = updatedBy;
+        this.updatedAt = updatedAt;
+        this.parentDeptId = parentDeptId;
     }
 
     public int getDeptId() {
@@ -57,73 +57,73 @@ public class Depts {
         this.deptId = deptId;
     }
 
-    public String getDept_code() {
-        return dept_code;
+    public String getDeptCode() {
+        return deptCode;
     }
 
-    public void setDept_code(String dept_code) {
-        this.dept_code = dept_code;
+    public void setDeptCode(String dept_code) {
+        this.deptCode = dept_code;
     }
 
-    public String getDept_name() {
-        return dept_name;
+    public String getDeptName() {
+        return deptName;
     }
 
-    public void setDept_name(String dept_name) {
-        this.dept_name = dept_name;
+    public void setDeptName(String dept_name) {
+        this.deptName = dept_name;
     }
 
-    public String getCreated_by() {
-        return created_by;
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setCreated_by(String created_by) {
-        this.created_by = created_by;
+    public void setCreatedBy(String created_by) {
+        this.createdBy = created_by;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime created_at) {
+        this.createdAt = created_at;
     }
 
-    public String getUpdated_by() {
-        return updated_by;
+    public String getUpdatedBy() {
+        return updatedBy;
     }
 
-    public void setUpdated_by(String updated_by) {
-        this.updated_by = updated_by;
+    public void setUpdatedBy(String updated_by) {
+        this.updatedBy = updated_by;
     }
 
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(LocalDateTime updated_at) {
+        this.updatedAt = updated_at;
     }
 
-    public int getParent_dept_id() {
-        return parent_dept_id;
+    public int getParentDeptId() {
+        return parentDeptId;
     }
 
-    public void setParent_dept_id(int parent_dept_id) {
-        this.parent_dept_id = parent_dept_id;
+    public void setParentDeptId(int parent_dept_id) {
+        this.parentDeptId = parent_dept_id;
     }
 
     @Override
     public String toString() {
         return "Depts{" +
                 "deptId=" + deptId +
-                ", dept_code='" + dept_code + '\'' +
-                ", dept_name='" + dept_name + '\'' +
-                ", created_by='" + created_by + '\'' +
-                ", created_at=" + created_at +
-                ", updated_by='" + updated_by + '\'' +
-                ", updated_at=" + updated_at +
-                ", parent_dept_id=" + parent_dept_id +
+                ", dept_code='" + deptCode + '\'' +
+                ", dept_name='" + deptName + '\'' +
+                ", created_by='" + createdBy + '\'' +
+                ", created_at=" + createdAt +
+                ", updated_by='" + updatedBy + '\'' +
+                ", updated_at=" + updatedAt +
+                ", parent_dept_id=" + parentDeptId +
                 '}';
     }
 }

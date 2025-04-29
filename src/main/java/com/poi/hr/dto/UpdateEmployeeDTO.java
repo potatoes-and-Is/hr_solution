@@ -10,12 +10,13 @@ public class UpdateEmployeeDTO {
     private String address;
     private String employeeIdentity;
     private String password;
+    private String employeeStatus;
 
     public UpdateEmployeeDTO() {
 
     }
 
-    public UpdateEmployeeDTO(int employeeId, String employeeName, String email, String phone, String address, String employeeIdentity, String password) {
+    public UpdateEmployeeDTO(int employeeId, String employeeName, String email, String phone, String address, String employeeIdentity, String password, String employeeStatus) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.email = email;
@@ -23,6 +24,7 @@ public class UpdateEmployeeDTO {
         this.address = address;
         this.employeeIdentity = employeeIdentity;
         this.password = password;
+        this.employeeStatus = employeeStatus;
     }
 
     public int getEmployeeId() {
@@ -80,4 +82,13 @@ public class UpdateEmployeeDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getEmployeeStatus() {
+        return employeeStatus;
+    }
+
+    public void setEmployeeStatus(String employeeStatus) {
+        this.employeeStatus = employeeStatus;
+    }
 }
+

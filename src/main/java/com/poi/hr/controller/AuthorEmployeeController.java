@@ -1,8 +1,8 @@
 package com.poi.hr.controller;
 
 import com.poi.hr.domain.employee.Employee;
-import com.poi.hr.dto.ResponseEmployeeDTO;
-import com.poi.hr.dto.ResponseEmployeeDetailDTO;
+import com.poi.hr.dto.EmployeeRequestDTO;
+import com.poi.hr.dto.ResponseAuthorDTO;
 import com.poi.hr.dto.UpdateEmployeeDTO;
 import com.poi.hr.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class AuthorEmployeeController {
     //관리자 페이지
     @GetMapping
     public String authorEmployeePage(Model model) {
-        List<Employee> employees = employeeService.findAllEmployees();
+        List<EmployeeRequestDTO> employees = employeeService.findAllEmployees();
 
         model.addAttribute("employees", employees);
         return "employee/author";  // templates/employee.html 호출
@@ -38,13 +38,13 @@ public class AuthorEmployeeController {
     // 직원 리스트 출력
     @GetMapping("/list")
     @ResponseBody
-    public List<Employee> getEmployees() {
+    public List<EmployeeRequestDTO> getEmployees() {
         return employeeService.findAllEmployees();
     }
 
     // 직원 추가
     @PostMapping("/add")
-    public ResponseEntity<Employee> saveEmployee(@Validated @RequestBody Employee employee) {
+    public ResponseEntity<Employee> saveEmployee(@Validated @RequestBody EmployeeRequestDTO employee) {
 //        employeeService.applyDefaultValues(employee);
         Employee savedEmployee = employeeService.save(employee);
         return ResponseEntity.status(201).body(savedEmployee);
@@ -61,13 +61,13 @@ public class AuthorEmployeeController {
     }
     // 상세 조회
     @GetMapping("/{employeeId}")
-    public ResponseEntity<ResponseEmployeeDetailDTO> getEmployeeDetail(@PathVariable("employeeId") int employeeId) {
+    public ResponseEntity<EmployeeRequestDTO> getEmployeeDetail(@PathVariable("employeeId") int employeeId) {
         System.out.println("Employee ID: " + employeeId); // 디버깅용
-        // 서비스 호출
-        ResponseEmployeeDetailDTO responseEmployeeDetailDTO = employeeService.getEmployeeById(employeeId);
+        // 서비스 호출f
+        EmployeeRequestDTO responseAuthorDTO = employeeService.getEmployeeById(employeeId);
 
         // 반환
-        return ResponseEntity.ok(responseEmployeeDetailDTO);
+        return ResponseEntity.ok(responseAuthorDTO);
     }
 
     //직원 추가 창 팝업

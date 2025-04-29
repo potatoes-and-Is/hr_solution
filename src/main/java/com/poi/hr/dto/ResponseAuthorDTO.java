@@ -3,7 +3,7 @@ package com.poi.hr.dto;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-public class ResponseEmployeeDetailDTO {
+public class ResponseAuthorDTO {
 
     private int employeeId;
     private String employeeNumber;
@@ -19,10 +19,10 @@ public class ResponseEmployeeDetailDTO {
     private String deptName;
     private String positionName;
     private String levelName;
+    private String password;
+    private Integer levelId;
 
-    public ResponseEmployeeDetailDTO(int employeeId, String employeeNumber, String employeeName, String gender,
-                                     String address, String email, String phone, String employeeIdentity, String status,
-                                     String hireDate, String retireDate, String deptName, String positionName, String levelName) {
+    public ResponseAuthorDTO(int employeeId, String employeeNumber, String employeeName, String gender, String address, String email, String phone, String employeeIdentity, String status, String hireDate, String retireDate, String deptName, String positionName, String levelName, String password, Integer levelId) {
         this.employeeId = employeeId;
         this.employeeNumber = employeeNumber;
         this.employeeName = employeeName;
@@ -37,10 +37,11 @@ public class ResponseEmployeeDetailDTO {
         this.deptName = deptName;
         this.positionName = positionName;
         this.levelName = levelName;
+        this.password = password;
+        this.levelId = levelId;
     }
 
-    public ResponseEmployeeDetailDTO(String employeeName, String deptName, String positionName, String phone, String email) {
-    }
+    public ResponseAuthorDTO() {}
 
     public int getEmployeeId() {
         return employeeId;
@@ -152,5 +153,21 @@ public class ResponseEmployeeDetailDTO {
 
     public void setLevelName(String levelName) {
         this.levelName = levelName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(Integer levelId) {
+        this.levelId = levelId;
     }
 }

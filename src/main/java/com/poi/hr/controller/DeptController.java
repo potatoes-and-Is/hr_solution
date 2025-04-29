@@ -23,7 +23,7 @@ public class DeptController {
     @GetMapping("/list")
     public List<ResponseDeptDTO> getAllDept() {
         return deptsRepository.findAll().stream()
-                .map(dept -> new ResponseDeptDTO(dept.getDeptId(), dept.getDept_name()))
+                .map(dept -> new ResponseDeptDTO(dept.getDeptId(), dept.getDeptName()))
                 .toList();
     }
 }

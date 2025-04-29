@@ -86,11 +86,11 @@
               .then(data => {
                 console.log(data); // 응답 데이터 확인
                 document.getElementById('email').value = data.email;
-                document.getElementById('identity').value = data.identity;
+                document.getElementById('identity').value = data.employeeIdentity;
                 document.getElementById('phone').value = data.phone;
                 document.getElementById('password').value = data.password;
                 document.getElementById('address').value = data.address;
-                document.getElementById('name').value = data.name;
+                document.getElementById('name').value = data.employeeName;
                 document.getElementById('genderSelect').value = data.gender;
                 document.getElementById('statusSelect').value = data.status;
                 document.getElementById('levelSelect').value = data.levelId;
@@ -176,7 +176,7 @@
               const posSelect = document.getElementById('positionSelect');
               data.forEach(pos => {
                 const option = document.createElement('option');
-                option.value = pos.teamPositionId;
+                option.value = pos.positionId;
                 option.text = pos.positionName;
                 posSelect.appendChild(option);
               });

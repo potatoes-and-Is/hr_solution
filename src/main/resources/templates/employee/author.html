@@ -21,17 +21,17 @@
       <button id="openPopup" class="btn btn-primary">직원 추가</button>
     </div>
     <div class="col-auto">
-      <select class="form-control">
+      <select class="form-control" id="searchOption">
         <option>이름</option>
         <option>부서</option>
         <option>직급</option>
       </select>
     </div>
     <div class="col-auto">
-      <input type="text" class="form-control" placeholder="검색어 입력">
+      <input type="text" class="form-control" id="searchInput" placeholder="검색어 입력">
     </div>
     <div class="col-auto">
-      <button class="btn btn-secondary">검색</button>
+      <button class="btn btn-secondary" id="searchBtn">검색</button>
     </div>
   </div>
 
@@ -71,6 +71,9 @@
   <script src="/js/button.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      let employeesData = [];
+
+
       fetch('/author/list')
               .then(response => response.json())
               .then(data => {

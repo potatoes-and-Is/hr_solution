@@ -1,4 +1,4 @@
-PATCH http://localhost:8080/author/14
+PATCH http://localhost:8080/author/1
 Content-Type: application/json
 
 {
@@ -10,6 +10,6 @@ Content-Type: application/json
   "employeeStatus": "ACTIVE",
   "password": "newSecurePassword123!",
   "gender": "M",
-  "levelId": 3
+  "levelId": 1
 }
 

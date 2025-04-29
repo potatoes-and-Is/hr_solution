@@ -48,7 +48,7 @@ public class TeamPositionPermission {
     public String toString() {
         return "TeamPositionPermission{" +
                 "teampositionPermissionId=" + teampositionPermissionId +
-                ", teamPosition=" + (teamPosition != null ? teamPosition.getTeamPositionId() : null) +
+                ", teamPosition=" + (teamPosition != null ? teamPosition.getPositionId() : null) +
                 ", uiPermission=" + (uiPermission != null ? uiPermission.getUiPermissionId() : null) +
                 '}';
     }

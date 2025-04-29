@@ -63,7 +63,7 @@ public class DepPositionEmployee {
     public String toString() {
         return "DepPositionEmployee{" +
                 "dpeId=" + dpeId +
-                ", teamPosition=" + (teamPosition != null ? teamPosition.getTeamPositionId() : null) +
+                ", teamPosition=" + (teamPosition != null ? teamPosition.getPositionId() : null) +
                 ", dept=" + (depts != null ? depts.getDeptId() : null) +
                 ", employeeId=" + (employee != null ? employee.getEmployeeId() : null) +
                 '}';

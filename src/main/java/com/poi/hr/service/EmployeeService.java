@@ -1,15 +1,15 @@
 package com.poi.hr.service;
 
 import com.poi.hr.domain.employee.*;
-import com.poi.hr.dto.ResponseEmployeeDTO;
-import com.poi.hr.dto.ResponseEmployeeDetailDTO;
+import com.poi.hr.dto.EmployeeRequestDTO;
+import com.poi.hr.dto.ResponseAuthorDTO;
 import com.poi.hr.dto.UpdateEmployeeDTO;
+import com.poi.hr.dto.mapper.EmployeeMapper;
 import com.poi.hr.repository.*;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,35 +24,34 @@ public class EmployeeService {
     private final DeptsRepository deptsRepository;
     private final TeamPositionRepository teamPositionRepository;
     private final LevelRepository levelRepository;
+    private final EmployeeMapper employeeMapper;
 
-
-
-    @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository, DPEmployeeRepository dpEmployeeRepository, DeptsRepository deptsRepository, TeamPositionRepository teamPositionRepository, LevelRepository levelRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, DPEmployeeRepository dpEmployeeRepository, DeptsRepository deptsRepository, TeamPositionRepository teamPositionRepository, LevelRepository levelRepository, EmployeeMapper employeeMapper) {
         this.employeeRepository = employeeRepository;
         this.dpEmployeeRepository = dpEmployeeRepository;
         this.deptsRepository = deptsRepository;
         this.teamPositionRepository = teamPositionRepository;
         this.levelRepository = levelRepository;
+        this.employeeMapper = employeeMapper;
     }
 
-    public List<Employee> findAllEmployees() {
+    public List<EmployeeRequestDTO> findAllEmployees() {
         // Custom Repository 메서드 호출로 변경
-        List<Employee> employees = employeeRepository.findAllEmployeesWithDetails();
+        List<EmployeeRequestDTO> employees = employeeRepository.findAllEmployeesWithDetails();
 
         System.out.println(employees);
         return employees;
     }
 
     @Transactional
-    public Employee save(Employee employee) {
+    public Employee save(EmployeeRequestDTO employee) {
 
         Level level = levelRepository.findById(employee.getLevelId())
                 .orElseThrow(() -> new NoSuchElementException("직급이 없습니다: ID=" + employee.getLevelId()));
 
         employee.setLevel(level);
 
-        Employee savedEmp = employeeRepository.save(employee);
+        Employee savedEmp = employeeRepository.save(employeeMapper.toEntity(employee));
 
         Integer deptId = employee.getDeptId();
         Integer positionId = employee.getPositionId();
@@ -73,6 +72,7 @@ public class EmployeeService {
         return savedEmp;
     }
 
+
     @Transactional
     public Employee updateEmployee(int employeeId, UpdateEmployeeDTO updateData) {
         Employee existingEmployee = employeeRepository.findById(employeeId)
@@ -89,28 +89,29 @@ public class EmployeeService {
     }
 
     // 상세 조회 서비스 메서드
-    public ResponseEmployeeDetailDTO getEmployeeById(int employeeId) {
+    public EmployeeRequestDTO getEmployeeById(int employeeId) {
         // 직원 정보 조회 (직원 ID로 직원 정보를 가져오는 메서드)
-        Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new IllegalArgumentException("직원이 존재하지 않습니다. ID: " + employeeId));
+        EmployeeRequestDTO employee = employeeRepository.getEmployeeDetail(employeeId);
 
+        return employee;
         // DTO로 변환하여 반환
-        return new ResponseEmployeeDetailDTO(
-                employee.getEmployeeId(),
-                employee.getEmployeeNumber(),
-                employee.getEmployeeName(),
-                employee.getGender(),
-                employee.getAddress(),
-                employee.getEmail(),
-                employee.getPhone(),
-                employee.getEmployeeIdentity(),
-                employee.getEmployeeStatus(),
-                employee.getHireDate().toString(), // 날짜를 문자열로 변환
-                employee.getRetireDate() != null ? employee.getRetireDate().toString() : null, // null 체크 후 날짜를 문자열로 변환
-                employee.getDeptName(),
-                employee.getPositionName(),
-                employee.getLevelName()
-        );
+//        return new ResponseAuthorDTO(
+//                employee.getEmployeeId(),
+//                employee.getEmployeeNumber(),
+//                employee.getEmployeeName(),
+//                employee.getGender(),
+//                employee.getAddress(),
+//                employee.getEmail(),
+//                employee.getPhone(),
+//                employee.getEmployeeIdentity(),
+//                employee.getEmployeeStatus(),
+//                employee.getHireDate().toString(), // 날짜를 문자열로 변환
+//                employee.getRetireDate() != null ? employee.getRetireDate().toString() : null, // null 체크 후 날짜를 문자열로 변환
+//                employee.getDeptName(),
+//                employee.getPositionName(),
+//                employee.getLevelName(),
+//                employee.getPassword(),
+//                employee.getLevelId()
+//        );
     }
-
 }

@@ -12,7 +12,7 @@ public class TeamPosition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_position_id")
-    private Integer teamPositionId;
+    private Integer positionId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
@@ -46,8 +46,8 @@ public class TeamPosition {
     }
 
     // ===== Getter & Setter =====
-    public int getTeamPositionId() {
-        return teamPositionId;
+    public int getPositionId() {
+        return positionId;
     }
 
     public TeamPositionRole getRole() {
@@ -73,11 +73,12 @@ public class TeamPosition {
     @Override
     public String toString() {
         return "TeamPositions{" +
-                "teamPositionId=" + teamPositionId +
+                "teamPositionId=" + positionId +
                 ", role=" + role +
                 ", positionName='" + positionName + '\'' +
                 ", createdAt=" + createdAt +
                 '}';
     }
 }
+
 

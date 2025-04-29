@@ -1,5 +1,6 @@
 package com.poi.hr.domain.employee;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -39,6 +40,7 @@ public class Employee {
     private String employeeIdentity;
 
     @Column(name = "employee_status")
+    @JsonProperty("status")
     private String employeeStatus;
 
     @CreationTimestamp
@@ -52,30 +54,11 @@ public class Employee {
     @JoinColumn(name = "level_id")
     private Level level;
 
-    @Transient
-    private Integer deptId;
-
-    @Transient
-    private Integer positionId;
-
-    @Transient
-    private String deptName;
-
-    @Transient
-    private String positionName;
-
-    @Transient
-    private String levelName;
-
-    @Transient
-    private Integer levelId;
-
-
     public Employee(){
 
     }
 
-    public Employee(int employeeId, String employeeNumber, String employeeName, String gender, String address, String email, String password, String phone, String employeeIdentity, String employeeStatus, LocalDate hireDate, LocalDate retireDate, Level level, Integer deptId, Integer positionId, String deptName, String positionName, String levelName) {
+    public Employee(int employeeId, String employeeNumber, String employeeName, String gender, String address, String email, String password, String phone, String employeeIdentity, String employeeStatus, LocalDate hireDate, LocalDate retireDate, Level level) {
         this.employeeId = employeeId;
         this.employeeNumber = employeeNumber;
         this.employeeName = employeeName;
@@ -89,11 +72,6 @@ public class Employee {
         this.hireDate = hireDate;
         this.retireDate = retireDate;
         this.level = level;
-        this.deptId = deptId;
-        this.positionId = positionId;
-        this.deptName = deptName;
-        this.positionName = positionName;
-        this.levelName = levelName;
     }
 
     public int getEmployeeId() {
@@ -200,52 +178,9 @@ public class Employee {
         this.level = level;
     }
 
-    public String getDeptName() {
-        return deptName;
-    }
-
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
-    }
-
-    public String getPositionName() {
-        return positionName;
-    }
-
-    public void setPositionName(String positionName) {
-        this.positionName = positionName;
-    }
-
-    public String getLevelName() {
-        return levelName;
-    }
-
-    public void setLevelName(String levelName) {
-        this.levelName = levelName;
-    }
-
-    public Integer getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(Integer deptId) {
-        this.deptId = deptId;
-    }
-
-    public Integer getPositionId() {
-        return positionId;
-    }
-
-    public void setPositionId(Integer positionId) {
-        this.positionId = positionId;
-    }
 
     public Integer getLevelId() {
-        return levelId;
-    }
-
-    public void setLevelId(Integer levelId) {
-        this.levelId = levelId;
+        return level != null ? level.getLevelId() : null;
     }
 
     @Override
@@ -264,12 +199,6 @@ public class Employee {
                 ", hireDate=" + hireDate +
                 ", retireDate=" + retireDate +
                 ", level=" + level +
-                ", deptId=" + deptId +
-                ", positionId=" + positionId +
-                ", deptName='" + deptName + '\'' +
-                ", positionName='" + positionName + '\'' +
-                ", levelName='" + levelName + '\'' +
-                ", levelId=" + levelId +
                 '}';
     }
 }
