@@ -20,6 +20,6 @@ public interface VacationRepository extends JpaRepository<VacationBalance, Integ
 
 //    VacationBalance findByEmployee_EmployeeIdAndVacationType_VacTypeIdAndYear(Integer employeeId, Integer vacTypeId, int year);
 
-    @Query("SELECT v FROM VacationBalance v WHERE v.employee.employeeId = :employeeId AND v.vacationType.vacTypeId = :vacTypeId AND v.year :year")
+    @Query("SELECT v FROM VacationBalance v WHERE v.employee.employeeId = :employeeId AND v.vacationType.vacTypeId = :vacTypeId AND v.year = :year")
     VacationBalance findVacationBalance(@Param("employeeId") Integer employeeId, @Param("vacTypeId") Integer vacTypeId, @Param("year") int year);
 }

@@ -126,6 +126,7 @@ public class VacationService {
                     approvalDoc.getEmployee().getEmployeeId(),
                     req.getVacationType().getVacTypeId(),
                     req.getVacReqStartDate().getYear()
+
                 );
 
         if (balance == null) {
@@ -133,7 +134,7 @@ public class VacationService {
         }
 
         balance.setUsedVacCount(balance.getUsedVacCount() + req.getVacUseDays());
-        balance.setRemainVacCount(balance.getRemainVacCount() + req.getVacUseDays());
+        balance.setRemainVacCount(balance.getRemainVacCount() - req.getVacUseDays());
     }
 
 

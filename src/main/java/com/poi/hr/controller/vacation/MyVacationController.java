@@ -53,4 +53,10 @@ public class MyVacationController {
         return "vacation/my-vacation";
     }
 
+    @GetMapping("/test-page")
+    public String showTestPage() {
+        return "vacation/approvalTest";
+    }
+
+
 }
