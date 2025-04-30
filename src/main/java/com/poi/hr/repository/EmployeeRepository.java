@@ -5,6 +5,7 @@ import com.poi.hr.domain.employee.Employee;
 import com.poi.hr.dto.EmployeeRequestDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -26,7 +27,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>, Em
     LEFT JOIN e.level l
     WHERE e.employeeId = :employeeId
 """)
-    EmployeeRequestDTO getEmployeeDetail(int employeeId);
+    EmployeeRequestDTO getEmployeeDetail(@Param("employeeId")int employeeId);
 
 
     @Query("SELECT COALESCE(MAX(e.employeeId), 0) + 1 FROM Employee e")
