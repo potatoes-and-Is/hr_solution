@@ -9,7 +9,7 @@ public class TeamPositionPermission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "teamposition_permission_id")
+    @Column(name = "team_position_permission_id")
     private int teampositionPermissionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
