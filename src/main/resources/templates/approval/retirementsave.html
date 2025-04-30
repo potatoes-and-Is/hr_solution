@@ -101,50 +101,47 @@
             background-color: #2e59d9;
         }
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function openApproverModal() {
             $('#approverModal').modal('show');
         }
 
-        function selectApprovers() {
-            const selected = [];
-            document.querySelectorAll('#approverList input:checked').forEach(checkbox => {
-                selected.push(checkbox.value);
-            });
+        function loadEmployeesByDepartment() {
+            const departmentCode = document.getElementById('departmentSelect').value;  // 선택된 부서 코드
+            const employeeList = document.getElementById('employeeList');  // 직원 목록을 표시할 요소
+            employeeList.innerHTML = '';  // 이전 목록 초기화
 
-            // 선택된 이름 보여주기
-            const selectedDiv = document.getElementById('selectedApprovers');
-            selectedDiv.innerHTML = selected.map(name => `<span style="margin-right:10px;">${name}</span>`).join('');
+            if (!departmentCode) return;  // 부서가 선택되지 않으면 리턴
 
-            // hidden input에 값을 심기 (쉼표로 구분)
-            document.querySelector('input[name="approverList"]').value = selected.join(',');
-
-            $('#approverModal').modal('hide');
-        }function loadEmployeesByDepartment() {
-            const department = document.getElementById('departmentSelect').value;
-            const employeeList = document.getElementById('employeeList');
-            employeeList.innerHTML = '';
-
-            // 예시 하드코딩 (서버에서 Ajax로 받아와도 OK)
-            const employees = {
-                sales: ['김영업', '박세일즈'],
-                hr: ['이인사', '최인사'],
-                it: ['정개발', '한개발']
-            };
-
-            if (employees[department]) {
-                employees[department].forEach(name => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-            <div class="employee-item" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0; padding: 10px 0; border-bottom: 1px solid #dee2e6;">
-                <span style="min-width: 100px; white-space: nowrap;">${name}</span>
-                <input type="checkbox" value="${name}" onchange="toggleEmployee('${name}', this.checked)">
-            </div>
-        `;
-                    employeeList.appendChild(li);
+            // Ajax 요청을 통해 서버에서 직원 목록을 가져옵니다
+            fetch(`/api/employees/by-department?departmentCode=${departmentCode}`)
+                .then(response => response.json())  // 서버 응답을 JSON 형식으로 파싱
+                .then(data => {
+                    if (data.length === 0) {
+                        alert('선택한 부서에 직원이 없습니다.');
+                    } else {
+                        data.forEach(employee => {
+                            const li = document.createElement('li');
+                            li.innerHTML = `
+                        <div class="employee-item" style="display: flex; align-items: center; gap: 8px; margin-bottom: 0; padding: 10px 0; border-bottom: 1px solid #dee2e6;">
+                            <span style="min-width: 100px; white-space: nowrap;">${employee.employeeName}</span>  <!-- employeeName만 표시 -->
+                            <span style="min-width: 100px; white-space: nowrap;">${employee.deptName}</span>  <!-- deptName만 표시 -->
+                            <input type="checkbox" value="${employee.employeeName}" onchange="toggleEmployee('${employee.employeeName}', this.checked)">
+                        </div>
+                    `;
+                            employeeList.appendChild(li);  // 직원 목록에 추가
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching employees:', error);  // 오류 처리
+                    alert('직원 목록을 불러오는 데 실패했습니다. 다시 시도해주세요.');
                 });
-            }
         }
+
 
         let selectedEmployees = [];
 
@@ -199,13 +196,9 @@
 <body>
 
 <div class="form-container">
-
-    <form th:action="@{/approval/save/leavesave}" method="post" th:object="${approvalEmpLeaveSaveDto}"> <!-- 여기에 form 추가 -->
-
+    <form th:action="@{/approval/save/leavesave}" method="post" th:object="${approvalEmpLeaveSaveDto}">
         <div id="signatures" class="signatures"></div>
-
         <h2 style="color:#4e73df; text-align:center; margin-bottom:30px;">퇴직 결재 문서</h2>
-
         <table>
             <tr>
                 <th>제목</th>
@@ -234,7 +227,9 @@
             </tr>
             <tr>
                 <th>퇴직 사유</th>
-                <input type="text" th:field="*{leaveType}" placeholder="퇴직 종류를 입력하세요.">
+                <td>
+                    <input type="text" th:field="*{retireType}" placeholder="퇴직 종류를 입력하세요.">
+                </td>
             </tr>
             <tr>
                 <th>결재자</th>
@@ -242,9 +237,9 @@
                     <div class="input-group">
                         <input type="text" id="approverDisplay" class="form-control bg-light" placeholder="결재자를 선택하세요" readonly>
                         <div class="input-group-append">
-                <span class="input-group-text" style="cursor:pointer;" onclick="openApproverModal()">
-                    <i class="fas fa-user-plus"></i>
-                </span>
+                            <span class="input-group-text" style="cursor:pointer;" onclick="openApproverModal()">
+                                <i class="fas fa-user-plus"></i>
+                            </span>
                         </div>
                     </div>
                     <input type="hidden" name="approverList">
@@ -291,7 +286,5 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
