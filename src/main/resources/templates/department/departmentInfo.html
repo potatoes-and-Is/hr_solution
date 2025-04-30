@@ -128,7 +128,6 @@
         modal.show();
       }
 
-      // 최상위부서 등록
       function loadDepartments() {
         $.ajax({
           url: '/department', // 부서 목록 요청
@@ -152,6 +151,7 @@
           }
         });
       }
+
       // 상위 부서 선택 시 하위부서 목록 출력
       function loadSubDepartments(parentDeptId, afterElement) {
         $.ajax({
@@ -358,9 +358,6 @@
           }
         });
       }
-
-
-
     </script>
   </th:block>
 </head>
@@ -449,11 +446,11 @@
             <form id="addDepartmentForm">
               <div class="mb-3">
                 <label for="deptCode" class="form-label">부서코드</label>
-                <input type="text" class="form-control" id="deptName" placeholder="부서코드 입력">
+                <input type="text" class="form-control" id="deptCode" placeholder="부서코드 입력">
               </div>
               <div class="mb-3">
                 <label for="deptName" class="form-label">부서명</label>
-                <input type="text" class="form-control" id="deptCode" placeholder="부서명 입력">
+                <input type="text" class="form-control" id="deptName" placeholder="부서명 입력">
               </div>
               <div class="mb-3">
                 <label for="parentDeptId" class="form-label">등록할 부서 선택</label>

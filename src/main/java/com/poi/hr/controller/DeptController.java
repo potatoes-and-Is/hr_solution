@@ -80,14 +80,6 @@ public class DeptController {
         ).collect(Collectors.toList());
     }
 
-    public DepPositionEmployeeRepository getDepPositionEmployeeRepository() {
-        return depPositionEmployeeRepository;
-    }
-
-    public DeptRepository getDeptRepository() {
-        return deptRepository;
-    }
-
     public record EmployeeResponse(String employeeName, String employeeNumber, String teamPositionName) {
     }
 
