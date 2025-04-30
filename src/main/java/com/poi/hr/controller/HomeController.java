@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -32,6 +33,9 @@ public class HomeController {
         AuthDetails authDetails = (AuthDetails) userDetails;
         model.addAttribute("userName", authDetails.getEmployeeName()); // 이름
         model.addAttribute("userRole", authDetails.getLoginEmployeeDto().getEmployeeRole().getRoleName()); // 직책(팀장, 팀원 등)
+
+        /*List<String> allowedRoles = Arrays.asList("대표", "인사팀장", "인사팀원", "부서장", "팀장");
+        model.addAttribute("allowedRoles", allowedRoles);*/
 
         // 현재 시간 (yyyy.MM.dd(E) HH:mm:ss)
         String currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd(E) HH:mm:ss"));

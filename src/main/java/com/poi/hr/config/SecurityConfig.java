@@ -42,6 +42,15 @@ public class SecurityConfig {
                                 .toArray(String[]::new))
                 .anyRequest().authenticated()
 
+                // 직원 관리
+                .requestMatchers("/author/**").hasAnyAuthority("CEO", "HR_LEADER", "HR_MEMBER", "DEPT_LEADER", "TEAM_LEADER")
+
+                // 출퇴근 관리
+                .requestMatchers("/attendanceList/**").hasAnyAuthority("CEO", "HR_LEADER")
+
+                // 휴가 관리
+
+
     ).formLogin(login -> login
                 .loginPage("/auth/login")
                 .loginProcessingUrl("/login")
