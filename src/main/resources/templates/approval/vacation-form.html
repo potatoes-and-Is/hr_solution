@@ -267,9 +267,7 @@
 
 <div class="form-container">
 
-  <form th:action="@{/approval/save/empleave}" method="post" th:object="${approvalEmpLeaveSaveDto}"> <!-- 여기에 form 추가 -->
-
-    <div id="signatures" class="signatures"></div>
+  <form th:action="@{/approval/save/vacation}" method="post" th:object="${approvalVacationSaveDto}">
 
     <h2 style="color:#4e73df; text-align:center; margin-bottom:30px;">휴가 결재 문서</h2>
 
@@ -277,7 +275,7 @@
       <tr>
         <th>문서유형</th>
         <td>
-          <input type="hidden" th:field="*{docType}" th:value="SICK">
+          <input type="hidden" th:field="*{docType}" th:value="VACATION">
         </td>
       </tr>
       <tr>
@@ -299,24 +297,33 @@
         </td>
       </tr>
       <tr>
-        <th>휴가 시작일/종료일</th>
+        <th>휴가 시작일</th>
         <td>
-          <input type="date" th:field="*{leaveStartDate}"> ~
-          <input type="date" th:field="*{leaveEndDate}">
+          <input type="date" th:field="*{vacReqStart}">
+        </td>
+      </tr>
+      <tr>
+        <th>휴가 종료일</th>
+        <td>
+          <input type="date" th:field="*{vacReqEnd}">
+        </td>
+      </tr>
+      <tr>
+        <th>휴가 사용 일수</th>
+        <td>
+          <input type="number" th:field="*{vacUseDay}" min="1">
         </td>
       </tr>
       <tr>
         <th>휴가 종류</th>
         <td>
-          <label>
-            <select th:field="*{leaveType}">
-              <option value="">-- 선택하세요 --</option>
-              <option th:each="type : ${approvalEmpLeaveViewDto.leaveTypeList}"
-                      th:value="${type.name()}"
-                      th:text="${type.getDisplayName()}">
-              </option>
-            </select>
-          </label>
+          <select th:field="*{vacTypeId}">
+            <option value="">-- 선택하세요 --</option>
+            <option th:each="type : ${approvalVacationViewDto.vacTypeList}"
+                    th:value="${type.id}"
+                    th:text="${type.name}">
+            </option>
+          </select>
         </td>
       </tr>
       <tr>
@@ -325,19 +332,21 @@
           <div class="input-group">
             <input type="text" id="approverDisplay" class="form-control bg-light" placeholder="결재자를 선택하세요" readonly>
             <div class="input-group-append">
-                <span class="input-group-text" style="cursor:pointer;" onclick="openApproverModal()">
-                    <i class="fas fa-user-plus"></i>
-                </span>
+                        <span class="input-group-text" style="cursor:pointer;" onclick="openApproverModal()">
+                            <i class="fas fa-user-plus"></i>
+                        </span>
             </div>
           </div>
-          <!--<input type="hidden" th:field="*{approvalLineList}">-->
         </td>
       </tr>
     </table>
+
     <div class="submit-btn">
-      <button type="submit">제출</button> <!-- form 안에 submit 버튼 -->
+      <button type="submit">제출</button>
     </div>
+
   </form>
+
 </div>
 
 <!-- Modal -->
