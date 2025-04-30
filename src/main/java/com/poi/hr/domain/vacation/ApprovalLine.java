@@ -1,6 +1,7 @@
 package com.poi.hr.domain.vacation;
 
 import com.poi.hr.domain.employee.Employee;
+import com.poi.hr.domain.vacation.enums.ApprovalDocStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -22,8 +23,9 @@ public class ApprovalLine {
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @Column(name = "approval_role", nullable = false, length = 30)
-    private String approvalRole;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "approval_status", nullable = false, length = 30)
+    private ApprovalDocStatus approvalStatus;
 
     @Column(name = "approval_line_order", nullable = false)
     private int approvalLineOrder;
@@ -35,10 +37,10 @@ public class ApprovalLine {
 
     }
 
-    public ApprovalLine(ApprovalDoc approvalDoc, Employee employee, String approvalRole, int approvalLineOrder) {
+    public ApprovalLine(ApprovalDoc approvalDoc, Employee employee, ApprovalDocStatus approvalStatus, int approvalLineOrder) {
         this.approvalDoc = approvalDoc;
         this.employee = employee;
-        this.approvalRole = approvalRole;
+        this.approvalStatus = approvalStatus;
         this.approvalLineOrder = approvalLineOrder;
     }
 
@@ -54,9 +56,6 @@ public class ApprovalLine {
         return employee;
     }
 
-    public String getApprovalRole() {
-        return approvalRole;
-    }
 
     public int getApprovalLineOrder() {
         return approvalLineOrder;
@@ -74,23 +73,17 @@ public class ApprovalLine {
         this.employee = employee;
     }
 
-    public void setApprovalRole(String approvalRole) {
-        this.approvalRole = approvalRole;
+    public ApprovalDocStatus getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(ApprovalDocStatus approvalStatus) {
+        this.approvalStatus = approvalStatus;
     }
 
     public void setApprovalLineOrder(int approvalLineOrder) {
         this.approvalLineOrder = approvalLineOrder;
     }
 
-    @Override
-    public String toString() {
-        return "ApprovalLine{" +
-                "approvalLineId=" + approvalLineId +
-                ", approvalDocId=" + (approvalDoc != null ? approvalDoc.getApprovalDocId() : null) +
-                ", employeeId=" + (employee != null ? employee.getEmployeeId() : null) +
-                ", approvalRole='" + approvalRole + '\'' +
-                ", approvalLineOrder=" + approvalLineOrder +
-                ", createdAt=" + createdAt +
-                '}';
-    }
+
 }

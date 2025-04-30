@@ -97,7 +97,7 @@ public class VacationService {
                     req.getVacReqStartDate().toString(),
                     req.getVacReqEndDate().toString(),
                     req.getVacUseDays(),
-                    req.getApprovalDocStatus().getDisplayName()
+                    req.getApprovalStatus().getDisplayName()
             );
             result.add(dto);
         }

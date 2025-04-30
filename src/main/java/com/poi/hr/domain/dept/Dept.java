@@ -1,7 +1,6 @@
 package com.poi.hr.domain.dept;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

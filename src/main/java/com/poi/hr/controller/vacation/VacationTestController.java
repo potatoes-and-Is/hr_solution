@@ -29,7 +29,7 @@ public class VacationTestController {
         }
 
         //2. 결재상태 APPROVED로 변경
-        approvalDoc.setApprovalDocStatus(ApprovalDocStatus.APPROVED);
+        approvalDoc.setApprovalStatus(ApprovalDocStatus.APPROVED);
 
         //3. 휴가 차감 로직 호출
         vacationService.processApprovedVacation(approvalDoc);

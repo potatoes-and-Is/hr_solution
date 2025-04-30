@@ -1,9 +1,8 @@
 package com.poi.hr.domain.vacation;
 
 import com.poi.hr.domain.employee.Employee;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.poi.hr.domain.vacation.enums.LeaveType;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -18,13 +17,14 @@ public class LeaveReq extends ApprovalDoc {
     private LocalDate leaveEndDate;
 
     @Column(name = "leave_type", nullable = false, length = 30)
-    private String leaveType;
+    @Enumerated(EnumType.STRING)
+    private LeaveType leaveType;
 
     public LeaveReq() {
 
     }
 
-    public LeaveReq(Employee employee, DocType docType, String approvalTitle, String approvalContent, String approvalReason, LocalDate leaveStartDate, LocalDate leaveEndDate, String leaveType) {
+    public LeaveReq(Employee employee, DocType docType, String approvalTitle, String approvalContent, String approvalReason, LocalDate leaveStartDate, LocalDate leaveEndDate, LeaveType leaveType) {
         super(employee, docType, approvalTitle, approvalContent, approvalReason);
         this.leaveStartDate = leaveStartDate;
         this.leaveEndDate = leaveEndDate;
@@ -39,9 +39,6 @@ public class LeaveReq extends ApprovalDoc {
         return leaveEndDate;
     }
 
-    public String getLeaveType() {
-        return leaveType;
-    }
 
     public void setLeaveStartDate(LocalDate leaveStartDate) {
         this.leaveStartDate = leaveStartDate;
@@ -51,16 +48,11 @@ public class LeaveReq extends ApprovalDoc {
         this.leaveEndDate = leaveEndDate;
     }
 
-    public void setLeaveType(String leaveType) {
-        this.leaveType = leaveType;
+    public LeaveType getLeaveType() {
+        return leaveType;
     }
 
-    @Override
-    public String toString() {
-        return "LeaveReq{" +
-                "leaveStartDate=" + leaveStartDate +
-                ", leaveEndDate=" + leaveEndDate +
-                ", leaveType='" + leaveType + '\'' +
-                '}';
+    public void setLeaveType(LeaveType leaveType) {
+        this.leaveType = leaveType;
     }
 }

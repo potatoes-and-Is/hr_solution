@@ -1,7 +1,7 @@
 package com.poi.hr.controller;
 
+import com.poi.hr.domain.dept.DepPositionEmployee;
 import com.poi.hr.domain.dept.Dept;
-import com.poi.hr.domain.employee.DepPositionEmployee;
 import com.poi.hr.dto.DeptDTO;
 import com.poi.hr.repository.DepPositionEmployeeRepository;
 import com.poi.hr.repository.DeptRepository;
@@ -14,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 

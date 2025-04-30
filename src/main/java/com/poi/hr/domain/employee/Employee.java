@@ -1,5 +1,6 @@
 package com.poi.hr.domain.employee;
 
+import com.poi.hr.domain.dept.DepPositionEmployee;
 import com.poi.hr.domain.hr.Level;
 import jakarta.persistence.*;
 
@@ -53,12 +54,12 @@ public class Employee {
     private Level level;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-    private List<com.poi.hr.domain.employee.DepPositionEmployee> depPositionEmployees;
+    private List<DepPositionEmployee> depPositionEmployees;
 
     public Employee() {
     }
 
-    public Employee(int employeeId, String employeeName, String gender, String email, String password, String phone, String employeeIdentity, String employeeStatus, LocalDate hireDate, LocalDate retireDate, String employeeNumber, Level level, List<com.poi.hr.domain.employee.DepPositionEmployee> depPositionEmployees) {
+    public Employee(int employeeId, String employeeName, String gender, String email, String password, String phone, String employeeIdentity, String employeeStatus, LocalDate hireDate, LocalDate retireDate, String employeeNumber, Level level, List<DepPositionEmployee> depPositionEmployees) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.gender = gender;
@@ -122,7 +123,7 @@ public class Employee {
         return level;
     }
 
-    public List<com.poi.hr.domain.employee.DepPositionEmployee> getDepPositionEmployees() {
+    public List<DepPositionEmployee> getDepPositionEmployees() {
         return depPositionEmployees;
     }
 

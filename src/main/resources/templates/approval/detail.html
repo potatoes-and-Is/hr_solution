@@ -33,42 +33,48 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">결재 내역 상세</h6>
         </div>
-        <div class="card-body">
-            <div class="report-block">
-                <p><strong>결재번호:</strong> <span th:text="${approval.approvalDocsId}"></span></p>
-                <p><strong>제목:</strong> <span th:text="${approval.approvalTitle}"></span></p>
-                <p><strong>구분:</strong> <span th:text="${approval.docTypeName}"></span></p>
-                <p><strong>기안일:</strong> <span th:text="${approval.createdAt}"></span></p>
-                <p><strong>완료일:</strong> <span th:text="${approval.approvalDate}"></span></p>
-                <p><strong>상태:</strong> <span th:text="${approval.approvalStatus}"></span></p>
+        <form>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="approvalDocId" class="mr-2 mb-0"><strong>결재번호 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="approvalDocId" th:value="${approvalDoc.approvalDocId}" disabled>
             </div>
-<!--            <div th:each="approval : ${approvalList}" class="report-block">-->
-<!--                <div class="report-row">-->
-<!--                    <span class="report-label">결재번호:</span>-->
-<!--                    <span th:text="${approval.approvalDocsId}">approvalDocsId</span>-->
-<!--                </div>-->
-<!--                <div class="report-row">-->
-<!--                    <span class="report-label">구분:</span>-->
-<!--                    <span th:text="${approval.docTypeName}">docTypeName</span>-->
-<!--                </div>-->
-<!--                <div class="report-row">-->
-<!--                    <span class="report-label">제목:</span>-->
-<!--                    <span th:text="${approval.approvalTitle}">approvalTitle</span>-->
-<!--                </div>-->
-<!--                <div class="report-row">-->
-<!--                    <span class="report-label">기안일:</span>-->
-<!--                    <span th:text="${approval.createdAt}">createdAt</span>-->
-<!--                </div>-->
-<!--                <div class="report-row">-->
-<!--                    <span class="report-label">완료일:</span>-->
-<!--                    <span th:text="${approval.approvalDate}">approvalDate</span>-->
-<!--                </div>-->
-<!--                <div class="report-row">-->
-<!--                    <span class="report-label">상태:</span>-->
-<!--                    <span th:text="${approval.approvalStatus}">approvalStatus</span>-->
-<!--                </div>-->
-<!--            </div>-->
-        </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="docTypeName" class="mr-2 mb-0"><strong>문서유형 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="docTypeName" th:value="${approvalDoc.docTypeName}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="approvalTitle" class="mr-2 mb-0"><strong>제목 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="approvalTitle" th:value="${approvalDoc.approvalTitle}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="createdAt" class="mr-2 mb-0"><strong>기안일 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="createdAt" th:value="${approvalDoc.createdAt}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="approvalDate" class="mr-2 mb-0"><strong>결재일 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="approvalDate" th:value="${approvalDoc.approvalDate}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="approvalContent" class="mr-2 mb-0"><strong>내용 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="approvalContent" th:value="${approvalDoc.approvalContent}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="approvalReason" class="mr-2 mb-0"><strong>사유 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="approvalReason" th:value="${approvalDoc.approvalReason}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="vacReqStart" class="mr-2 mb-0"><strong>휴직시작일 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="vacReqStart" th:value="${approvalDoc.vacReqStart}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="vacReqEnd" class="mr-2 mb-0"><strong>휴직종료일 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="vacReqEnd" th:value="${approvalDoc.vacReqEnd}" disabled>
+            </div>
+            <!--<div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="vacUseDay" class="mr-2 mb-0"><strong>휴직사용일수 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="vacUseDay" th:value="${approvalDoc.vacUseDay}" disabled>
+            </div>-->
+        </form>
     </div>
 </div>
 

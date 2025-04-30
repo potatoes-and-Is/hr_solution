@@ -66,14 +66,5 @@ public class VacationType {
         isPaid = paid;
     }
 
-    @Override
-    public String toString() {
-        return "VacationType{" +
-                "vacTypeId=" + vacTypeId +
-                ", vacTypeCode='" + vacTypeCode + '\'' +
-                ", vacTypeName='" + vacTypeName + '\'' +
-                ", isPaid=" + isPaid +
-                ", createdAt=" + createdAt +
-                '}';
-    }
+
 }

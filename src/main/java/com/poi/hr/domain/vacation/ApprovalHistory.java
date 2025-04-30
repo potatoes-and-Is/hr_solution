@@ -18,9 +18,8 @@ public class ApprovalHistory {
     @Column(name = "approval_comment", length = 255)
     private String approvalComment;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "approval_status", nullable = false)
-    private ApprovalDocStatus approvalStatus;
+    @Column(name = "approval_role", nullable = false, length = 30)
+    private String approvalRole;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approval_line_id")
@@ -33,9 +32,9 @@ public class ApprovalHistory {
 
     }
 
-    public ApprovalHistory(String approvalComment, ApprovalDocStatus approvalStatus, ApprovalLine approvalLine) {
+    public ApprovalHistory(String approvalComment, String approvalRole, ApprovalLine approvalLine) {
         this.approvalComment = approvalComment;
-        this.approvalStatus = approvalStatus;
+        this.approvalRole = approvalRole;
         this.approvalLine = approvalLine;
     }
 
@@ -47,9 +46,6 @@ public class ApprovalHistory {
         return approvalComment;
     }
 
-    public ApprovalDocStatus getApprovalStatus() {
-        return approvalStatus;
-    }
 
     public ApprovalLine getApprovalLine() {
         return approvalLine;
@@ -63,8 +59,12 @@ public class ApprovalHistory {
         this.approvalComment = approvalComment;
     }
 
-    public void setApprovalStatus(ApprovalDocStatus approvalStatus) {
-        this.approvalStatus = approvalStatus;
+    public String getApprovalRole() {
+        return approvalRole;
+    }
+
+    public void setApprovalRole(String approvalRole) {
+        this.approvalRole = approvalRole;
     }
 
     public void setApprovalLine(ApprovalLine approvalLine) {
@@ -76,7 +76,7 @@ public class ApprovalHistory {
         return "ApprovalHistory{" +
                 "approvalHistoryId=" + approvalHistoryId +
                 ", approvalComment='" + approvalComment + '\'' +
-                ", approvalStatus=" + approvalStatus +
+                ", approvalRole=" + approvalRole +
                 ", approvalLineId=" + (approvalLine != null ? approvalLine.getApprovalLineId() : null ) +
                 ", approvalDate=" + approvalDate +
                 '}';

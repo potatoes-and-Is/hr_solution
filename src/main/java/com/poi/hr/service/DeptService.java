@@ -1,7 +1,7 @@
 package com.poi.hr.service;
 
+import com.poi.hr.domain.dept.DepPositionEmployee;
 import com.poi.hr.domain.dept.Dept;
-import com.poi.hr.domain.employee.DepPositionEmployee;
 import com.poi.hr.dto.DeptDTO;
 import com.poi.hr.repository.DepPositionEmployeeRepository;
 import com.poi.hr.repository.DeptRepository;
@@ -127,5 +127,14 @@ public class DeptService {
             throw new IllegalArgumentException("부서가 존재하지 않습니다." + deptId);
         }
         deptRepository.deleteById(deptId);
+    }
+
+        public List<Dept> findAllDepts() {
+        return deptRepository.findAll();
+    }
+
+
+    public List<DepPositionEmployee> findAllWithDeptAndEmployee() {
+        return depPositionEmployeeRepository.findAll();
     }
 }

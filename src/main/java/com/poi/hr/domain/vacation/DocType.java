@@ -11,6 +11,9 @@ public class DocType {
     @Column(name = "doc_type_id")
     private int docTypeId;
 
+    @Column(name = "doc_type_code", nullable = false, length = 30)
+    private String docTypeCode;
+
     @Column(name = "doc_type_name", nullable = false, length = 30)
     private String docTypeName;
 
@@ -34,11 +37,11 @@ public class DocType {
         this.docTypeName = docTypeName;
     }
 
-    @Override
-    public String toString() {
-        return "DocType{" +
-                "docTypeId=" + docTypeId +
-                ", docTypeName='" + docTypeName + '\'' +
-                '}';
+    public String getDocTypeCode() {
+        return docTypeCode;
+    }
+
+    public void setDocTypeCode(String docTypeCode) {
+        this.docTypeCode = docTypeCode;
     }
 }

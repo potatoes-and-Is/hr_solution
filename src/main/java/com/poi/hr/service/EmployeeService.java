@@ -1,6 +1,6 @@
 package com.poi.hr.service;
 import com.poi.hr.domain.dept.Dept;
-import com.poi.hr.domain.employee.DepPositionEmployee;
+import com.poi.hr.domain.dept.DepPositionEmployee;
 import com.poi.hr.domain.hr.Level;
 import com.poi.hr.domain.hr.TeamPosition;
 import com.poi.hr.domain.vacation.enums.TeamPositionRole;
