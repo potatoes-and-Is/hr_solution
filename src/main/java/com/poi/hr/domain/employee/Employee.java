@@ -1,4 +1,4 @@
-package com.poi.hr.domain.Employee;
+package com.poi.hr.domain.employee;
 
 import com.poi.hr.domain.dept.DepPositionEmployee;
 import com.poi.hr.domain.hr.Level;

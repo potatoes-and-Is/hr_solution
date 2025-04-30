@@ -1,7 +1,7 @@
 package com.poi.hr.domain.approval;
 
 import com.poi.hr.domain.enums.LeaveType;
-import com.poi.hr.domain.Employee.Employee;
+import com.poi.hr.domain.employee.Employee;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

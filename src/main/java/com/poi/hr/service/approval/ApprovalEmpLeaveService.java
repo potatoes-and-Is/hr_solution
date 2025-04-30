@@ -3,7 +3,7 @@ package com.poi.hr.service.approval;
 import com.poi.hr.domain.approval.ApprovalDoc;
 import com.poi.hr.domain.approval.DocType;
 import com.poi.hr.domain.approval.LeaveReq;
-import com.poi.hr.domain.Employee.Employee;
+import com.poi.hr.domain.employee.Employee;
 import com.poi.hr.dto.approval.ApprovalEmpLeaveResponseDto;
 import com.poi.hr.dto.approval.ApprovalEmpLeaveSaveDto;
 import com.poi.hr.repository.approval.ApprovalRepository;

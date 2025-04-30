@@ -1,7 +1,7 @@
 package com.poi.hr.domain.approval;
 
 import com.poi.hr.domain.enums.ApprovalDocStatus;
-import com.poi.hr.domain.Employee.Employee;
+import com.poi.hr.domain.employee.Employee;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
