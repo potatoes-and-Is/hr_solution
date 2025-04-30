@@ -70,7 +70,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Employees:</h6>
                     <a class="collapse-item" th:href="@{/departmentInfo}">부서별 직원 조회</a>
-                    <a class="collapse-item" th:href="@{/author}">직원관리</a>
+                    <a th:if="${allowedRoles.contains(role)}" class="collapse-item" th:href="@{/author}">직원관리</a>
                 </div>
             </div>
         </li>
@@ -108,7 +108,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Attendance:</h6>
                     <a class="collapse-item" th:href="@{/attendanceList}">출퇴근 내역확인</a>
-                    <a class="collapse-item" href="">출퇴근 관리</a>
+                    <a th:if="${allowedRoles.contains(role)}" class="collapse-item" th:href="@{/attendanceList}">출퇴근 관리</a>
                 </div>
             </div>
         </li>
@@ -145,8 +145,8 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Approval:</h6>
                     <a class="collapse=item" th:href="@{/approval/choice}">결재 문서 신청</a>
-                    <a class="collapse-item" th:href="@{/approval/list}">결재 내역 조회</a>
-                    <a class="collapse-item" th:href="@{/attendanceList}">결재 관리</a>
+                    <a th:if="${allowedHr.contains(role)}" class="collapse-item" th:href="@{/approval/list}">결재 내역 조회</a>
+                    <a th:if="${allowedRoles.contains(role)}" class="collapse-item" th:href="@{/attendanceList}">결재 관리</a>
                 </div>
             </div>
         </li>

@@ -373,9 +373,9 @@
         <div class="mb-3">
           <input type="text" id="searchInput" class="form-control" placeholder="검색할 부서명을 입력하세요" onkeyup="filterDepartments()">
           <div class="d-flex justify-content-start mt-2" style="gap: 10px;">
-            <button class="btn btn-outline-primary btn-sm" onclick="addDepartment()">부서추가</button>
-            <button class="btn btn-outline-success btn-sm" onclick="updateDepartment()">부서수정</button>
-            <button class="btn btn-outline-danger btn-sm" onclick="deleteDepartment()">부서삭제</button>
+            <button th:if="${allowedHrL.contains(role)}" class="btn btn-outline-primary btn-sm" onclick="addDepartment()">부서추가</button>
+            <button th:if="${role=='대표' || role=='부서장' || role=='인사팀장'}" class="btn btn-outline-success btn-sm" onclick="updateDepartment()">부서수정</button>
+            <button th:if="${allowedHrL.contains(role)}" class="btn btn-outline-danger btn-sm" onclick="deleteDepartment()">부서삭제</button>
           </div>
         </div>
         <ul class="tree" id="departmentTree">
