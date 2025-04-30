@@ -1,6 +1,7 @@
 package com.poi.hr.controller;
 
 import com.poi.hr.domain.hr.TeamPosition;
+import com.poi.hr.dto.TeamPositionDTO;
 import com.poi.hr.repository.TeamPositionAPIRepository;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +23,11 @@ public class TeamPositionAPIController {
 
     // 직책 리스트 반환 API
     @GetMapping("/list")
-    public List<TeamPosition> getAllPositions() {
-        return teamPositionsRepository.findAll();
+    public List<TeamPositionDTO> getAllPositions() {
+        List<TeamPosition> positions = teamPositionsRepository.findAll();
+        return positions.stream()
+                .map(p -> new TeamPositionDTO(p.getTeamPositionId(), p.getPositionName()))
+                .toList();
     }
 }
 
