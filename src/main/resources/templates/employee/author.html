@@ -17,7 +17,7 @@
 
   <!-- 검색바 영역 -->
   <div class="row mb-3">
-    <div class="col-auto">
+    <div th:if="${allowedHr.contains(role)}" class="col-auto">
       <button id="openPopup" class="btn btn-primary">직원 추가</button>
     </div>
     <div class="col-auto">
@@ -69,6 +69,10 @@
 <th:block layout:fragment="scripts">
   <script src="/js/common.js"></script>
   <script src="/js/button.js"></script>
+  <script th:inline="javascript">
+    const role = [[${role}]];
+    const allowedHr = [[${allowedHr}]];
+  </script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       let employeesData = []; // 전체 직원 데이터를 저장할 변수
@@ -127,6 +131,7 @@
       tbody.innerHTML = ''; // 기존 데이터 초기화
 
       data.forEach(employee => {
+        const showUpdateButton = allowedHr.includes(role);
         const row = `
       <tr>
         <td>${employee.employeeName}</td>
@@ -135,7 +140,7 @@
         <td>${employee.hireDate}</td>
         <td>${employee.phone}</td>
         <td>
-          <button class="update-btn" data-id="${employee.employeeId}">수정</button>
+          ${showUpdateButton ? `<button class="update-btn" data-id="${employee.employeeId}">수정</button>` : ''}
         </td>
       </tr>`;
         tbody.insertAdjacentHTML('beforeend', row);
