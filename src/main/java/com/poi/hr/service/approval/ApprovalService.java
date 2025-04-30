@@ -1,11 +1,16 @@
 package com.poi.hr.service.approval;
 
+import com.poi.hr.auth.model.AuthDetails;
 import com.poi.hr.domain.vacation.ApprovalDoc;
 import com.poi.hr.dto.approval.ApprovalDetailDto;
 import com.poi.hr.dto.approval.ApprovalListDto;
 import com.poi.hr.repository.approval.ApprovalRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,4 +57,7 @@ public class ApprovalService {
                 approvalDoc.getApprovalReason()
         );
     }
+
+
+
 }
