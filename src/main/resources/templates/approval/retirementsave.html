@@ -233,18 +233,8 @@
                 </td>
             </tr>
             <tr>
-                <th>퇴직 종류</th>
-                <td>
-                    <label>
-                        <select th:field="*{leaveType}">
-                            <option value="">-- 선택하세요 --</option>
-                            <option th:each="type : ${approvalEmpLeaveViewDto.leaveTypeList}"
-                                    th:value="${type.name()}"
-                                    th:text="${type.getDisplayName()}">
-                            </option>
-                        </select>
-                    </label>
-                </td>
+                <th>퇴직 사유</th>
+                <input type="text" th:field="*{leaveType}" placeholder="퇴직 종류를 입력하세요.">
             </tr>
             <tr>
                 <th>결재자</th>
@@ -280,9 +270,9 @@
                     <label for="departmentSelect">부서 선택</label>
                     <select id="departmentSelect" class="form-control" onchange="loadEmployeesByDepartment()">
                         <option value="">-- 선택하세요 --</option>
-                        <option th:each="type : ${approvalEmpLeaveViewDto.deptList}"
-                                th:value="${type.getDeptCode()}"
-                                th:text="${type.getDeptName()}">
+                        <option th:each="dept : ${approvalEmpRetireViewDto.deptList}"
+                                th:value="${dept.deptCode}"
+                                th:text="${dept.deptName}">
                         </option>
                     </select>
                 </div>

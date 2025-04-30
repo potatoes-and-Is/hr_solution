@@ -1,31 +1,34 @@
 package com.poi.hr.controller;
 
-import com.poi.hr.dto.ApprovalEmpLeaveViewDTO;
-import com.poi.hr.dto.ApprovalEmpLeaveSaveDTO;
-import com.poi.hr.service.ApprovalService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import com.poi.hr.dto.ApprovalEmpRetireViewDTO;
+import com.poi.hr.dto.ApprovalEmpRetireSaveDTO;
+import com.poi.hr.dto.DeptDTO;
+import org.springframework.stereotype.Service;
 
-@Controller
-@RequestMapping("/approval")
-public class ApprovalController {
+import java.util.List;
 
-    @Autowired
-    private ApprovalService approvalService;
+@Service
+public class ApprovalService {
 
-    @GetMapping("/leavesave")
-    public String showLeaveForm(Model model) {
-        ApprovalEmpLeaveViewDTO viewDto = approvalService.getLeaveFormData();
-        model.addAttribute("approvalEmpLeaveViewDto", viewDto);
-        model.addAttribute("approvalEmpLeaveSaveDto", new ApprovalEmpLeaveSaveDTO());
-        return "approval/leavesave";
+    // 부서 리스트나 퇴직 데이터를 처리하는 로직을 작성합니다.
+    public ApprovalEmpRetireViewDTO getLeaveFormData() {
+        ApprovalEmpRetireViewDTO dto = new ApprovalEmpRetireViewDTO();
+
+        // 데이터베이스에서 부서 목록을 가져오거나, 하드코딩을 할 수 있습니다.
+        // 예시로 하드코딩된 부서 리스트 설정
+        DeptDTO sales = new DeptDTO("sales", "영업부");
+        DeptDTO hr = new DeptDTO("hr", "인사부");
+        DeptDTO it = new DeptDTO("it", "개발부");
+
+        dto.setDeptList(List.of(sales, hr, it));
+
+        return dto;
     }
 
-    @PostMapping("/save/leavesave")
-    public String submitLeaveForm(@ModelAttribute ApprovalEmpLeaveSaveDTO dto) {
-        approvalService.saveLeaveApproval(dto);
-        return "redirect:/approval/leavesave?success";
+    public void saveLeaveApproval(ApprovalEmpRetireSaveDTO dto) {
+        // 퇴직 결재 데이터를 저장하는 로직
+        System.out.println("Saving Leave Approval:");
+        System.out.println(dto);
     }
 }
+
