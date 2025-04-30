@@ -1,4 +1,4 @@
-package com.poi.hr.domain.vacation;
+package com.poi.hr.domain.approval;
 
 import com.poi.hr.domain.login.entity.Employee;
 import jakarta.persistence.*;

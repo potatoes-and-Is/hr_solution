@@ -1,9 +1,8 @@
-package com.poi.hr.domain.vacation;
+package com.poi.hr.domain.approval;
 
 import com.poi.hr.domain.vacation.enums.ApprovalDocStatus;
 import jakarta.persistence.*;
 
-import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 
 @Entity
