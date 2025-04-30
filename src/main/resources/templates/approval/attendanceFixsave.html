@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>퇴직 결재 문서</title>
+    <title>출퇴근 수정 결재 문서</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
@@ -22,16 +22,22 @@
 <body>
 
 <div class="form-container">
-    <form th:action="@{/approval/save/retirement}" method="post" th:object="${approvalEmpRetireSaveDTO}">
-        <h2 style="color:#4e73df; text-align:center; margin-bottom:30px;">퇴직 결재 문서</h2>
+    <form th:action="@{/approval/save/attendance}" method="post" th:object="${approvalEmpAttendanceSaveDTO}">
+        <h2 style="color:#4e73df; text-align:center; margin-bottom:30px;">휴가 결재 문서</h2>
         <table>
             <tr><th>제목</th><td><input type="text" th:field="*{approvalTitle}" placeholder="제목을 입력하세요."></td></tr>
             <tr><th>내용</th><td><textarea th:field="*{approvalContent}" placeholder="내용을 입력하세요." rows="3"></textarea></td></tr>
             <tr><th>사유</th><td><textarea th:field="*{approvalReason}" placeholder="사유를 입력하세요." rows="5"></textarea></td></tr>
-            <tr><th>퇴직일</th><td><input type="date" th:field="*{vacReqStart}"> ~ <input type="date" th:field="*{vacReqEnd}"></td></tr>
-            <tr><th>퇴직 사유</th><td><input type="text" th:field="*{retireType}" placeholder="퇴직 종류를 입력하세요."></td></tr>
             <tr>
-                <th>결재자</th>
+                <th>출근수정요청시간</th>
+                <td><input type="date" th:field="*{reqCheckInTime}"></td>
+            </tr>
+            <tr>
+                <th>퇴근수정요청시간</th>
+                <td><input type="date" th:field="*{reqCheckOutTime}"></td>
+            </tr>
+
+            <th>결재자</th>
                 <td>
                     <div class="input-group">
                         <input type="text" id="approverDisplay" class="form-control bg-light" placeholder="결재자를 선택하세요" readonly>

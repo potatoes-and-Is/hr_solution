@@ -5,7 +5,7 @@ import com.poi.hr.domain.vacation.ApprovalLine;
 import com.poi.hr.domain.vacation.DocType;
 import com.poi.hr.domain.vacation.RetireReq;
 import com.poi.hr.dto.vacation.ApprovalEmpRetireSaveDTO;
-import com.poi.hr.dto.vacation.ApprovalEmpRetireViewDTO;
+import com.poi.hr.dto.vacation.ApprovalViewDTO;
 import com.poi.hr.dto.DeptDTO;
 import com.poi.hr.dto.EmployeeRequestDTO;
 import com.poi.hr.repository.DeptRepository;
@@ -38,8 +38,8 @@ public class ApprovalService {
     }
 
     // 퇴직 결재 폼 데이터를 조회하는 메서드
-    public ApprovalEmpRetireViewDTO getLeaveFormData() {
-        ApprovalEmpRetireViewDTO dto = new ApprovalEmpRetireViewDTO();
+    public ApprovalViewDTO getLeaveFormData() {
+        ApprovalViewDTO dto = new ApprovalViewDTO();
 
         // 데이터베이스에서 부서 리스트를 가져옴
         List<DeptDTO> deptDTOList = deptRepository.findAll().stream()
@@ -83,10 +83,6 @@ public class ApprovalService {
             approvalLineRepository.save(line);
         }
     }
-
-
-
-
 
     public List<EmployeeRequestDTO> getEmployeesByDepartment(String department) {
         return employeeRepository.getEmployeesByDepartment(department);

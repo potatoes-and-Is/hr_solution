@@ -22,16 +22,26 @@
 <body>
 
 <div class="form-container">
-    <form th:action="@{/approval/save/leavesave}" method="post" th:object="${approvalEmpLeaveSaveDto}">
+    <form th:action="@{/approval/save/vacation}" method="post" th:object="${approvalEmpVacationSaveDTO}">
         <h2 style="color:#4e73df; text-align:center; margin-bottom:30px;">휴가 결재 문서</h2>
         <table>
             <tr><th>제목</th><td><input type="text" th:field="*{approvalTitle}" placeholder="제목을 입력하세요."></td></tr>
             <tr><th>내용</th><td><textarea th:field="*{approvalContent}" placeholder="내용을 입력하세요." rows="3"></textarea></td></tr>
             <tr><th>사유</th><td><textarea th:field="*{approvalReason}" placeholder="사유를 입력하세요." rows="5"></textarea></td></tr>
-            <tr><th>퇴직일</th><td><input type="date" th:field="*{vacReqStart}"> ~ <input type="date" th:field="*{vacReqEnd}"></td></tr>
-            <tr><th>퇴직 사유</th><td><input type="text" th:field="*{retireType}" placeholder="퇴직 종류를 입력하세요."></td></tr>
             <tr>
-                <th>결재자</th>
+                <th>휴가 시작일</th>
+                <td><input type="date" th:field="*{vacReqStart}"></td>
+            </tr>
+            <tr>
+                <th>휴가 종료일</th>
+                <td><input type="date" th:field="*{vacReqEnd}"></td>
+            </tr>
+            <tr>
+                <th>휴가 사용 일수</th>
+                <td><input type="text" th:field="*{vacUseDays}" placeholder="휴가 사용 일수를 입력하세요."></td>
+            </tr>
+
+            <th>결재자</th>
                 <td>
                     <div class="input-group">
                         <input type="text" id="approverDisplay" class="form-control bg-light" placeholder="결재자를 선택하세요" readonly>
@@ -61,7 +71,7 @@
                     <label for="departmentSelect">부서 선택</label>
                     <select id="departmentSelect" class="form-control" onchange="loadEmployeesByDepartment()">
                         <option value="">-- 선택하세요 --</option>
-                        <option th:each="dept : ${approvalEmpRetireViewDto.deptList}"
+                        <option th:each="dept : ${approvalViewDTO.deptList}"
                                 th:value="${dept.deptCode}"
                                 th:text="${dept.deptName}">
                         </option>
