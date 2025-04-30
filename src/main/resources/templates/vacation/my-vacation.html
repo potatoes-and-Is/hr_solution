@@ -14,6 +14,14 @@
             .bg-total { background-color: #4e73df; }
             .bg-used { background-color: #858796; }
             .bg-remaining { background-color: #1cc88a; }
+            .table-responsive {
+                min-height: 300px;
+            }
+            .sign-up-btn {
+                background-color: #f6c23e;
+                color: white;
+                font-weight: bold;
+            }
         </style>
     </th:block>
 </head>
@@ -30,79 +38,271 @@
             <div class="col-md-4">
                 <div class="summary-box bg-total">
                     <div>총 부여된 휴가</div>
-                    <div class="h2" th:text="${vacationInfo.getVacCount()} + '일'"></div>
+                    <div class="h2" th:text="${(vacationInfo.vacCount % 1 == 0) ? vacationInfo.vacCount.intValue() + '일' : vacationInfo.vacCount + '일'}"></div>
+
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="summary-box bg-used">
                     <div>사용한 휴가</div>
-                    <div class="h2" th:text="${vacationInfo.getUsedVacCount()} + '일'"></div>
+                    <div class="h2" th:text="${(vacationInfo.usedVacCount % 1 == 0) ? vacationInfo.usedVacCount.intValue() + '일' : vacationInfo.usedVacCount + '일'}"></div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="summary-box bg-remaining">
                     <div>사용 가능한 휴가</div>
-                    <div class="h2" th:text="${vacationInfo.getRemainVacCount()} + '일'"></div>
+                    <div class="h2" th:text="${(vacationInfo.remainVacCount % 1 == 0) ? vacationInfo.remainVacCount.intValue() + '일' : vacationInfo.remainVacCount + '일'}"></div>
                 </div>
             </div>
         </div>
 
-        <!-- 연도 선택 -->
-        <div class="dropdown mb-3">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="yearDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span th:text="${selectedYear}">2025</span> 년도
-            </button>
-            <div class="dropdown-menu" aria-labelledby="yearDropdown">
-                <a class="dropdown-item" th:each="year : ${years}" th:href="@{/vacation/my(year=${year})}" th:text="${year}">2025</a>
+        <!-- 연도 선택 + 휴가신청 버튼 -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="yearDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span th:text="${selectedYear}"></span> 년도
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="yearDropdown">
+                        <a class="dropdown-item" th:each="year : ${years}" th:href="@{/vacation/my(year=${year})}" th:text="${year}">2025</a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="btn sign-up-btn" data-toggle="modal" data-target="#vacationRequestModal">휴가 신청하기</button>
+<!--                <button class="btn btn-danger ml-2" id="cancelVacationButton">신청한 휴가 취소하기</button>-->
             </div>
         </div>
 
         <!-- 휴가 상세 내역 -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary" th:text="${selectedYear} + '년도 휴가 상세내역'">2025년도 휴가 상세내역</h6>
+        <form method="post" action="#" id="vacationCancelForm">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary" th:text="${selectedYear} + '년도 휴가 상세내역'">2025년도 휴가 상세내역</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center" width="100%" cellspacing="0">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>선택</th>
+                                <th>휴가종류</th>
+                                <th>휴가시작일</th>
+                                <th>종료일</th>
+                                <th>총일수</th>
+                                <th>지급/차감</th>
+                                <th>결재상태</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="vacation, stat : ${vacations}">
+                                <td>
+                                    <input type="checkbox" name="vacationIds" th:value="${vacation.id}" th:disabled="${vacation.approvalStatus != '대기중'}">
+                                </td>
+                                <td th:text="${vacation.vacationType}"></td>
+                                <td th:text="${vacation.startDate}"></td>
+                                <td th:text="${vacation.endDate}"></td>
+                                <td th:text="${#numbers.formatDecimal(vacation.days, 0, 0)} + '일'"></td>
+                                <td th:text="${vacation.division == '지급' ? '+' : '-'} + (${vacation.days % 1 == 0} ? ${vacation.days.intValue()} : ${vacation.days}) + '일'"></td>
+                                <td>
+                                    <span th:if="${vacation.approvalStatus == '승인완료'}" class="badge badge-success">승인완료</span>
+                                    <span th:if="${vacation.approvalStatus == '대기중'}" class="badge badge-warning">대기중</span>
+                                    <span th:if="${vacation.approvalStatus == '반려'}" class="badge badge-danger">반려</span>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(vacations)}">
+                                <td colspan="7">휴가 신청 내역이 없습니다.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered text-center" width="100%" cellspacing="0">
-                        <thead class="thead-light">
-                        <tr>
-                            <th>구분</th>
-                            <th>휴가종류</th>
-                            <th>휴가시작일</th>
-                            <th>종료일</th>
-                            <th>총일수</th>
-                            <th>작성일자</th>
-                            <th>결재상태</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="vacation, stat : ${vacations}">
-                            <td th:text="${stat.count}">1</td>
-                            <td th:text="${vacation.type}">연차</td>
-                            <td th:text="${vacation.startDate}">2025-04-03</td>
-                            <td th:text="${vacation.endDate}">2025-04-04</td>
-                            <td th:text="${vacation.totalDays} + '일'">2일</td>
-                            <td th:text="${vacation.createdDate}">2025-04-01</td>
-                            <td>
-                                <span th:if="${vacation.status == '승인완료'}" class="badge badge-success">승인완료</span>
-                                <span th:if="${vacation.status == '대기중'}" class="badge badge-warning">대기중</span>
-                                <span th:if="${vacation.status == '반려'}" class="badge badge-danger">반려</span>
-                            </td>
-                        </tr>
-                        <tr th:if="${#lists.isEmpty(vacations)}">
-                            <td colspan="7">휴가 신청 내역이 없습니다.</td>
-                        </tr>
-                        </tbody>
-                    </table>
+        </form>
+
+        <!-- 휴가 신청 모달 -->
+        <div class="modal fade" id="vacationRequestModal" tabindex="-1" role="dialog" aria-labelledby="vacationRequestModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="vacationRequestModalLabel">휴가 신청하기</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <form id="vacationRequestForm">
+
+                            <!-- 휴가유형 -->
+                            <div class="form-group">
+                                <label for="vacType">휴가유형</label>
+                                <select class="form-control" id="vacType" name="vacTypeId" required>
+                                    <option value="">-- 휴가유형 선택 --</option>
+                                    <option th:each="type : ${vacationTypes}" th:value="${type.vacTypeId}" th:text="${type.vacTypeName}"></option>
+                                </select>
+                            </div>
+
+                            <!-- 휴가사용일수 (숫자 입력) -->
+                            <div class="form-group">
+                                <label for="vacUseDays">휴가사용일수</label>
+                                <input type="number" class="form-control" id="vacUseDays" name="vacUseDays" step="0.25" min="0.25" required>
+                            </div>
+
+                            <!-- 시작일 -->
+                            <div class="form-group">
+                                <label for="startDate">휴가시작일</label>
+                                <input type="date" class="form-control" id="startDate" name="startDate" required>
+                            </div>
+
+                            <!-- 종료일 (자동 계산, 수정 가능) -->
+                            <div class="form-group">
+                                <label for="endDate">휴가종료일</label>
+                                <input type="date" class="form-control" id="endDate" name="endDate">
+                            </div>
+
+                            <!-- 사유 -->
+                            <div class="form-group">
+                                <label for="reason">사유</label>
+                                <textarea class="form-control" id="reason" name="reason" rows="3" placeholder="휴가 사유를 입력하세요" required></textarea>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                        <button class="btn btn-primary" id="submitVacationRequest">결재문서 올리기</button>
+                    </div>
+
                 </div>
             </div>
         </div>
+
+        <!-- 간단한 페이징 -->
+<!--        <nav aria-label="Page navigation example">-->
+<!--            <ul class="pagination justify-content-center">-->
+<!--                <li class="page-item disabled">-->
+<!--                    <a class="page-link" href="#" tabindex="-1">이전</a>-->
+<!--                </li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                <li class="page-item">-->
+<!--                    <a class="page-link" href="#">다음</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </nav>-->
+
+
     </div>
 </div>
 
 <th:block layout:fragment="scripts">
-    <!-- JS 추가 필요 시 여기에 -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const vacTypeSelect = document.getElementById('vacType');
+        const startDateInput = document.getElementById('startDate');
+        const vacUseDaysInput = document.getElementById('vacUseDays');
+        const endDateInput = document.getElementById('endDate');
+
+        function calculateEndDate() {
+            const startDate = startDateInput.value;
+            const days = parseFloat(vacUseDaysInput.value);
+
+            if (startDate && days) {
+                const start = new Date(startDate);
+                start.setDate(start.getDate() + (days - 1));
+                endDateInput.value = start.toISOString().split('T')[0];
+            }
+        }
+
+        // 이벤트 등록은 DOMContentLoaded 시점에 바로 해줘야 함
+        startDateInput.addEventListener('change', calculateEndDate);
+        vacUseDaysInput.addEventListener('change', calculateEndDate);
+
+        // (추가) 기본 값이 있으면 처음에도 계산할 수 있도록
+        if (startDateInput.value && vacUseDaysInput.value) {
+            calculateEndDate();
+        }
+
+        // 휴가유형 변경 이벤트
+        vacTypeSelect.addEventListener('change', function () {
+            const selectedType = vacTypeSelect.options[vacTypeSelect.selectedIndex].text;
+
+            if (selectedType.includes('반반차')) {
+                vacUseDaysInput.value = 0.25;
+            } else if (selectedType.includes('반차')) {
+                vacUseDaysInput.value = 0.5;
+            } else {
+                vacUseDaysInput.value = 1;
+            }
+            calculateEndDate(); // 휴가 유형 변경 후에도 종료일 다시 계산
+        });
+    });
+
+
+    //휴가 신청하기 모달 - 휴가 유형 출력(페이지 로드될 때)
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/poihr/api/vacation/types')
+            .then(response => response.json())
+            .then(data => {
+                const vacationTypeSelect = document.getElementById('vacType');
+
+                data.forEach(type => {
+                    const option = document.createElement('option');
+                    option.value = type.vacTypeId;
+                    option.text = type.vacTypeName;
+                    vacationTypeSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('휴가유형 가져오기를 실패하였습니다.', error));
+    });
+
+    //휴가 신청하기 모달 - 결재 등록으로 데이터 전송
+    document.getElementById('submitVacationRequest').addEventListener('click', function () {
+        const form = document.getElementById('vacationRequestForm');
+
+        //form 입력값 가져오기
+        const requestData = {
+            vacTypeID: form.vacType.value,
+            vacUseDays: form.vacUseDays.value,
+            startDate: form.startDate.value,
+            endDate: form.endDate.value,
+            reason: form.reason.value,
+        };
+
+        fetch('/poihr/api/vacation/vac-req/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('서버 오류');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('휴가 신청이 정상적으로 상신되었습니다.');
+                location.reload(); //목록 갱신
+            })
+            .catch(error => {
+                console.error('휴가 신청 실패:', error);
+                alert('휴가 신청에 실패했습니다. 다시 시도해주세요.');
+            });
+    });
+</script>
+
+
+
+
 </th:block>
 </body>
 </html>
