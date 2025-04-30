@@ -12,6 +12,7 @@ import com.poi.hr.service.approval.ApprovalEmpLeaveService;
 import com.poi.hr.service.approval.ApprovalLineService;
 import com.poi.hr.service.approval.ApprovalService;
 import com.poi.hr.service.approval.ApprovalVacService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -113,12 +114,22 @@ public class ApprovalController {
     }
 
 
-    @GetMapping("/inbox/detail/{approvalDocId}")
-    public String showApprovalInbox(Model model, @PathVariable int approvalDocId) {
+    /* 승인/반려 버튼 눌렀을 때 처리 */
+    @PostMapping("/inbox/detail/{approvalDocId}")
+    @ResponseBody
+    public ResponseEntity<?> processApproval(
+            @PathVariable int approvalDocId,
+            @RequestBody ApprovalActionRequest request,
+            Authentication authentication) {
 
+        AuthDetails authDetails = (AuthDetails) authentication.getPrincipal();
+        int approverId = authDetails.getEmployeeId();
+        approvalService.processApprovalAction(approvalDocId,approverId, request);
 
-        return "/approval/testInboxDetail";
+        return ResponseEntity.ok().build();
     }
+
+
 
 
 }
