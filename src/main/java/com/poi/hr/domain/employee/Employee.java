@@ -53,7 +53,7 @@ public class Employee {
     private Level level;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-    private List<com.poi.hr.domain.employee.DepPositionEmployee> depPositionEmployees;
+    private List<DepPositionEmployee> depPositionEmployees;
 
     public Employee() {
     }
