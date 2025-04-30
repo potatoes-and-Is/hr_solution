@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Retire_reqs")
+//@Table(name = "Retire_reqs")
 public class RetireReq extends ApprovalDoc {
 
     @OneToOne(fetch = FetchType.LAZY)

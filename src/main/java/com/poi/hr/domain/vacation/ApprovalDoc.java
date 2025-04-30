@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Inheritance(strategy = InheritanceType.JOINED)
+//@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "Approval_docs")
 public abstract class ApprovalDoc {
 

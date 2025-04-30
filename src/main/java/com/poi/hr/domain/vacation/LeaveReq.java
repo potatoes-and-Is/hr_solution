@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Leave_reqs")
+//@Table(name = "Leave_reqs")
 public class LeaveReq extends ApprovalDoc {
 
     @Column(name = "leave_start_date", nullable = false)

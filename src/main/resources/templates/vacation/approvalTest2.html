@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+  <th:block layout:fragment="head">
+    <style>
+      .table th, .table td {
+        vertical-align: middle;
+      }
+    </style>
+  </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+  <div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">결재 내역 조회</h1>
+
+    <!-- Approval Documents Table -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">결재문서 목록</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="approvalDocsTable" width="100%" cellspacing="0">
+            <thead class="thead-light">
+            <tr>
+              <th>문서번호</th>
+              <th>제목</th>
+              <th>신청자</th>
+              <th>결재유형</th>
+              <th>결재상태</th>
+              <th>등록일</th>
+              <th>최종결재일</th>
+              <th>상세보기</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="doc : ${approvalDocs}">
+              <td th:text="${doc.approvalDocId}">1</td>
+              <td th:text="${doc.approvalTitle}">휴가신청</td>
+              <td th:text="${doc.employeeName}">홍길동</td>
+              <td th:text="${doc.docTypeName}">휴가결재</td>
+              <td>
+                                    <span th:text="${doc.approvalDocStatus}" th:classappend="
+                                        ${doc.approvalDocStatus} == 'PENDING' ? 'badge badge-warning' :
+                                        ${doc.approvalDocStatus} == 'IN_PROGRESS' ? 'badge badge-info' :
+                                        ${doc.approvalDocStatus} == 'APPROVED' ? 'badge badge-success' :
+                                        ${doc.approvalDocStatus} == 'REJECTED' ? 'badge badge-danger' :
+                                        'badge badge-secondary'">
+                                        PENDING
+                                    </span>
+              </td>
+              <td th:text="${#dates.format(doc.createdAt, 'yyyy-MM-dd')}">2025-04-29</td>
+              <td th:text="${#dates.format(doc.approvalDate, 'yyyy-MM-dd')}">2025-05-01</td>
+              <td>
+                <a th:href="@{'/approval/detail/' + ${doc.approvalDocId}}" class="btn btn-primary btn-sm">
+                  상세보기
+                </a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<th:block layout:fragment="scripts">
+  <script>
+    $(document).ready(function() {
+      $('#approvalDocsTable').DataTable({
+        "order": [[ 0, "desc" ]]
+      });
+    });
+  </script>
+</th:block>
+</body>
+</html>

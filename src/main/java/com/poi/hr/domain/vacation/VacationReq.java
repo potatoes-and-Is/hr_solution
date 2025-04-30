@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Vacation_reqs")
+//@Table(name = "Vacation_reqs")
 public class VacationReq extends ApprovalDoc {
 
     @ManyToOne(fetch = FetchType.LAZY)

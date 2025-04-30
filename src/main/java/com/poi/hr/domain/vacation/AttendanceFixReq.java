@@ -6,15 +6,15 @@ import jakarta.persistence.*;
 import java.time.LocalTime;
 
 @Entity
-@Table(
-        name = "Attendance_fix_reqs",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                    name = "uq_attendance_fix_req_attend_id",
-                    columnNames = {"attend_id"}
-                )
-        }
-)
+//@Table(
+//        name = "Attendance_fix_reqs",
+//        uniqueConstraints = {
+//                @UniqueConstraint(
+//                    name = "uq_attendance_fix_req_attend_id",
+//                    columnNames = {"attend_id"}
+//                )
+//        }
+//)
 public class AttendanceFixReq extends ApprovalDoc {
 
     @ManyToOne(fetch = FetchType.LAZY)
