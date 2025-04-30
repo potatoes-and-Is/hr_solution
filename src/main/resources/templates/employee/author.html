@@ -129,7 +129,11 @@
       data.forEach(employee => {
         const row = `
       <tr>
-        <td>${employee.employeeName}</td>
+        <td>
+            <a href="#" class="employee-detail" data-id="${employee.employeeId}">
+                ${employee.employeeName}
+            </a>
+        </td>
         <td>${employee.deptName}</td>
         <td>${employee.levelName}</td>
         <td>${employee.hireDate}</td>
@@ -150,6 +154,13 @@
       if(e.target && e.target.classList.contains('update-btn')) {
         const employeeId = e.target.dataset.id;
         openCenteredPopup(`/author/employee/update/${employeeId}`, '직원 수정', 800, 600);
+      }
+    });
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.classList.contains('employee-detail')) {
+        e.preventDefault();
+        const employeeId = e.target.dataset.id;
+        openCenteredPopup(`/author/employee/detail/${employeeId}`, '직원상세정보', 800, 500);
       }
     });
   </script>

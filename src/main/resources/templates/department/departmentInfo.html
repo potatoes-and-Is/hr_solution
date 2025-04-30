@@ -104,6 +104,7 @@
       }
 
       function updateEmployeeTable(employees) {
+        console.log('직원 데이터:', employees);
         const tbody = $('#employeeTableBody');
         tbody.empty();
 
@@ -111,15 +112,23 @@
           tbody.append('<tr><td colspan="3">직원이 없습니다.</td></tr>');
         } else {
           employees.forEach(function (emp) {
-            const row = '<tr>'
-                    + '<td>' + emp.employeeName + '</td>'
-                    + '<td>' + emp.employeeNumber + '</td>'
-                    + '<td>' + emp.teamPositionName + '</td>'
-                    + '</tr>';
+            const row = $(`
+        <tr>
+          <td>
+            <a href="#" class="employee-detail-link" data-id="${emp.employeeId}">
+              ${emp.employeeName}
+            </a>
+          </td>
+          <td>${emp.employeeNumber}</td>
+          <td>${emp.teamPositionName}</td>
+        </tr>
+      `); // 👈 문자열을 jQuery 객체로 감싸기
             tbody.append(row);
           });
         }
       }
+
+
       // 부서 추가 모달 표시 함수
       function addDepartment() {
         loadDepartments();

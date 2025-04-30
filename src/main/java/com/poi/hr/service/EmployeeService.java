@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -60,8 +61,9 @@ public class EmployeeService {
         Level level = levelAPIRepository.findById(employee.getLevelId())
                 .orElseThrow(() -> new NoSuchElementException("직급이 없습니다: ID=" + employee.getLevelId()));
 
-        employee.setLevel(level);
-
+        if (employee.getHireDate() == null) {
+            employee.setHireDate(LocalDate.now());
+        }
         int nextNumber = employeeRepository.findNextEmployeeNumber(); // ⭐ 숫자만 가져옴
         String formattedEmployeeNumber = String.format("EMP" + "%03d", nextNumber); // 001, 002 형식
         employee.setEmployeeNumber(formattedEmployeeNumber); // DTO에 설정
@@ -137,6 +139,10 @@ public class EmployeeService {
     public EmployeeRequestDTO getEmployeeById(int employeeId) {
         // 직원 정보 조회 (직원 ID로 직원 정보를 가져오는 메서드)
         EmployeeRequestDTO employee = employeeRepository.getEmployeeDetail(employeeId);
+
+        if (employee == null) {
+            throw new NoSuchElementException("해당 ID의 직원 정보가 없습니다: " + employeeId);
+        }
 
         return employee;
     }

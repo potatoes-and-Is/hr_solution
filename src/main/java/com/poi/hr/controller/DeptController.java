@@ -59,6 +59,7 @@ public class DeptController {
 
         return dpeList.stream()
                 .map(dpe -> new EmployeeResponse(
+                        dpe.getEmployee().getEmployeeId(),
                         dpe.getEmployee().getEmployeeName(),
                         dpe.getEmployee().getEmployeeNumber(),
                         dpe.getTeamPosition().getPositionName()
@@ -74,7 +75,7 @@ public class DeptController {
         return deptRepository;
     }
 
-    public record EmployeeResponse(String employeeName, String employeeNumber, String teamPositionName) {
+    public record EmployeeResponse(int employeeId, String employeeName, String employeeNumber, String teamPositionName) {
     }
 
     // 부서 추가
