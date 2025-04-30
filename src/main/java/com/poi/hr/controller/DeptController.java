@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -50,7 +51,6 @@ public class DeptController {
         return ResponseEntity.ok(departmentList);
     }
 
-
     // 특정 부서 소속된 직원 조회
     @ResponseBody
     @GetMapping("/department/{deptId}/employees")
@@ -66,12 +66,18 @@ public class DeptController {
                 .collect(Collectors.toList());
     }
 
-    public DepPositionEmployeeRepository getDepPositionEmployeeRepository() {
-        return depPositionEmployeeRepository;
-    }
-
-    public DeptRepository getDeptRepository() {
-        return deptRepository;
+    // 상위 부서 내에서 하위부서 찾아오기
+    @GetMapping("/department/{deptId}/subDepartment")
+    @ResponseBody
+    public List<DeptDTO> getSubDepartment(@PathVariable("deptId") Integer deptId) {
+        List<Dept> children = deptRepository.findByParentDept_DeptId(deptId);
+        return children.stream().map(dept ->
+                new DeptDTO(
+                        dept.getDeptId(),
+                        dept.getDeptCode(),
+                        dept.getDeptName()
+                )
+        ).collect(Collectors.toList());
     }
 
     public record EmployeeResponse(String employeeName, String employeeNumber, String teamPositionName) {

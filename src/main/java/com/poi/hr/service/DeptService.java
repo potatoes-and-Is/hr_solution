@@ -84,7 +84,7 @@ public class DeptService {
             throw new IllegalArgumentException("이미 존재하는 부서입니다." + departmentDto.getDeptCode() + departmentDto.getDeptName());
         }
 
-        Dept department = new Dept(departmentDto.getDeptName(), departmentDto.getDeptCode());
+        Dept department = new Dept(departmentDto.getDeptCode(), departmentDto.getDeptName());
         department.setCreatedBy("SYSTEM");
         department.setUpdatedBy("SYSTEM");
 
@@ -98,6 +98,7 @@ public class DeptService {
         Dept saveDepartment = deptRepository.save(department);
 
         return new DeptDTO(saveDepartment.getDeptName(), saveDepartment.getDeptCode());
+
     }
 
     // 부서 수정하기
