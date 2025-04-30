@@ -1,6 +1,6 @@
 package com.poi.hr.repository;
 
-import com.poi.hr.domain.hr.Dept;
+import com.poi.hr.domain.dept.Dept;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

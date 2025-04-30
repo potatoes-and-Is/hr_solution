@@ -1,7 +1,7 @@
 package com.poi.hr.service;
 
-import com.poi.hr.domain.hr.DepPositionEmployee;
-import com.poi.hr.domain.hr.Dept;
+import com.poi.hr.domain.dept.DepPositionEmployee;
+import com.poi.hr.domain.dept.Dept;
 import com.poi.hr.dto.DeptDTO;
 import com.poi.hr.repository.DepPositionEmployeeRepository;
 import com.poi.hr.repository.DeptRepository;
@@ -129,12 +129,12 @@ public class DeptService {
         deptRepository.deleteById(deptId);
     }
 
-    //    public List<Dept> findAllDepts() {
-//        return deptRepository.findAll();
-//    }
-//
-//
-//    public List<DepPositionEmployee> findAllWithDeptAndEmployee() {
-//        return depPositionEmployeeRepository.findAll();
-//    }
+        public List<Dept> findAllDepts() {
+        return deptRepository.findAll();
+    }
+
+
+    public List<DepPositionEmployee> findAllWithDeptAndEmployee() {
+        return depPositionEmployeeRepository.findAll();
+    }
 }

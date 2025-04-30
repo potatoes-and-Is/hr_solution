@@ -1,6 +1,4 @@
-package com.poi.hr.dto;
-
-import java.time.LocalDate;
+package com.poi.hr.dto.approval;
 
 public class ApprovalLineSaveDto {
 

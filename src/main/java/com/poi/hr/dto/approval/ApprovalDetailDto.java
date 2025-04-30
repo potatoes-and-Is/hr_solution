@@ -1,4 +1,4 @@
-package com.poi.hr.dto;
+package com.poi.hr.dto.approval;
 
 import java.time.LocalDate;
 

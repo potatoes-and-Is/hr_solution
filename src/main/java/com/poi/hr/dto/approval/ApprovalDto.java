@@ -1,9 +1,6 @@
-package com.poi.hr.dto;
+package com.poi.hr.dto.approval;
 
 import com.poi.hr.domain.approval.DocType;
-import com.poi.hr.domain.enums.ApprovalDocStatus;
-
-import java.time.LocalDate;
 
 public class ApprovalDto {
 

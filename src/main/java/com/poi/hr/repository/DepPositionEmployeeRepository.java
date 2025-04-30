@@ -1,6 +1,6 @@
 package com.poi.hr.repository;
 
-import com.poi.hr.domain.hr.DepPositionEmployee;
+import com.poi.hr.domain.dept.DepPositionEmployee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

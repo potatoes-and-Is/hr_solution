@@ -1,9 +1,9 @@
-package com.poi.hr.service;
+package com.poi.hr.service.approval;
 
 import com.poi.hr.domain.approval.ApprovalDoc;
-import com.poi.hr.dto.ApprovalDetailDto;
-import com.poi.hr.dto.ApprovalListDto;
-import com.poi.hr.repository.ApprovalRepository;
+import com.poi.hr.dto.approval.ApprovalDetailDto;
+import com.poi.hr.dto.approval.ApprovalListDto;
+import com.poi.hr.repository.approval.ApprovalRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 

@@ -1,18 +1,16 @@
-package com.poi.hr.service;
+package com.poi.hr.service.approval;
 
 import com.poi.hr.domain.approval.ApprovalDoc;
 import com.poi.hr.domain.approval.ApprovalLine;
 import com.poi.hr.domain.enums.ApprovalDocStatus;
-import com.poi.hr.domain.hr.Employee;
-import com.poi.hr.dto.ApprovalLineSaveDto;
-import com.poi.hr.repository.ApprovalLineRepository;
-import com.poi.hr.repository.ApprovalRepository;
+import com.poi.hr.dto.approval.ApprovalLineSaveDto;
+import com.poi.hr.repository.approval.ApprovalLineRepository;
+import com.poi.hr.repository.approval.ApprovalRepository;
 import com.poi.hr.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ApprovalLineService {

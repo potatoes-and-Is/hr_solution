@@ -1,6 +1,4 @@
-package com.poi.hr.dto;
-
-import com.poi.hr.domain.enums.LeaveType;
+package com.poi.hr.dto.approval;
 
 import java.time.LocalDate;
 

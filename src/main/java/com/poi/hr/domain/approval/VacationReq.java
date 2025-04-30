@@ -1,7 +1,6 @@
 package com.poi.hr.domain.approval;
 
-import com.poi.hr.domain.enums.ApprovalDocStatus;
-import com.poi.hr.domain.hr.Employee;
+import com.poi.hr.domain.Employee.Employee;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

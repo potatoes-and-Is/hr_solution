@@ -1,7 +1,6 @@
-package com.poi.hr.domain.hr;
+package com.poi.hr.domain.dept;
 
-import com.poi.hr.domain.hr.Dept;
-import com.poi.hr.domain.hr.Employee;
+import com.poi.hr.domain.Employee.Employee;
 import com.poi.hr.domain.hr.TeamPosition;
 import jakarta.persistence.*;
 

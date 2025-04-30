@@ -1,5 +1,7 @@
-package com.poi.hr.domain.hr;
+package com.poi.hr.domain.Employee;
 
+import com.poi.hr.domain.dept.DepPositionEmployee;
+import com.poi.hr.domain.hr.Level;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

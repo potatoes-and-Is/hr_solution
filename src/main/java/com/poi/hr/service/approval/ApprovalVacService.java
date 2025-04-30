@@ -1,10 +1,10 @@
-package com.poi.hr.service;
+package com.poi.hr.service.approval;
 
 import com.poi.hr.domain.approval.ApprovalDoc;
 import com.poi.hr.domain.approval.VacationReq;
-import com.poi.hr.dto.ApprovalVacResponseDto;
-import com.poi.hr.repository.ApprovalRepository;
-import com.poi.hr.repository.VacationReqRepository;
+import com.poi.hr.dto.approval.ApprovalVacResponseDto;
+import com.poi.hr.repository.approval.ApprovalRepository;
+import com.poi.hr.repository.approval.VacationReqRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,7 @@
-package com.poi.hr.dto;
+package com.poi.hr.dto.approval;
 
 import com.poi.hr.domain.enums.LeaveType;
-import com.poi.hr.domain.hr.Dept;
-import com.poi.hr.domain.hr.Employee;
+import com.poi.hr.domain.dept.Dept;
 
 import java.util.List;
 

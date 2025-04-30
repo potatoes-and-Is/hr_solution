@@ -1,15 +1,15 @@
-package com.poi.hr.service;
+package com.poi.hr.service.approval;
 
 import com.poi.hr.domain.approval.ApprovalDoc;
 import com.poi.hr.domain.approval.DocType;
 import com.poi.hr.domain.approval.LeaveReq;
-import com.poi.hr.domain.hr.Employee;
-import com.poi.hr.dto.ApprovalEmpLeaveResponseDto;
-import com.poi.hr.dto.ApprovalEmpLeaveSaveDto;
-import com.poi.hr.repository.ApprovalRepository;
-import com.poi.hr.repository.DocTypeRepository;
+import com.poi.hr.domain.Employee.Employee;
+import com.poi.hr.dto.approval.ApprovalEmpLeaveResponseDto;
+import com.poi.hr.dto.approval.ApprovalEmpLeaveSaveDto;
+import com.poi.hr.repository.approval.ApprovalRepository;
+import com.poi.hr.repository.approval.DocTypeRepository;
 import com.poi.hr.repository.EmployeeRepository;
-import com.poi.hr.repository.LeaveReqRepository;
+import com.poi.hr.repository.approval.LeaveReqRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
