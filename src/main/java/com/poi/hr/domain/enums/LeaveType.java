@@ -6,18 +6,18 @@ public enum LeaveType {
     PERSONAL("개인사정"),
     ETC("기타");
 
-    private final String type;
+    private final String displayName;
 
     LeaveType(String type) {
-        this.type = type;
+        this.displayName = type;
     }
 
-    public String getType() {
-        return type;
+    public String getDisplayName() {
+        return displayName;
     }
 
     @Override
     public String toString() {
-        return type;
+        return displayName;
     }
 }

@@ -1,18 +1,21 @@
 package com.poi.hr.dto;
 
+import com.poi.hr.domain.approval.DocType;
+import com.poi.hr.domain.enums.ApprovalDocStatus;
+
 import java.time.LocalDate;
 
-public class ApprovalVacDto extends ApprovalDto {
+public class ApprovalVacResponseDto extends ApprovalDetailDto {
 
     private LocalDate vacReqStart;
     private LocalDate vacReqEnd;
     private double vacUseDay;
 
-    public ApprovalVacDto() {
+    public ApprovalVacResponseDto() {
     }
 
-    public ApprovalVacDto(int approvalDocId, String docTypeName, String approvalTitle, LocalDate createdAt, LocalDate approvalDate, String approvalStatus, String approvalContent, String approvalReason, LocalDate vacReqStart, LocalDate vacReqEnd, double vacUseDay) {
-        super(approvalDocId, docTypeName, approvalTitle, createdAt, approvalDate, approvalStatus, approvalContent, approvalReason);
+    public ApprovalVacResponseDto(int approvalDocId, String docTypeCode, String docTypeName, String approvalTitle, LocalDate createdAt, LocalDate approvalDate, String approvalStatus, String approvalContent, String approvalReason, LocalDate vacReqStart, LocalDate vacReqEnd, double vacUseDay) {
+        super(approvalDocId, docTypeCode, docTypeName, approvalTitle, createdAt, approvalDate, approvalStatus, approvalContent, approvalReason);
         this.vacReqStart = vacReqStart;
         this.vacReqEnd = vacReqEnd;
         this.vacUseDay = vacUseDay;

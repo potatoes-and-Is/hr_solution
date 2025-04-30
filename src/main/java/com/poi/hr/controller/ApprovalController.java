@@ -1,21 +1,39 @@
 package com.poi.hr.controller;
 
-import com.poi.hr.dto.ApprovalDto;
-import com.poi.hr.dto.ApprovalListDto;
-import com.poi.hr.service.ApprovalService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.poi.hr.domain.enums.LeaveType;
+import com.poi.hr.domain.hr.DepPositionEmployee;
+import com.poi.hr.domain.hr.Dept;
+import com.poi.hr.domain.hr.Employee;
+import com.poi.hr.dto.*;
+import com.poi.hr.service.*;
+import org.codehaus.groovy.transform.SourceURIASTTransformation;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@Controller("/approval")
+@Controller
+@RequestMapping("/approval")
 public class ApprovalController {
 
-    private ApprovalService approvalService;
+    private final ApprovalService approvalService;
+    private final ApprovalEmpLeaveService approvalEmpLeaveService;
+    private final ApprovalVacService approvalVacService;
+    private final ApprovalLineService approvalLineService;
+    private final DeptService deptService;
 
-    public ApprovalController(ApprovalService approvalService) {
+    public ApprovalController(ApprovalService approvalService, ApprovalEmpLeaveService approvalEmpLeaveService, ApprovalVacService approvalVacService, ApprovalLineService approvalLineService, DeptService deptService) {
         this.approvalService = approvalService;
+        this.approvalEmpLeaveService = approvalEmpLeaveService;
+        this.approvalVacService = approvalVacService;
+        this.approvalLineService = approvalLineService;
+        this.deptService = deptService;
     }
 
     /* 출퇴근 탭 */
@@ -24,6 +42,45 @@ public class ApprovalController {
 //        model.addAttribute("title", "결재 내역 상세");
 //        return "approval/detail";
 //    }
+
+    @GetMapping("/choice")
+    public String saveApproval() {
+        return "approval/choice";
+    }
+
+    @GetMapping("/save/empleave")
+    public String showApprovalEmpLeave(Model model) throws JsonProcessingException {
+        model.addAttribute("approvalEmpLeaveSaveDto", new ApprovalEmpLeaveSaveDto());
+
+        List<Dept> deptList = deptService.findAllDepts();
+        List<DepPositionEmployee> all = deptService.findAllWithDeptAndEmployee();
+
+        Map<String, List<EmployeeDto>> deptEmpMap = new HashMap<>();
+        for (DepPositionEmployee dpe : all) {
+            String deptIdStr = String.valueOf(dpe.getDepartment().getDeptId());
+            EmployeeDto empDto = new EmployeeDto(
+                    dpe.getEmployee().getEmployeeId(),
+                    dpe.getEmployee().getEmployeeName()
+            );
+            deptEmpMap.computeIfAbsent(deptIdStr, k -> new ArrayList<>()).add(empDto);
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String deptEmpMapJson = objectMapper.writeValueAsString(deptEmpMap);
+
+        model.addAttribute("deptEmpMap", deptEmpMap);  // Thymeleaf select 옵션용
+        model.addAttribute("deptEmpMapJson", deptEmpMapJson);  // JavaScript에서 쓸 JSON 문자열
+        model.addAttribute("approvalEmpLeaveViewDto", new ApprovalEmpLeaveViewDto(List.of(LeaveType.values()), deptList));
+        return "approval/save/empleave";
+    }
+
+
+    @PostMapping("/save/empleave")
+    public String SaveEmpLeave(@ModelAttribute ApprovalEmpLeaveSaveDto approvalEmpLeaveSaveDto) {
+        approvalEmpLeaveService.saveApprovalEmpLeave(approvalEmpLeaveSaveDto);
+        approvalLineService.saveApprovalLine(approvalEmpLeaveSaveDto.getApprovalLineList());
+        return "redirect:/approval/list";
+    }
 
     @GetMapping("/list")
     public String showApprovalList(Model model) {
@@ -34,24 +91,19 @@ public class ApprovalController {
 
     @GetMapping("/detail/{id}")
     public String showApprovalDetail(Model model, @PathVariable int id) {
-        ApprovalDto approvalDto = approvalService.findById(id);
+        ApprovalDetailDto approvalDetailDto = approvalService.findById(id);
 
-        switch (approvalDto.getDocTypeName()) {
-            case "휴가 신청서":
-                model.addAttribute("approvalDoc", approvalService.findApprovalVacById(id));
+        switch (approvalDetailDto.getDocTypeCode()) {
+            case "LEAVE_REQUEST":
+                model.addAttribute("approvalDoc", approvalEmpLeaveService.findApprovalEmpLeaveById(id));
                 break;
-            case "휴직 신청서":
-                model.addAttribute("approvalDoc", approvalService.findApprovalEmpLeaveById(id));
+            case "VACATION_REQUEST":
+                model.addAttribute("approvalDoc", approvalVacService.findApprovalVacById(id));
                 break;
             default:
                 throw new IllegalArgumentException("결재 문서가 존재하지 않습니다.");
         }
 
         return "approval/detail";
-    }
-
-    @PostMapping("/save")
-    public String saveApproval(@ModelAttribute ApprovalDto approvalDto) {
-        a
     }
 }

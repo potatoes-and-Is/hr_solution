@@ -37,7 +37,7 @@ public class Dept {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_dept_id", referencedColumnName = "dept_id")
-    private Dept parentDeptId;
+    private Dept parentDept;
 
     // 하위 부서 리스트 (OneToMany 관계)
     @OneToMany(mappedBy = "parentDeptId", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -118,12 +118,12 @@ public class Dept {
         this.updatedAt = updatedAt;
     }
 
-    public Dept getParentDeptId() {
-        return parentDeptId;
+    public Dept getParentDept() {
+        return parentDept;
     }
 
-    public void setParentDeptId(Dept parentDeptId) {
-        this.parentDeptId = parentDeptId;
+    public void setParentDept(Dept parentDept) {
+        this.parentDept = parentDept;
     }
 
     public List<Dept> getChildDept() {

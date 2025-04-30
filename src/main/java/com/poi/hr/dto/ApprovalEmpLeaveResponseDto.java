@@ -1,22 +1,20 @@
 package com.poi.hr.dto;
 
-import com.poi.hr.domain.approval.DocType;
-import com.poi.hr.domain.enums.ApprovalDocStatus;
 import com.poi.hr.domain.enums.LeaveType;
 
 import java.time.LocalDate;
 
-public class ApprovalEmpLeaveDto extends ApprovalDetailDto {
+public class ApprovalEmpLeaveResponseDto extends ApprovalDetailDto {
 
     private LocalDate vacReqStart;
     private LocalDate vacReqEnd;
-    private LeaveType leaveType;
+    private String leaveType;
 
-    public ApprovalEmpLeaveDto() {
+    public ApprovalEmpLeaveResponseDto() {
     }
 
-    public ApprovalEmpLeaveDto(int approvalDocId, String docTypeName, String approvalTitle, LocalDate createdAt, LocalDate approvalDate, String approvalStatus, String approvalContent, String approvalReason, LocalDate vacReqStart, LocalDate vacReqEnd, LeaveType leaveType) {
-        super(approvalDocId, docTypeName, approvalTitle, createdAt, approvalDate, approvalStatus, approvalContent, approvalReason);
+    public ApprovalEmpLeaveResponseDto(int approvalDocId, String docTypeCode, String docTypeName, String approvalTitle, LocalDate createdAt, LocalDate approvalDate, String approvalStatus, String approvalContent, String approvalReason, LocalDate vacReqStart, LocalDate vacReqEnd, String leaveType) {
+        super(approvalDocId, docTypeCode, docTypeName, approvalTitle, createdAt, approvalDate, approvalStatus, approvalContent, approvalReason);
         this.vacReqStart = vacReqStart;
         this.vacReqEnd = vacReqEnd;
         this.leaveType = leaveType;
@@ -26,11 +24,23 @@ public class ApprovalEmpLeaveDto extends ApprovalDetailDto {
         return vacReqStart;
     }
 
+    public void setVacReqStart(LocalDate vacReqStart) {
+        this.vacReqStart = vacReqStart;
+    }
+
     public LocalDate getVacReqEnd() {
         return vacReqEnd;
     }
 
-    public LeaveType getLeaveType() {
+    public void setVacReqEnd(LocalDate vacReqEnd) {
+        this.vacReqEnd = vacReqEnd;
+    }
+
+    public String getLeaveType() {
         return leaveType;
+    }
+
+    public void setLeaveType(String leaveType) {
+        this.leaveType = leaveType;
     }
 }

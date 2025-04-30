@@ -1,18 +1,20 @@
 package com.poi.hr.domain.approval;
 
+import com.poi.hr.domain.enums.ApprovalDocStatus;
 import com.poi.hr.domain.enums.LeaveType;
+import com.poi.hr.domain.hr.Employee;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "leave_reqs")
-public class LeaveReq extends ApprovalDocs {
+public class LeaveReq extends ApprovalDoc {
 
-    @Column(name = "leave_start_date")
+    @Column(name = "leave_start_date", nullable = false)
     private LocalDate leaveStartDate;
 
-    @Column(name = "leave_end_date")
+    @Column(name = "leave_end_date", nullable = false)
     private LocalDate leaveEndDate;
 
     @Enumerated(EnumType.STRING)
@@ -21,11 +23,13 @@ public class LeaveReq extends ApprovalDocs {
     public LeaveReq() {
     }
 
-    public LeaveReq(LocalDate leaveStartDate, LocalDate leaveEndDate, LeaveType leaveType) {
+    public LeaveReq(Employee employee, DocType docType, String approvalTitle, String approvalContent, String approvalReason, LocalDate leaveStartDate, LocalDate leaveEndDate, LeaveType leaveType) {
+        super(employee, docType, approvalTitle, approvalContent, approvalReason);
         this.leaveStartDate = leaveStartDate;
         this.leaveEndDate = leaveEndDate;
         this.leaveType = leaveType;
     }
+
 
     public LocalDate getLeaveStartDate() {
         return leaveStartDate;
@@ -37,5 +41,26 @@ public class LeaveReq extends ApprovalDocs {
 
     public LeaveType getLeaveType() {
         return leaveType;
+    }
+
+    public void setLeaveStartDate(LocalDate leaveStartDate) {
+        this.leaveStartDate = leaveStartDate;
+    }
+
+    public void setLeaveEndDate(LocalDate leaveEndDate) {
+        this.leaveEndDate = leaveEndDate;
+    }
+
+    public void setLeaveType(LeaveType leaveType) {
+        this.leaveType = leaveType;
+    }
+
+    @Override
+    public String toString() {
+        return "LeaveReq{" +
+                "leaveStartDate=" + leaveStartDate +
+                ", leaveEndDate=" + leaveEndDate +
+                ", leaveType=" + leaveType +
+                '}';
     }
 }

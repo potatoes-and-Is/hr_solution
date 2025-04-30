@@ -7,18 +7,18 @@ public enum ApprovalDocStatus {
     REJECTED("반려"),
     FAILED("취소");
 
-    private final String status;
+    private final String displayName;
 
-    ApprovalDocStatus(String status) {
-        this.status = status;
+    ApprovalDocStatus(String displayName) {
+        this.displayName = displayName;
     }
 
-    public String getStatus() {
-        return status;
+    public String getDisplayName() {
+        return displayName;
     }
 
     @Override
     public String toString() {
-        return status;
+        return displayName;
     }
 }

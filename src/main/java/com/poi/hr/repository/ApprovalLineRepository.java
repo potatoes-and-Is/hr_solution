@@ -1,4 +1,7 @@
 package com.poi.hr.repository;
 
-public class ApprovalLineRepository {
+import com.poi.hr.domain.approval.ApprovalLine;
+import org.springframework.data.repository.CrudRepository;
+
+public interface ApprovalLineRepository extends CrudRepository<ApprovalLine, Integer> {
 }

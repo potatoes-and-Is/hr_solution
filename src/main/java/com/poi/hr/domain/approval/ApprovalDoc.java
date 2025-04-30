@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "approval_docs")
-public abstract class ApprovalDocs {
+public class ApprovalDoc {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,19 +48,15 @@ public abstract class ApprovalDocs {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDate createdAt;
 
-    public ApprovalDocs() {
+    public ApprovalDoc() {
     }
 
-    public ApprovalDocs(int approvalDocId, Employee employee, DocType docType, String approvalTitle, String approvalContent, String approvalReason, ApprovalDocStatus approvalStatus, LocalDate approvalDate, LocalDate createdAt) {
-        this.approvalDocId = approvalDocId;
+    public ApprovalDoc(Employee employee, DocType docType, String approvalTitle, String approvalContent, String approvalReason) {
         this.employee = employee;
         this.docType = docType;
         this.approvalTitle = approvalTitle;
         this.approvalContent = approvalContent;
         this.approvalReason = approvalReason;
-        this.approvalStatus = approvalStatus;
-        this.approvalDate = approvalDate;
-        this.createdAt = createdAt;
     }
 
     public int getApprovalDocId() {
