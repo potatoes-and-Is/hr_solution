@@ -20,14 +20,6 @@ public class DeptDTO {
     public DeptDTO() {
     }
 
-    public DeptDTO(int deptId, String deptName, String createdBy, String updatedBy, Integer parentDeptId) {
-        this.deptId = deptId;
-        this.deptName = deptName;
-        this.createdBy = createdBy;
-        this.updatedBy = updatedBy;
-        this.parentDeptId = parentDeptId;
-    }
-
     public DeptDTO(int deptId, String deptCode, String deptName, String createdBy, String updatedBy, Integer parentDeptId) {
         this.deptId = deptId;
         this.deptCode = deptCode;
@@ -42,7 +34,10 @@ public class DeptDTO {
         this.deptName = deptName;
     }
 
-    public DeptDTO(int deptId, String deptCode, String deptName) {
+    public DeptDTO(Integer deptId, String deptCode, String deptName) {
+        this.deptId = deptId;
+        this.deptCode = deptCode;
+        this.deptName = deptName;
     }
 
     public Integer getDeptId() {

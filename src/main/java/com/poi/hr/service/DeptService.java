@@ -99,6 +99,7 @@ public class DeptService {
         Dept saveDepartment = deptRepository.save(department);
 
         return new DeptDTO(saveDepartment.getDeptName(), saveDepartment.getDeptCode());
+
     }
 
     // 부서 수정하기
