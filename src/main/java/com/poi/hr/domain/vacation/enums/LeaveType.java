@@ -16,8 +16,5 @@ public enum LeaveType {
         return displayName;
     }
 
-    @Override
-    public String toString() {
-        return displayName;
-    }
+
 }

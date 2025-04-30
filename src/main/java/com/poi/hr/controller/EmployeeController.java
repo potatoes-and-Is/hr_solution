@@ -22,7 +22,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LoginEmployeeDto> test(@PathVariable int id) {
+    public ResponseEntity<LoginEmployeeDto> test(@PathVariable("id") int id) {
         System.out.println("컨트롤러 접근");
         LoginEmployeeDto loginEmployeeDto = employeeService.findById(id);
 
