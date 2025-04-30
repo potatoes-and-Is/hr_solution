@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+    <style>
+        .report-block {
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .report-row {
+            margin-bottom: 10px;
+        }
+        .report-label {
+            font-weight: bold;
+            display: inline-block;
+            width: 120px;
+        }
+    </style>
+    <th:block layout:fragment="head">
+        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">내게 온 결재임</h1>
+    <p class="mb-4" th:text="${userName} + '님의 전자 결재 보고서 페이지입니다.'"></p>
+
+    <!-- Report Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">결재 내역 상세</h6>
+        </div>
+        <form>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="approvalDocId" class="mr-2 mb-0"><strong>결재번호 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="approvalDocId" th:value="${approvalDoc.approvalDocId}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="docTypeName" class="mr-2 mb-0"><strong>문서유형 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="docTypeName" th:value="${approvalDoc.docTypeName}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="approvalTitle" class="mr-2 mb-0"><strong>제목 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="approvalTitle" th:value="${approvalDoc.approvalTitle}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="createdAt" class="mr-2 mb-0"><strong>기안일 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="createdAt" th:value="${approvalDoc.createdAt}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="approvalDate" class="mr-2 mb-0"><strong>결재일 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="approvalDate" th:value="${approvalDoc.approvalDate}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="approvalContent" class="mr-2 mb-0"><strong>내용 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="approvalContent" th:value="${approvalDoc.approvalContent}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="approvalReason" class="mr-2 mb-0"><strong>사유 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="approvalReason" th:value="${approvalDoc.approvalReason}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="vacReqStart" class="mr-2 mb-0"><strong>휴직시작일 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="vacReqStart" th:value="${approvalDoc.vacReqStart}" disabled>
+            </div>
+            <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="vacReqEnd" class="mr-2 mb-0"><strong>휴직종료일 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="vacReqEnd" th:value="${approvalDoc.vacReqEnd}" disabled>
+            </div>
+            <!--<div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
+                <label for="vacUseDay" class="mr-2 mb-0"><strong>휴직사용일수 :</strong></label>
+                <input type="text" class="form-control-plaintext mr-2" id="vacUseDay" th:value="${approvalDoc.vacUseDay}" disabled>
+            </div>-->
+            <div class="form-group d-flex align-items-center mt-3">
+                <label for="approvalComment" class="mr-2 mb-0"><strong>결재의견 :</strong></label>
+                <input type="text" id="approvalComment" class="form-control mr-2" placeholder="의견을 입력하세요" style="max-width: 300px;">
+
+                <button type="button" id="approveBtn" class="btn btn-success mr-2">승인</button>
+                <button type="button" id="rejectBtn" class="btn btn-danger">반려</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+    <!-- (DataTables는 여기서 안 써도 됨, 표가 아니니까) -->
+</th:block>
+
+<script>
+    /* 승인, 반려 버튼 눌렀을 때 */
+    const approveBtn = document.getElementById('approveBtn');
+    const rejectBtn = document.getElementById('rejectBtn');
+
+    function sendApprovalAction(isApproved) {
+        const approvalDocId = document.getElementById('approvalDocId').value;
+        const comment = document.getElementById('approvalComment').value;
+
+        fetch(`/approval/inbox/detail/${approvalDocId}`, {
+            method: 'GET',
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                isApproved: isApproved,
+                approvalComment: comment,
+            })
+        }).then(res => {
+            if (res.ok) {
+                alert("결재가 처리되었습니다.");
+                location.href = "/approval/list"; // inbox 페이지 경로로 수정 필요
+            } else {
+                alert("결재 처리 중 오류가 발생했습니다.")
+            }
+        });
+    }
+
+    approveBtn.addEventListener('click', () => sendApprovalAction(true));
+    rejectBtn.addEventListener('click', () => sendApprovalAction(false));
+</script>
+</body>
+</html>

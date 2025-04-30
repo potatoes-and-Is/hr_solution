@@ -112,4 +112,13 @@ public class ApprovalController {
         return "approval/detail";
     }
 
+
+    @GetMapping("/inbox/detail/{approvalDocId}")
+    public String showApprovalInbox(Model model, @PathVariable int approvalDocId) {
+
+
+        return "/approval/testInboxDetail";
+    }
+
+
 }
