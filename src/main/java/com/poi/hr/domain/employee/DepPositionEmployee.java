@@ -54,6 +54,18 @@ public class DepPositionEmployee {
         return teamPosition;
     }
 
+    public void setDpeId(Integer dpeId) {
+        this.dpeId = dpeId;
+    }
+
+    public void setDept(Dept dept) {
+        this.dept = dept;
+    }
+
+    public void setTeamPosition(TeamPosition teamPosition) {
+        this.teamPosition = teamPosition;
+    }
+
     @Override
     public String toString() {
         return "DepPositionEmployee{" +

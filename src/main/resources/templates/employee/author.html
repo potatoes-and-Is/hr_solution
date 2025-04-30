@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+  <th:block layout:fragment="head">
+    <title>인적사항 관리</title>
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/topbar.css}">
+  </th:block>
+</head>
+
+<body>
+<!-- ⭐ 여기에만 너가 만든 내용 집어넣기 -->
+<div layout:fragment="content">
+  <h1 class="h3 mb-4 text-gray-800">인적사항 관리</h1>
+
+  <!-- 검색바 영역 -->
+  <div class="row mb-3">
+    <div class="col-auto">
+      <button id="openPopup" class="btn btn-primary">직원 추가</button>
+    </div>
+    <div class="col-auto">
+      <select class="form-control" id="searchOption">
+        <option>이름</option>
+        <option>부서</option>
+        <option>직급</option>
+      </select>
+    </div>
+    <div class="col-auto">
+      <input type="text" class="form-control" id="searchInput" placeholder="검색어 입력">
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-secondary" id="searchBtn">검색</button>
+    </div>
+  </div>
+
+  <!-- 테이블 영역 -->
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="thead-light">
+      <tr>
+        <th>이름</th>
+        <th>부서</th>
+        <th>직급</th>
+        <th>입사년도</th>
+        <th>전화번호</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody id="employeeTableBody">
+      <!-- 데이터 삽입 -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 페이징 -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+    </ul>
+  </nav>
+</div>
+
+
+<!-- JS 스크립트 추가 영역 -->
+<th:block layout:fragment="scripts">
+  <script src="/js/common.js"></script>
+  <script src="/js/button.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let employeesData = []; // 전체 직원 데이터를 저장할 변수
+
+      // 최초 전체 직원 불러오기
+      fetch('/author/list')
+              .then(response => response.json())
+              .then(data => {
+                employeesData = data;
+                renderTable(employeesData); // 테이블 렌더링
+              })
+              .catch(error => console.error('직원 목록 불러오기 실패:', error));
+
+      // 직원 추가 버튼
+      document.getElementById('openPopup').addEventListener('click', function() {
+        openCenteredPopup('/author/popup', '직원 등록', 800, 600);
+      });
+
+      // 수정 버튼 (동적 이벤트)
+      document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('update-btn')) {
+          const employeeId = e.target.dataset.id;
+          openCenteredPopup(`/author/employee/update/${employeeId}`, '직원 수정', 800, 600);
+        }
+      });
+
+      // 검색 버튼 클릭
+      document.getElementById('searchBtn').addEventListener('click', function() {
+        const keyword = document.getElementById('searchInput').value.trim();  // 검색어
+        const option = document.getElementById('searchOption').value;          // 이름, 부서, 직급 중 선택
+
+        if (!keyword) {
+          renderTable(employeesData); // 검색어 없으면 전체 출력
+          return;
+        }
+
+        const filtered = employeesData.filter(employee => {
+          if (option === '이름') {
+            return employee.employeeName.includes(keyword);
+          } else if (option === '부서') {
+            return employee.deptName.includes(keyword);
+          } else if (option === '직급') {
+            return employee.levelName.includes(keyword);
+          }
+          return false;
+        });
+
+        renderTable(filtered);
+      });
+
+    });
+
+    // 테이블 렌더링 함수
+    function renderTable(data) {
+      const tbody = document.getElementById('employeeTableBody');
+      tbody.innerHTML = ''; // 기존 데이터 초기화
+
+      data.forEach(employee => {
+        const row = `
+      <tr>
+        <td>${employee.employeeName}</td>
+        <td>${employee.deptName}</td>
+        <td>${employee.levelName}</td>
+        <td>${employee.hireDate}</td>
+        <td>${employee.phone}</td>
+        <td>
+          <button class="update-btn" data-id="${employee.employeeId}">수정</button>
+        </td>
+      </tr>`;
+        tbody.insertAdjacentHTML('beforeend', row);
+      });
+    }
+
+    document.getElementById('openPopup').addEventListener('click', function() {
+      openCenteredPopup('/author/popup', '직원 등록', 800, 600);
+    });
+
+    document.addEventListener('click', function(e) {
+      if(e.target && e.target.classList.contains('update-btn')) {
+        const employeeId = e.target.dataset.id;
+        openCenteredPopup(`/author/employee/update/${employeeId}`, '직원 수정', 800, 600);
+      }
+    });
+  </script>
+</th:block>
+</body>
+</html>
