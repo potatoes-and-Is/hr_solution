@@ -1,7 +1,6 @@
-package com.poi.hr.dto;
+package com.poi.hr.dto.vacation;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class ApprovalEmpRetireSaveDTO {
@@ -11,9 +10,9 @@ public class ApprovalEmpRetireSaveDTO {
     private LocalDate retireDate;       // 퇴직일
     private String leaveType;
     private String retireType;          // 퇴직 종류
-    private List<String> approverList;  // 결재자 ID 또는 이름 목록
+    private List<Integer> approverList;  // 결재자 ID 또는 이름 목록
     private LocalDate vacReqStart;  // or appropriate type
-    private Date vacReqEnd;
+    private LocalDate vacReqEnd;
 
     public String getApprovalTitle() {
         return approvalTitle;
@@ -55,11 +54,11 @@ public class ApprovalEmpRetireSaveDTO {
         this.retireType = retireType;
     }
 
-    public List<String> getApproverList() {
+    public List<Integer> getApproverList() {
         return approverList;
     }
 
-    public void setApproverList(List<String> approverList) {
+    public void setApproverList(List<Integer> approverList) {
         this.approverList = approverList;
     }
 
@@ -71,11 +70,12 @@ public class ApprovalEmpRetireSaveDTO {
         this.vacReqStart = vacReqStart;
     }
 
-    public Date getVacReqEnd() {
+    public LocalDate getVacReqEnd() {
+
         return vacReqEnd;
     }
 
-    public void setVacReqEnd(Date vacReqEnd) {
+    public void setVacReqEnd(LocalDate vacReqEnd) {
         this.vacReqEnd = vacReqEnd;
     }
 

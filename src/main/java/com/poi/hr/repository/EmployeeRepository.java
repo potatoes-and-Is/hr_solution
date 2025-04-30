@@ -44,7 +44,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>, Em
     LEFT JOIN dep.dept d
     LEFT JOIN dep.teamPosition tp
     LEFT JOIN e.level l
-    WHERE d.deptName = :department
+    WHERE d.deptCode = :department
     """)
     List<EmployeeRequestDTO> getEmployeesByDepartment(String department);
 }

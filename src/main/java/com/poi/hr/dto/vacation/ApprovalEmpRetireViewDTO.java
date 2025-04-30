@@ -1,4 +1,6 @@
-package com.poi.hr.dto;
+package com.poi.hr.dto.vacation;
+
+import com.poi.hr.dto.DeptDTO;
 
 import java.util.List;
 

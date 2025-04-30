@@ -3,7 +3,7 @@ package com.poi.hr.dto.vacation.mapper;
 import com.poi.hr.domain.employee.Employee;
 import com.poi.hr.domain.vacation.DocType;
 import com.poi.hr.domain.vacation.RetireReq;
-import com.poi.hr.dto.ApprovalEmpRetireSaveDTO;
+import com.poi.hr.dto.vacation.ApprovalEmpRetireSaveDTO;
 
 public class RetireReqMapper {
 
