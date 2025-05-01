@@ -92,6 +92,22 @@ public class ApprovalService {
                 .collect(Collectors.toList());
     }
 
+    /* 내게 온 결재문서 목록 조회 */
+//    public List<ApprovalMyListDto> findMyApprovals(int currentUserId) {
+//        return approvalRepository.findAll().stream()
+//                .filter(doc -> doc.getEmployee().getEmployeeId() == currentUserId)
+//                .map(doc -> new ApprovalMyListDto(
+//                        doc.getApprovalDocId(),
+//                        doc.getDocType().getDocTypeName(),
+//                        doc.getApprovalTitle(),
+//                        doc.getEmployee().getEmployeeName(),
+//                        doc.getCreatedAt(),
+//                        doc.getApprovalStatus()
+//                ))
+//                .collect(Collectors.toList());
+//    }
+
+
     /* 내게 온 결재 - 승인/반려 처리 */
     @Transactional
     public void processApprovalAction(int approvalDocId, int approverId, ApprovalActionRequest request) {
@@ -176,4 +192,5 @@ public class ApprovalService {
                         doc.getApprovalStatus()
                 )).collect(Collectors.toList());
     }
+
 }
