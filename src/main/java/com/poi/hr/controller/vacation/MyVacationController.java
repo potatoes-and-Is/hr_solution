@@ -1,8 +1,11 @@
 package com.poi.hr.controller.vacation;
 
+import com.poi.hr.auth.model.AuthDetails;
 import com.poi.hr.dto.vacation.MyVacationListDTO;
 import com.poi.hr.dto.vacation.VacationBalanceDTO;
 import com.poi.hr.service.VacationService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +31,11 @@ public class MyVacationController {
             @RequestParam(value = "year", required = false) Integer year,
             Model model) {
 
-        int employeeId = 2;  //임시 아이디
+        //0. 로그인 사용자 정보 가져오기
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        AuthDetails principal = (AuthDetails) auth.getPrincipal();
+        int employeeId = principal.getEmployeeId();
+        System.out.println("회원아이디입니다요오오오오오오오옹 employeeId = " + employeeId);
 
         //1. year 없으면 올해 년도로 지정
         if (year == null) { //null 체크를 했기에 서비스 레이어에서 int로 매개변수 받을 수 있음
