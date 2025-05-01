@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>퇴직 결재 문서</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8f9fc; margin: 40px; }
+        .form-container { background: #fff; width: 900px; margin: auto; padding: 30px; border: 1px solid #e3e6f0; border-radius: 0.35rem; box-shadow: 0 0.15rem 1.75rem 0 rgba(58,59,69,0.15); position: relative; }
+        table { width: 100%; border-collapse: collapse; margin-top: 120px; }
+        td, th { border: 1px solid #e3e6f0; padding: 12px 15px; font-size: 14px; }
+        th { background-color: #f8f9fc; color: #4e73df; width: 25%; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #d1d3e2; border-radius: 0.35rem; background-color: #f8f9fc; }
+        .submit-btn { margin-top: 30px; text-align: center; }
+        .submit-btn button { background-color: #4e73df; color: #fff; border: none; padding: 10px 30px; border-radius: 0.35rem; font-size: 16px; cursor: pointer; }
+        .submit-btn button:hover { background-color: #2e59d9; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <form th:action="@{/approval/save/retirement}" method="post" th:object="${approvalEmpRetireSaveDTO}">
+        <h2 style="color:#4e73df; text-align:center; margin-bottom:30px;">퇴직 결재 문서</h2>
+        <table>
+            <tr><th>제목</th><td><input type="text" th:field="*{approvalTitle}" placeholder="제목을 입력하세요."></td></tr>
+            <tr><th>내용</th><td><textarea th:field="*{approvalContent}" placeholder="내용을 입력하세요." rows="3"></textarea></td></tr>
+            <tr><th>사유</th><td><textarea th:field="*{approvalReason}" placeholder="사유를 입력하세요." rows="5"></textarea></td></tr>
+            <tr><th>퇴직일</th><td><input type="date" th:field="*{vacReqStart}"> ~ <input type="date" th:field="*{vacReqEnd}"></td></tr>
+            <tr>
+                <th>결재자</th>
+                <td>
+                    <div class="input-group">
+                        <input type="text" id="approverDisplay" class="form-control bg-light" placeholder="결재자를 선택하세요" readonly>
+                        <div class="input-group-append">
+                            <span class="input-group-text" style="cursor:pointer;" onclick="openApproverModal()">
+                                <i class="fas fa-user-plus"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <input type="hidden" name="approverList">
+                </td>
+            </tr>
+        </table>
+        <div class="submit-btn">
+            <button type="submit">제출</button>
+        </div>
+    </form>
+</div>
+
+<!-- ✅ 모달은 반드시 body 안, script 아래 X -->
+<div class="modal fade" id="approverModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title">결재자 선택</h5></div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="departmentSelect">부서 선택</label>
+                    <select id="departmentSelect" class="form-control" onchange="loadEmployeesByDepartment()">
+                        <option value="">-- 선택하세요 --</option>
+                        <option th:each="dept : ${approvalViewDTO.deptList}"
+                                th:value="${dept.deptCode}"
+                                th:text="${dept.deptName}">
+                        </option>
+                    </select>
+                </div>
+                <ul id="employeeList" style="list-style: none; padding: 0;"></ul>
+                <div id="selectedEmployees" style="margin-top: 10px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="confirmApprovers()">선택 완료</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ JS는 body 끝에서 로딩 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let selectedEmployees = [];
+
+    function openApproverModal() {
+        console.log("모달 열기");
+        $('#approverModal').modal('show');
+    }
+
+    function loadEmployeesByDepartment() {
+        const departmentCode = document.getElementById('departmentSelect').value;
+        const employeeList = document.getElementById('employeeList');
+        employeeList.innerHTML = '';
+        if (!departmentCode) return;
+
+        fetch(`/approval/by-department?department=${departmentCode}`)
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(employee => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                    <div class="employee-item" style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #dee2e6;">
+                        <span style="min-width:100px">${employee.employeeName}</span>
+                        <span style="min-width:100px">${employee.deptName}</span>
+                        <input type="checkbox" value="${employee.employeeId}" onchange="toggleEmployee('${employee.employeeId}', '${employee.employeeName}', this.checked)">
+                    </div>`;
+                    employeeList.appendChild(li);
+                });
+            });
+    }
+
+    function toggleEmployee(id, name, checked) {
+        const container = document.querySelector(`input[value="${id}"]`).closest('.employee-item');
+        if (checked) {
+            if (!selectedEmployees.find(e => e.id === id)) {
+                selectedEmployees.push({ id, name });
+            }
+            container.style.fontWeight = "bold";
+        } else {
+            selectedEmployees = selectedEmployees.filter(e => e.id !== id);
+            container.style.fontWeight = "";
+        }
+        renderSelectedEmployees();
+    }
+
+    function renderSelectedEmployees() {
+        const selectedDiv = document.getElementById('selectedEmployees');
+        selectedDiv.innerHTML = selectedEmployees.map(e =>
+            `<span style="display:inline-block;background-color:#4e73df;color:white;border-radius:20px;padding:6px 12px;margin:4px;font-size:14px;">${e.name}</span>`
+        ).join('');
+    }
+
+    function confirmApprovers() {
+        const approverStr = selectedEmployees.map(e => e.id).join(',');
+        document.getElementById('approverDisplay').value = selectedEmployees.map(e => e.name).join(', ');
+        document.querySelector('input[name="approverList"]').value = approverStr;
+        $('#approverModal').modal('hide');
+    }
+</script>
+</body>
+</html>
+
+

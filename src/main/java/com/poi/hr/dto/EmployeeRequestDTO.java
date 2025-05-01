@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.poi.hr.domain.hr.Level;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class EmployeeRequestDTO {
     private int employeeId;
@@ -25,7 +26,7 @@ public class EmployeeRequestDTO {
 
     private String employeeIdentity;
 
-    private String status;
+    private String employeeStatus;
 
     private LocalDate hireDate;
 
@@ -45,11 +46,20 @@ public class EmployeeRequestDTO {
 
     private Integer levelId;
 
+    // 추가된 필드: 경력, 학력, 자격증, 어학
+    private List<CareerDTO> careers;
+    private List<EducationDTO> educations;
+    private List<QualificationDTO> qualifications;
+    private List<LanguageDTO> languages;
+
+    // 기존 getter, setter들...
+
+
     public int getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(Integer employeeId) {
+    public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -117,12 +127,12 @@ public class EmployeeRequestDTO {
         this.employeeIdentity = employeeIdentity;
     }
 
-    public String getStatus() {
-        return status;
+    public String getEmployeeStatus() {
+        return employeeStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setEmployeeStatus(String employeeStatus) {
+        this.employeeStatus = employeeStatus;
     }
 
     public LocalDate getHireDate() {
@@ -197,6 +207,40 @@ public class EmployeeRequestDTO {
         this.levelId = levelId;
     }
 
+    public List<CareerDTO> getCareers() {
+        return careers;
+    }
+
+    public void setCareers(List<CareerDTO> careers) {
+        this.careers = careers;
+    }
+
+    public List<EducationDTO> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(List<EducationDTO> educations) {
+        this.educations = educations;
+    }
+
+    public List<QualificationDTO> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(List<QualificationDTO> qualifications) {
+        this.qualifications = qualifications;
+    }
+
+    public List<LanguageDTO> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<LanguageDTO> languages) {
+        this.languages = languages;
+    }
+
+    // 기본 생성자 및 파라미터 생성자 (기존 코드 그대로 유지)
+
     public EmployeeRequestDTO() {}
 
     public EmployeeRequestDTO(
@@ -209,7 +253,7 @@ public class EmployeeRequestDTO {
             String password,
             String phone,
             String employeeIdentity,
-            String status,
+            String employeeStatus,
             LocalDate hireDate,
             LocalDate retireDate,
             Integer deptId,
@@ -228,14 +272,16 @@ public class EmployeeRequestDTO {
         this.password = password;
         this.phone = phone;
         this.employeeIdentity = employeeIdentity;
-        this.status = status;
+        this.employeeStatus = employeeStatus;
         this.hireDate = hireDate;
         this.retireDate = retireDate;
         this.deptId = deptId;
         this.positionId = positionId;
         this.deptName = deptName;
         this.positionName = positionName;
-        this.levelName = levelName;
         this.levelId = levelId;
+        this.levelName = levelName;
     }
+
 }
+

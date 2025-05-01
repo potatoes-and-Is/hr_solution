@@ -25,15 +25,6 @@ public class AuthorEmployeeController {
         this.employeeService = employeeService;
     }
 
-    //관리자 페이지
-    @GetMapping
-    public String authorEmployeePage(Model model) {
-        List<EmployeeRequestDTO> employees = employeeService.findAllEmployees();
-
-        model.addAttribute("employees", employees);
-        return "employee/author";  // templates/employee.html 호출
-    }
-
     // 직원 리스트 출력
     @GetMapping("/list")
     @ResponseBody
@@ -58,15 +49,38 @@ public class AuthorEmployeeController {
         return ResponseEntity.ok("수정 완료");
     }
 
-    // 상세 조회
+    // 수정 상세 조회
     @GetMapping("/{employeeId}")
     public ResponseEntity<EmployeeRequestDTO> getEmployeeDetail(@PathVariable("employeeId") int employeeId) {
         System.out.println("Employee ID: " + employeeId); // 디버깅용
-        // 서비스 호출f
+        // 서비스 호출
         EmployeeRequestDTO responseAuthorDTO = employeeService.getEmployeeById(employeeId);
 
         // 반환
         return ResponseEntity.ok(responseAuthorDTO);
+    }
+
+    //관리자 페이지
+    @GetMapping
+    public String authorEmployeePage(Model model) {
+        List<EmployeeRequestDTO> employees = employeeService.findAllEmployees();
+
+        model.addAttribute("employees", employees);
+        return "employee/author";  // templates/employee.html 호출
+    }
+
+    //상세 보기 페이지
+    @GetMapping("/employee/detail/{employeeId}")
+    public String detailEmployeePage(@PathVariable("employeeId") int employeeId, Model model) {
+        model.addAttribute("employeeId", employeeId);
+        return "employee/detailEmployee";
+    }
+
+    //상세 보기 페이지 2
+    @GetMapping("/employee/authorDetail/{employeeId}")
+    public String authorDetailEmployeePage(@PathVariable("employeeId") int employeeId, Model model) {
+        model.addAttribute("employeeId", employeeId);
+        return "employee/authorDetailEmployee";
     }
 
     //직원 추가 창 팝업

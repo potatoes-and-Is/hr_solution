@@ -40,7 +40,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
             emp.setPassword((String) row[6]);
             emp.setPhone((String) row[7]);
             emp.setEmployeeIdentity((String) row[8]);
-            emp.setStatus((String) row[9]);
+            emp.setEmployeeStatus((String) row[9]);
             emp.setHireDate(row[10] != null ? ((java.sql.Date) row[10]).toLocalDate() : null);
             emp.setRetireDate(row[11] != null ? ((java.sql.Date) row[11]).toLocalDate() : null);
             emp.setDeptId(row[12] != null ? ((Number) row[12]).intValue() : null);

@@ -52,7 +52,7 @@
     <!-- 추가: Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
-
+    <script src="/js/common.js"></script>
 
     <!-- ✅ 부서 토글, 검색, 직원 불러오기 스크립트 -->
     <script>
@@ -112,7 +112,7 @@
         } else {
           employees.forEach(function (emp) {
             const row = '<tr>'
-                    + '<td>' + emp.employeeName + '</td>'
+                    + '<td><a href="#" class="employee-detail" data-id="' + emp.employeeId + '">' + emp.employeeName + '</a></td>'
                     + '<td>' + emp.employeeNumber + '</td>'
                     + '<td>' + emp.teamPositionName + '</td>'
                     + '</tr>';
@@ -358,6 +358,13 @@
           }
         });
       }
+      document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('employee-detail')) {
+          e.preventDefault();
+          const employeeId = e.target.dataset.id;
+          openCenteredPopup(`/author/employee/detail/${employeeId}`, '직원상세정보', 800, 500);
+        }
+      });
     </script>
   </th:block>
 </head>

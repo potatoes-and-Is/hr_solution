@@ -1,5 +1,7 @@
 package com.poi.hr.dto;
 
+import java.util.List;
+
 public class UpdateEmployeeDTO {
     private int employeeId;
     private String employeeName;
@@ -8,17 +10,23 @@ public class UpdateEmployeeDTO {
     private String address;
     private String employeeIdentity;
     private String password;
-    private String status;
+    private String employeeStatus;
     private String gender;
+
+    private List<CareerDTO> careers;         // 경력 리스트
+    private List<EducationDTO> educations;   // 학력 리스트
+    private List<QualificationDTO> qualifications;  // 자격증 리스트
+    private List<LanguageDTO> languages;     // 어학 리스트
+
+
     private Integer levelId;
     private Integer deptId;
     private Integer positionId;
 
-    public UpdateEmployeeDTO() {}
+    public UpdateEmployeeDTO() {
+    }
 
-    public UpdateEmployeeDTO(int employeeId, String employeeName, String email, String phone, String address,
-                             String employeeIdentity, String password, String status,
-                             String gender, Integer levelId, Integer deptId, Integer positionId) {
+    public UpdateEmployeeDTO(int employeeId, String employeeName, String email, String phone, String address, String employeeIdentity, String password, String employeeStatus, String gender, List<CareerDTO> careers, List<EducationDTO> educations, List<QualificationDTO> qualifications, List<LanguageDTO> languages, Integer levelId, Integer deptId, Integer positionId) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.email = email;
@@ -26,8 +34,12 @@ public class UpdateEmployeeDTO {
         this.address = address;
         this.employeeIdentity = employeeIdentity;
         this.password = password;
-        this.status = status;
+        this.employeeStatus = employeeStatus;
         this.gender = gender;
+        this.careers = careers;
+        this.educations = educations;
+        this.qualifications = qualifications;
+        this.languages = languages;
         this.levelId = levelId;
         this.deptId = deptId;
         this.positionId = positionId;
@@ -89,12 +101,12 @@ public class UpdateEmployeeDTO {
         this.password = password;
     }
 
-    public String getStatus() {
-        return status;
+    public String getEmployeeStatus() {
+        return employeeStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setEmployeeStatus(String employeeStatus) {
+        this.employeeStatus = employeeStatus;
     }
 
     public String getGender() {
@@ -103,6 +115,38 @@ public class UpdateEmployeeDTO {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public List<CareerDTO> getCareers() {
+        return careers;
+    }
+
+    public void setCareers(List<CareerDTO> careers) {
+        this.careers = careers;
+    }
+
+    public List<EducationDTO> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(List<EducationDTO> educations) {
+        this.educations = educations;
+    }
+
+    public List<QualificationDTO> getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(List<QualificationDTO> qualifications) {
+        this.qualifications = qualifications;
+    }
+
+    public List<LanguageDTO> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<LanguageDTO> languages) {
+        this.languages = languages;
     }
 
     public Integer getLevelId() {
