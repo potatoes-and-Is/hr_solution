@@ -138,7 +138,7 @@ public class ApprovalController {
                 throw new IllegalArgumentException("결재 문서가 존재하지 않습니다.");
         }
 
-        return "approval/testInboxDetail";
+        return "approval/mylistDetail";
     }
 
     /* 승인/반려 버튼 눌렀을 때 처리 */
@@ -154,6 +154,21 @@ public class ApprovalController {
 
         return ResponseEntity.ok().build();
     }
+
+//    @GetMapping("/mylist/{id}")
+//    public String showMylistDetail(@PathVariable("id") int id, Model model) {
+//        ApprovalEmpLeaveResponseDto dto = approvalEmpLeaveService.findApprovalEmpLeaveById(id);  // ← 여기 수정
+//
+//        model.addAttribute("docType", dto.getDocTypeName());
+//        model.addAttribute("approvalTitle", dto.getApprovalTitle());
+//        model.addAttribute("approvalContent", dto.getApprovalContent());
+//        model.addAttribute("approvalReason", dto.getApprovalReason());
+//        model.addAttribute("leaveStartDate", dto.getVacReqStart());
+//        model.addAttribute("leaveEndDate", dto.getVacReqEnd());
+//        model.addAttribute("leaveType", dto.getLeaveType());
+//
+//        return "approval/mylistDetail";
+//    }
 
 
 }
