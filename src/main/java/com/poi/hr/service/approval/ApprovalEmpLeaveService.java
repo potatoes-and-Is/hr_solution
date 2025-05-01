@@ -4,6 +4,7 @@ import com.poi.hr.domain.vacation.ApprovalDoc;
 import com.poi.hr.domain.vacation.DocType;
 import com.poi.hr.domain.vacation.LeaveReq;
 import com.poi.hr.domain.employee.Employee;
+import com.poi.hr.domain.vacation.enums.LeaveType;
 import com.poi.hr.dto.approval.ApprovalEmpLeaveResponseDto;
 import com.poi.hr.dto.approval.ApprovalEmpLeaveSaveDto;
 import com.poi.hr.repository.approval.ApprovalRepository;
@@ -78,4 +79,5 @@ public class ApprovalEmpLeaveService {
         approvalEmpLeaveSaveDto.getApprovalLineList().get(0).setApprovalDocId(leaveReq.getApprovalDocId());
 
     }
+
 }
