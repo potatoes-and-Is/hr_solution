@@ -1,16 +1,16 @@
 package com.poi.hr.service;
 
+import com.poi.hr.domain.dept.Dept;
 import com.poi.hr.domain.vacation.ApprovalDoc;
 import com.poi.hr.domain.vacation.VacationBalance;
 import com.poi.hr.domain.vacation.VacationGrantHistory;
 import com.poi.hr.domain.vacation.VacationReq;
+import com.poi.hr.dto.vacation.DepartmentVacationDto;
 import com.poi.hr.dto.vacation.MyVacationListDTO;
 import com.poi.hr.dto.vacation.VacationBalanceDTO;
 import com.poi.hr.dto.vacation.VacationTypeResDTO;
-import com.poi.hr.repository.vacation.VacationGrantHistoryRepository;
-import com.poi.hr.repository.vacation.VacationRepository;
-import com.poi.hr.repository.vacation.VacationReqRepository;
-import com.poi.hr.repository.vacation.VacationTypeRepository;
+import com.poi.hr.repository.DeptRepository;
+import com.poi.hr.repository.vacation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,12 +25,14 @@ public class VacationService {
     private final VacationTypeRepository vacationTypeRepository;
     private final VacationGrantHistoryRepository vacationGrantHistoryRepository;
     private final VacationReqRepository vacationReqRepository;
+    private final DeptRepository deptRepository;
 
-    public VacationService(VacationRepository vacationRepository, VacationTypeRepository vacationTypeRepository, VacationGrantHistoryRepository vacationGrantHistoryRepository, VacationReqRepository vacationReqRepository) {
+    public VacationService(VacationRepository vacationRepository, VacationTypeRepository vacationTypeRepository, VacationGrantHistoryRepository vacationGrantHistoryRepository, VacationReqRepository vacationReqRepository, DeptRepository deptRepository) {
         this.vacationRepository = vacationRepository;
         this.vacationTypeRepository = vacationTypeRepository;
         this.vacationGrantHistoryRepository = vacationGrantHistoryRepository;
         this.vacationReqRepository = vacationReqRepository;
+        this.deptRepository = deptRepository;
     }
 
     //대시보드 - 휴가정보 가져오기
@@ -137,10 +139,38 @@ public class VacationService {
         balance.setRemainVacCount(balance.getRemainVacCount() - req.getVacUseDays());
     }
 
+    public List<Dept> getAllDepartments() {
+        return deptRepository.findAll();  // 반드시 데이터가 있어야 함
+    }
 
+    public List<DepartmentVacationDto> getApprovedVacationsByDeptId(Integer deptId) {
+        List<Object[]> rawList = vacationReqRepository.findApprovedVacationsByDeptId(deptId);
 
+        return rawList.stream()
+                .map(obj -> new DepartmentVacationDto(
+                        (String) obj[0],
+                        ((java.sql.Date) obj[1]).toLocalDate(),
+                        ((java.sql.Date) obj[2]).toLocalDate(),
+                        (String) obj[3]
+                ))
+                .collect(Collectors.toList());
+    }
 
-
+//    public List<DepartmentVacationDto> getVacationsByDepartment(Integer deptId) {
+//        List<Object[]> rawDataList = employeeLeaveRepository.findVacationDataByDeptId(deptId);
+//        List<DepartmentVacationDto> dtos = new ArrayList<>();
+//
+//        for (Object[] row : rawDataList) {
+//            String employeeName = (String) row[0];
+//            LocalDate startDate = ((Date) row[1]).toLocalDate();
+//            LocalDate endDate = ((Date) row[2]).toLocalDate();
+//            String vacationType = (String) row[3];
+//
+//            dtos.add(new DepartmentVacationDto(employeeName, startDate, endDate, vacationType));
+//        }
+//
+//        return dtos;
+//    }
 
 
 

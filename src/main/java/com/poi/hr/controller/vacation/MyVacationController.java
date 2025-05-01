@@ -1,6 +1,9 @@
 package com.poi.hr.controller.vacation;
 
 import com.poi.hr.auth.model.AuthDetails;
+import com.poi.hr.domain.dept.Dept;
+import com.poi.hr.dto.DeptDTO;
+import com.poi.hr.dto.vacation.DepartmentVacationDto;
 import com.poi.hr.dto.vacation.MyVacationListDTO;
 import com.poi.hr.dto.vacation.VacationBalanceDTO;
 import com.poi.hr.service.VacationService;
@@ -65,5 +68,20 @@ public class MyVacationController {
         return "vacation/approvalTest";
     }
 
+    @GetMapping("/department")
+    public String showDeptVacation(@RequestParam(required = false) Integer deptId, Model model) {
+        // 모든 부서 정보 조회해서 드롭다운에 사용
+        List<Dept> departments = vacationService.getAllDepartments();
+        model.addAttribute("departments", departments);
+
+        // 부서가 선택된 경우에만 휴가 내역 조회
+        if (deptId != null) {
+            List<DepartmentVacationDto> vacations = vacationService.getApprovedVacationsByDeptId(deptId);
+            model.addAttribute("vacations", vacations);
+        }
+
+        return "vacation/dept-vacation";
+    }
 
 }
+

@@ -21,6 +21,11 @@ public class DocType {
 
     }
 
+    public DocType(String docTypeCode, String docTypeName) {
+        this.docTypeCode = docTypeCode;
+        this.docTypeName = docTypeName;
+    }
+
     public DocType(String docTypeName) {
         this.docTypeName = docTypeName;
     }

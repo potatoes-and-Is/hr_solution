@@ -8,7 +8,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
+import java.util.List;
+
 public interface ApprovalLineRepository extends CrudRepository<ApprovalLine, Integer> {
+
+    // 특정 문서의 결재라인을 결재 순서대로 가져오기
+    List<ApprovalLine> findByApprovalDoc_ApprovalDocIdOrderByApprovalLineOrderAsc(int approvalDocId);
     @Query("SELECT al FROM ApprovalLine al " +
             "WHERE al.approvalDoc.approvalDocId = :approvalDocId " +
             "AND al.employee.employeeId = :employeeId")
