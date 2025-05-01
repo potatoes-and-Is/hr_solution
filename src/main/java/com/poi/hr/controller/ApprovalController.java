@@ -115,19 +115,19 @@ public class ApprovalController {
 
 
     /* 승인/반려 버튼 눌렀을 때 처리 */
-    @PostMapping("/inbox/detail/{approvalDocId}")
-    @ResponseBody
-    public ResponseEntity<?> processApproval(
-            @PathVariable int approvalDocId,
-            @RequestBody ApprovalActionRequest request,
-            Authentication authentication) {
-
-        AuthDetails authDetails = (AuthDetails) authentication.getPrincipal();
-        int approverId = authDetails.getEmployeeId();
-        approvalService.processApprovalAction(approvalDocId,approverId, request);
-
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/inbox/detail/{approvalDocId}")
+//    @ResponseBody
+//    public ResponseEntity<?> processApproval(
+//            @PathVariable int approvalDocId,
+//            @RequestBody ApprovalActionRequest request,
+//            Authentication authentication) {
+//
+//        AuthDetails authDetails = (AuthDetails) authentication.getPrincipal();
+//        int approverId = authDetails.getEmployeeId();
+//        approvalService.processApprovalAction(approvalDocId,approverId, request);
+//
+//        return ResponseEntity.ok().build();
+//    }
 
 
 

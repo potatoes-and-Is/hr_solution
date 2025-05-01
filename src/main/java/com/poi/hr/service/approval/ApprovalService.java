@@ -66,20 +66,20 @@ public class ApprovalService {
     }
 
     /* 내게 온 결재 - 승인/반려 처리 */
-    @Transactional
-    public void processApprovalAction(int approvalDocId, int approverId, ApprovalActionRequest request) {
-        // 1. 결재라인 정보 조회
-        ApprovalLine line = approvalLineRepository
-                .findByApprovalDocIdAndEmployeeId(approvalDocId, approverId)
-                .orElseThrow(() -> new RuntimeException("결재라인 정보 없음"));
+//    @Transactional
+//    public void processApprovalAction(int approvalDocId, int approverId, ApprovalActionRequest request) {
+//        // 1. 결재라인 정보 조회
+//        ApprovalLine line = approvalLineRepository
+//                .findByApprovalDocIdAndEmployeeId(approvalDocId, approverId)
+//                .orElseThrow(() -> new RuntimeException("결재라인 정보 없음"));
+//
+//        // 2. 결재의견 저장
+//        ApprovalHistory history = new ApprovalHistory();
+//        history.setApprovalLine(line);
 
-        // 2. 결재의견 저장
-        ApprovalHistory history = new ApprovalHistory();
-        history.setApprovalLine(line);
-
-        history.setApprovalRole(line.getApprovalRole()); // 예: "2차승인자"
-        history.setApprovalComment(request.getApprovalComment());
-        approvalHistoryRepository.save(history);
+//        history.setApprovalRole(line.getApprovalRole()); // 예: "2차승인자"
+//        history.setApprovalComment(request.getApprovalComment());
+//        approvalHistoryRepository.save(history);
 
 
         // 3. 다음 결재자 있는지 판단
@@ -88,5 +88,5 @@ public class ApprovalService {
 
         // 5. 이후 처리 (휴가, 출퇴근요청 등 자식 테이블 상태 변경 함수 호출)
 
-    }
+//    }
 }
