@@ -15,18 +15,22 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>, Em
     Optional<Employee> findByEmployeeNumber(String employeeNumber);
 
     @Query("""
-    SELECT new com.poi.hr.dto.EmployeeRequestDTO(
-        e.employeeId, e.employeeNumber, e.employeeName, e.gender, e.address, e.email, e.password,
-        e.phone, e.employeeIdentity, e.employeeStatus, e.hireDate, e.retireDate,
-        d.deptId, tp.teamPositionId, d.deptName, tp.positionName, l.levelId, l.levelName
-    )
-    FROM Employee e
-    LEFT JOIN DepPositionEmployee dep ON e.employeeId = dep.employee.employeeId
-    LEFT JOIN dep.dept d
-    LEFT JOIN dep.teamPosition tp
-    LEFT JOIN e.level l
-    WHERE e.employeeId = :employeeId
+SELECT new com.poi.hr.dto.EmployeeRequestDTO(
+    e.employeeId, e.employeeNumber, e.employeeName, e.gender,
+    e.address, e.email, e.password, e.phone, e.employeeIdentity,
+    e.employeeStatus, e.hireDate, e.retireDate,
+    COALESCE(d.deptId, -1), COALESCE(tp.teamPositionId, -1),
+    d.deptName, tp.positionName,
+    COALESCE(l.levelId, -1), l.levelName
+)
+FROM Employee e
+LEFT JOIN DepPositionEmployee dep ON e.employeeId = dep.employee.employeeId
+LEFT JOIN dep.dept d
+LEFT JOIN dep.teamPosition tp
+LEFT JOIN e.level l
+WHERE e.employeeId = :employeeId
 """)
+
     EmployeeRequestDTO getEmployeeDetail(int employeeId);
 
 

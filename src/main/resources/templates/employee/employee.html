@@ -4,182 +4,319 @@
   <meta charset="UTF-8">
   <title id="pageTitle">직원등록</title>
   <link rel="stylesheet" th:href="@{/css/employee.css}">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-top: 40px;
+      color: #333;
+      border-left: 5px solid #007bff;
+      padding-left: 10px;
+    }
+
+    .form-row {
+      display: flex;
+      margin-bottom: 12px;
+    }
+
+    .form-row label {
+      width: 120px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .form-row input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .form-row select,
+    .form-row textarea {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .section {
+      margin-top: 30px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      box-shadow: 0 0 4px rgba(0,0,0,0.05);
+    }
+
+    .section h3 {
+      font-size: 20px;
+      color: #222;
+      border-left: 5px solid #007bff;
+      padding-left: 10px;
+      margin-bottom: 20px;
+    }
+
+
+    #actionBtn {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 30px;
+    }
+
+    #actionBtn:hover {
+      background: #0056b3;
+    }
+  </style>
 </head>
 <body>
 <div class="content">
-  <label for="email">이메일</label>
-  <input type="text" id="email" placeholder="e-mail">
+  <h2>기본 정보</h2>
+  <div class="form-row"><label for="email">이메일</label><input type="text" id="email"></div>
+  <div class="form-row"><label for="identity">주민등록번호</label><input type="text" id="identity"></div>
+  <div class="form-row"><label for="phone">전화번호</label><input type="text" id="phone"></div>
+  <div class="form-row"><label for="password">비밀번호</label><input type="text" id="password"></div>
+  <div class="form-row"><label for="address">주소</label><input type="text" id="address"></div>
+  <div class="form-row"><label for="name">성명</label><input type="text" id="name"></div>
+  <div class="form-row"><label for="levelSelect">직급</label><select id="levelSelect"></select></div>
+  <div class="form-row"><label for="deptSelect">부서</label><select id="deptSelect"></select></div>
+  <div class="form-row"><label for="positionSelect">직책</label><select id="positionSelect"></select></div>
+  <div class="form-row"><label for="genderSelect">성별</label><select id="genderSelect"><option value="M">남성</option><option value="F">여성</option></select></div>
+  <div class="form-row"><label for="statusSelect">상태</label><select id="statusSelect"><option value="ACTIVE">재직</option><option value="INACTIVE">퇴직</option></select></div>
 </div>
-<div class="content">
-  <label for="identity">주민등록번호</label>
-  <input type="text" id="identity" placeholder="주민등록번호">
-</div>
-<div class="content">
-  <label for="phone">전화 번호</label>
-  <input type="text" id="phone" placeholder="전화 번호">
-</div>
-<div class="content">
-  <label for="password">비밀번호</label>
-  <input type="text" id="password" placeholder="비밀번호">
-</div>
-<div class="content">
-  <label for="address">주소</label>
-  <input type="text" id="address" placeholder="주소">
-</div>
-<div class="content">
-  <label for="name">성명</label>
-  <input type="text" id="name" placeholder="이름">
-  <div class="options-container">
-    <label for="levelSelect">직급</label>
-    <select id="levelSelect"><option value="">선택</option></select>
 
-    <label for="deptSelect">부서</label>
-    <select id="deptSelect"><option value="">선택</option></select>
-
-    <label for="positionSelect">직책</label>
-    <select id="positionSelect"><option value="">선택</option></select>
-
-    <label for="genderSelect">성별</label>
-    <select id="genderSelect">
-      <option value="M">남성</option>
-      <option value="F">여성</option>
-    </select>
-
-    <label for="statusSelect">상태</label>
-    <select id="statusSelect">
-      <option value="ACTIVE">재직</option>
-      <option value="INACTIVE">퇴직</option>
-    </select>
-
-    <!-- 버튼을 옵션 아래로 -->
-    <button id="actionBtn">저장</button>
+<div class="content">
+  <h2>추가 정보</h2>
+  <div class="section">
+    <h3>경력사항</h3>
+    <div class="form-row"><label for="careerCompany">회사명</label><input type="text" id="careerCompany"></div>
+    <div class="form-row"><label for="careerDept">부서명</label><input type="text" id="careerDept"></div>
+    <div class="form-row"><label for="careerLevel">직급</label><input type="text" id="careerLevel"></div>
+    <div class="form-row"><label for="careerReason">퇴사사유</label><input type="text" id="careerReason"></div>
   </div>
-</html>
-<script>
-  // 페이지 로드 시 직급 리스트 가져오기
-  document.addEventListener('DOMContentLoaded', async function() {
-    const btn = document.getElementById('actionBtn');
-    const path = window.location.pathname;
+  <div class="section">
+    <h3>학력사항</h3>
+    <div class="form-row"><label for="schoolName">학교명</label><input type="text" id="schoolName"></div>
+    <div class="form-row"><label for="entranceDate">입학일</label><input type="text" id="entranceDate"></div>
+    <div class="form-row"><label for="graduationDate">졸업일</label><input type="text" id="graduationDate"></div>
+    <div class="form-row"><label for="graduationStatus">졸업상태</label><input type="text" id="graduationStatus"></div>
+  </div>
+  <div class="section">
+    <h3>자격증</h3>
+    <div class="form-row"><label for="certificateName">자격증명</label><input type="text" id="certificateName"></div>
+    <div class="form-row"><label for="certificateOrg">발행기관</label><input type="text" id="certificateOrg"></div>
+    <div class="form-row"><label for="certificateDate">취득일</label><input type="text" id="certificateDate"></div>
+    <div class="form-row"><label for="certificateExpire">만기일</label><input type="text" id="certificateExpire"></div>
+  </div>
+  <div class="section">
+    <h3>어학능력</h3>
+    <div class="form-row"><label for="languageName">언어</label><input type="text" id="languageName"></div>
+    <div class="form-row"><label for="languageScore">점수</label><input type="text" id="languageScore"></div>
+    <div class="form-row"><label for="languageOrg">발행기관</label><input type="text" id="languageOrg"></div>
+    <div class="form-row"><label for="languageDate">취득일</label><input type="text" id="languageDate"></div>
+    <div class="form-row"><label for="languageExpire">만기일</label><input type="text" id="languageExpire"></div>
+  </div>
+</div>
+  </div>
+  <button id="actionBtn">저장</button>
+</div>
+</body>
 
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const path = window.location.pathname;
+    const btn = document.getElementById('actionBtn');
     let mode = 'add';
     let employeeId = null;
 
-    // ✅ 타이틀 동적 변경
-    if(path.startsWith('/author/employee/update/')){
-      document.getElementById('pageTitle').innerText = '직원 수정';
-    }
+    await loadSelectOptions(); // ✅ select 옵션 불러오기
 
-    await loadSelectOptions();
-
-    if(path.startsWith('/author/employee/update/')){
+    if (path.startsWith('/author/employee/update/')) {
       mode = 'update';
       employeeId = path.split('/').pop();
-      btn.textContent = '수정';
 
-      fetch(`/author/${employeeId}`,{
-        method: 'GET', // 또는 'POST', 'PATCH' 등
-        headers: {
-          'Content-Type': 'application/json'
+      try {
+        const response = await fetch(`/author/${employeeId}`);
+        const data = await response.json();
+
+        // 기본 정보
+        document.getElementById('email').value = data.email ?? '';
+        document.getElementById('identity').value = data.employeeIdentity ?? '';
+        document.getElementById('phone').value = data.phone ?? '';
+        document.getElementById('password').value = data.password ?? '';
+        document.getElementById('address').value = data.address ?? '';
+        document.getElementById('name').value = data.employeeName ?? '';
+        document.getElementById('genderSelect').value = data.gender ?? '';
+        document.getElementById('statusSelect').value = data.employeeStatus ?? '';
+        document.getElementById('levelSelect').value = data.levelId ?? '';
+        document.getElementById('deptSelect').value = data.deptId ?? '';
+        document.getElementById('positionSelect').value = data.positionId ?? '';
+
+        // 경력
+        if (data.careers?.length > 0) {
+          const c = data.careers[0];
+          document.getElementById('careerCompany').value = c.previousCompany ?? '';
+          document.getElementById('careerDept').value = c.previousDeptName ?? '';
+          document.getElementById('careerLevel').value = c.previousLevel ?? '';
+          document.getElementById('careerReason').value = c.retireReason ?? '';
         }
-      })
-              .then(response => response.json())
-              .then(data => {
-                console.log(data); // 응답 데이터 확인
-                document.getElementById('email').value = data.email;
-                document.getElementById('identity').value = data.employeeIdentity;
-                document.getElementById('phone').value = data.phone;
-                document.getElementById('password').value = data.password;
-                document.getElementById('address').value = data.address;
-                document.getElementById('name').value = data.employeeName;
-                document.getElementById('genderSelect').value = data.gender;
-                document.getElementById('statusSelect').value = data.status;
-                document.getElementById('levelSelect').value = data.levelId;
-                document.getElementById('deptSelect').value = data.deptId;
-                document.getElementById('positionSelect').value = data.positionId;
-              })
-              .catch(error => console.error('직원 정보 로드 실패:', error));
+
+        // 학력
+        if (data.educations?.length > 0) {
+          const e = data.educations[0];
+          document.getElementById('schoolName').value = e.schoolName ?? '';
+          document.getElementById('entranceDate').value = e.entranceDate ?? '';
+          document.getElementById('graduationDate').value = e.graduationDate ?? '';
+          document.getElementById('graduationStatus').value = e.graduationStatus ?? '';
+        }
+
+        // 자격증
+        if (data.qualifications?.length > 0) {
+          const q = data.qualifications[0];
+          document.getElementById('certificateName').value = q.qualificationName ?? '';
+          document.getElementById('certificateOrg').value = q.certificateOrg ?? '';
+          document.getElementById('certificateDate').value = q.certificateDate ?? '';
+          document.getElementById('certificateExpire').value = q.expirationDate ?? '';
+        }
+
+        // 어학
+        if (data.languages?.length > 0) {
+          const l = data.languages[0];
+          document.getElementById('languageName').value = l.languageName ?? '';
+          document.getElementById('languageScore').value = l.score ?? '';
+          document.getElementById('languageOrg').value = l.languageOrg ?? '';
+          document.getElementById('languageDate').value = l.acquisitionDate ?? '';
+          document.getElementById('languageExpire').value = l.expirationDate ?? '';
+        }
+
+      } catch (error) {
+        console.error('직원 정보 로드 실패:', error);
+      }
     }
 
-    // 3️⃣ 버튼 클릭
-    btn.addEventListener('click', function() {
+    btn.addEventListener('click', () => {
       const employeeData = {
         email: document.getElementById('email').value,
-        levelId: document.getElementById('levelSelect').value,
-        deptId: document.getElementById('deptSelect').value,
-        positionId: document.getElementById('positionSelect').value,
-        gender: document.getElementById('genderSelect').value,
-        status: document.getElementById('statusSelect').value,
+        employeeName: document.getElementById('name').value,
         employeeIdentity: document.getElementById('identity').value,
         phone: document.getElementById('phone').value,
         password: document.getElementById('password').value,
         address: document.getElementById('address').value,
-        employeeName: document.getElementById('name').value
-      };
+        gender: document.getElementById('genderSelect').value,
+        employeeStatus: document.getElementById('statusSelect').value,
+        levelId: parseInt(document.getElementById('levelSelect').value),
+        deptId: parseInt(document.getElementById('deptSelect').value),
+        positionId: parseInt(document.getElementById('positionSelect').value),
 
-      const url = (mode === 'update') ? `/author/${employeeId}`  : '/author/add';
+        careers: [{
+          previousCompany: document.getElementById('careerCompany').value,
+          previousDeptName: document.getElementById('careerDept').value,
+          previousLevel: document.getElementById('careerLevel').value,
+          retireReason: document.getElementById('careerReason').value,
+          createdBy: 'admin'
+        }],
+
+        educations: [{
+          schoolName: document.getElementById('schoolName').value,
+          entranceDate: document.getElementById('entranceDate').value,
+          graduationDate: document.getElementById('graduationDate').value,
+          graduationStatus: document.getElementById('graduationStatus').value,
+          createdBy: 'admin'
+        }],
+
+        qualifications: [{
+          qualificationName: document.getElementById('certificateName').value,
+          certificateOrg: document.getElementById('certificateOrg').value,
+          certificateDate: document.getElementById('certificateDate').value,
+          expirationDate: document.getElementById('certificateExpire').value,
+          createdBy: 'admin'
+        }],
+
+        languages: [{
+          languageName: document.getElementById('languageName').value,
+          score: Number(document.getElementById('languageScore').value) || 0,
+          languageOrg: document.getElementById('languageOrg').value,
+          acquisitionDate: document.getElementById('languageDate').value,
+          expirationDate: document.getElementById('languageExpire').value,
+          createdBy: 'admin'
+        }]
+      };
+      const url = (mode === 'update') ? `/author/${employeeId}` : '/author/add';
       const method = (mode === 'update') ? 'PATCH' : 'POST';
 
       fetch(url, {
-        method: method,
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(employeeData)
       })
               .then(response => {
                 if (response.ok) {
-                  alert('직원 등록 성공!');
-                  // 부모창 리다이렉트 또는 새로고침
+                  alert('직원 정보 저장 성공!');
                   if (window.opener && !window.opener.closed) {
-                    window.opener.location.href = '/author';   // 부모 창 리다이렉트
+                    window.opener.location.href = '/author';
                   }
-                  window.close();  // 팝업 창 닫기
+                  window.close();
                 } else {
-                  alert('직원 등록 실패!');
+                  alert('저장 실패!');
                 }
               })
-              .catch(error => {
-                console.error('Error:', error);
-                alert('에러 발생!');
+              .catch(err => {
+                console.error('저장 중 에러:', err);
+                alert('서버 에러 발생');
               });
     });
-
   });
 
-  // 📌 select 옵션 로드 함수
   async function loadSelectOptions() {
-    await fetch('/api/levels/list')
-            .then(response => response.json())
-            .then(data => {
-              const levelSelect = document.getElementById('levelSelect');
-              data.forEach(level => {
-                const option = document.createElement('option');
-                option.value = level.levelId;
-                option.text = level.levelName;
-                levelSelect.appendChild(option);
-              });
-            });
+    const [levels, depts, positions] = await Promise.all([
+      fetch('/api/levels/list').then(res => res.json()),
+      fetch('/api/depts/list').then(res => res.json()),
+      fetch('/api/positions/list').then(res => res.json())
+    ]);
 
-    await fetch('/api/depts/list')
-            .then(response => response.json())
-            .then(data => {
-              const deptSelect = document.getElementById('deptSelect');
-              data.forEach(dept => {
-                const option = document.createElement('option');
-                option.value = dept.deptId;
-                option.text = dept.deptName;
-                deptSelect.appendChild(option);
-              });
-            });
+    const levelSelect = document.getElementById('levelSelect');
+    const deptSelect = document.getElementById('deptSelect');
+    const posSelect = document.getElementById('positionSelect');
 
-    await fetch('/api/positions/list')
-            .then(response => response.json())
-            .then(data => {
-              const posSelect = document.getElementById('positionSelect');
-              data.forEach(pos => {
-                const option = document.createElement('option');
-                option.value = pos.teamPositionId;
-                option.text = pos.positionName;
-                posSelect.appendChild(option);
-              });
-            });
+    levels.forEach(lvl => {
+      const opt = new Option(lvl.levelName, lvl.levelId);
+      levelSelect.add(opt);
+    });
+
+    depts.forEach(dep => {
+      const opt = new Option(dep.deptName, dep.deptId);
+      deptSelect.add(opt);
+    });
+
+    positions.forEach(pos => {
+      const opt = new Option(pos.positionName, pos.teamPositionId);
+      posSelect.add(opt);
+    });
   }
 </script>
+

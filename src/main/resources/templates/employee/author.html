@@ -130,7 +130,7 @@
         const row = `
       <tr>
         <td>
-            <a href="#" class="employee-detail" data-id="${employee.employeeId}">
+            <a href="#" class="employee-author-detail" data-id="${employee.employeeId}">
                 ${employee.employeeName}
             </a>
         </td>
@@ -157,10 +157,10 @@
       }
     });
     document.addEventListener('click', function(e) {
-      if (e.target && e.target.classList.contains('employee-detail')) {
+      if (e.target && e.target.classList.contains('employee-author-detail')) {
         e.preventDefault();
         const employeeId = e.target.dataset.id;
-        openCenteredPopup(`/author/employee/detail/${employeeId}`, '직원상세정보', 800, 500);
+        openCenteredPopup(`/author/employee/authorDetail/${employeeId}`, '관리자직원상세정보', 800, 500);
       }
     });
   </script>
