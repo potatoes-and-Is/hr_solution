@@ -2,6 +2,7 @@ package com.poi.hr.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.poi.hr.auth.model.AuthDetails;
 import com.poi.hr.domain.dept.DepPositionEmployee;
 import com.poi.hr.domain.dept.Dept;
 import com.poi.hr.domain.vacation.enums.LeaveType;
@@ -11,6 +12,9 @@ import com.poi.hr.service.approval.ApprovalEmpLeaveService;
 import com.poi.hr.service.approval.ApprovalLineService;
 import com.poi.hr.service.approval.ApprovalService;
 import com.poi.hr.service.approval.ApprovalVacService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -108,4 +112,30 @@ public class ApprovalController {
 
         return "approval/detail";
     }
+
+
+    /* 승인/반려 버튼 눌렀을 때 처리 */
+//    @PostMapping("/inbox/detail/{approvalDocId}")
+//    @ResponseBody
+//    public ResponseEntity<?> processApproval(
+//            @PathVariable int approvalDocId,
+//            @RequestBody ApprovalActionRequest request,
+//            Authentication authentication) {
+//
+//        AuthDetails authDetails = (AuthDetails) authentication.getPrincipal();
+//        int approverId = authDetails.getEmployeeId();
+//        approvalService.processApprovalAction(approvalDocId,approverId, request);
+//
+//        return ResponseEntity.ok().build();
+//    }
+
+
+    @GetMapping("/mylist")
+    public String showMyApprovalList(Model model) {
+        int currentUserId = 1;
+        List<ApprovalMyListDto> approvalMyList = approvalService.findMyApprovals(currentUserId);
+        model.addAttribute("approvalMyList", approvalMyList);
+        return "approval/mylist";
+    }
+
 }

@@ -66,4 +66,8 @@ public class AuthDetails implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
+    public int getEmployeeId() {
+        return loginEmployeeDto.getEmployeeId();
+    }
 }
