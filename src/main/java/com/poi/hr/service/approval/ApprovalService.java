@@ -4,33 +4,37 @@ import com.poi.hr.auth.model.AuthDetails;
 import com.poi.hr.domain.vacation.ApprovalDoc;
 import com.poi.hr.domain.vacation.ApprovalHistory;
 import com.poi.hr.domain.vacation.ApprovalLine;
+import com.poi.hr.domain.vacation.enums.ApprovalDocStatus;
 import com.poi.hr.dto.approval.ApprovalActionRequest;
 import com.poi.hr.dto.approval.ApprovalDetailDto;
 import com.poi.hr.dto.approval.ApprovalListDto;
 import com.poi.hr.dto.approval.ApprovalMyListDto;
+import com.poi.hr.repository.approval.ApprovalHistoryRepository;
 import com.poi.hr.repository.approval.ApprovalLineRepository;
 import com.poi.hr.repository.approval.ApprovalRepository;
+import com.poi.hr.util.SecurityUtil;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.poi.hr.domain.vacation.enums.ApprovalDocStatus.*;
 
 @Service
 public class ApprovalService {
 
     private final ApprovalRepository approvalRepository;
     private final ApprovalLineRepository approvalLineRepository;
+    private final ApprovalHistoryRepository approvalHistoryRepository;
 
-    public ApprovalService(ApprovalRepository approvalRepository, ApprovalLineRepository approvalLineRepository) {
+    public ApprovalService(ApprovalRepository approvalRepository, ApprovalLineRepository approvalLineRepository, ApprovalHistoryRepository approvalHistoryRepository) {
         this.approvalRepository = approvalRepository;
         this.approvalLineRepository = approvalLineRepository;
+        this.approvalHistoryRepository = approvalHistoryRepository;
     }
 
     /* 모든 결재문서 조회 */
@@ -67,35 +71,13 @@ public class ApprovalService {
         );
     }
 
-    /* 내게 온 결재 - 승인/반려 처리 */
-//    @Transactional
-//    public void processApprovalAction(int approvalDocId, int approverId, ApprovalActionRequest request) {
-//        // 1. 결재라인 정보 조회
-//        ApprovalLine line = approvalLineRepository
-//                .findByApprovalDocIdAndEmployeeId(approvalDocId, approverId)
-//                .orElseThrow(() -> new RuntimeException("결재라인 정보 없음"));
-//
-//        // 2. 결재의견 저장
-//        ApprovalHistory history = new ApprovalHistory();
-//        history.setApprovalLine(line);
-
-//        history.setApprovalRole(line.getApprovalRole()); // 예: "2차승인자"
-//        history.setApprovalComment(request.getApprovalComment());
-//        approvalHistoryRepository.save(history);
-
-
-        // 3. 다음 결재자 있는지 판단
-
-        // 4. 결재문서 상태 변경
-
-        // 5. 이후 처리 (휴가, 출퇴근요청 등 자식 테이블 상태 변경 함수 호출)
-
-//    }
-
     /* 내게 온 결재문서 목록 조회 */
-    public List<ApprovalMyListDto> findMyApprovals(int currentUserId) {
-        return approvalRepository.findAll().stream()
-                .filter(doc -> doc.getEmployee().getEmployeeId() == currentUserId)
+    @Transactional
+    public List<ApprovalMyListDto> findMyApprovals() {
+        int currentUserId = SecurityUtil.getCurrentEmployeeId();
+        List<ApprovalDoc> docs = approvalLineRepository.findPendingDocsForMyApproval(currentUserId);
+
+        return docs.stream()
                 .map(doc -> new ApprovalMyListDto(
                         doc.getApprovalDocId(),
                         doc.getDocType().getDocTypeName(),
@@ -106,4 +88,67 @@ public class ApprovalService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    /* 내게 온 결재 - 승인/반려 처리 */
+    @Transactional
+    public void processApprovalAction(int approvalDocId, int approverId, ApprovalActionRequest request) {
+        // 1. 결재라인 정보 조회
+        ApprovalLine line = approvalLineRepository
+                .findApprovalLine(approvalDocId, approverId)
+                .orElseThrow(() -> new RuntimeException("결재라인 정보 없음"));
+
+        System.out.println("결재라인 정보 가져왔다아아아" + line);
+
+        // 2. 결재의견 저장
+        ApprovalHistory history = new ApprovalHistory();
+        history.setApprovalLine(line);
+        history.setApprovalRole(request.getApprovalRole()); // 예: "2차승인자"
+        history.setApprovalComment(request.getApprovalComment());
+        approvalHistoryRepository.save(history);
+
+        System.out.println("저장되었꼬오오오오오오오오결재의견저장후");
+
+        // 3. 현재 결재자 상태 변경
+        line.setApprovalStatus(request.isApproved() ? APPROVED : REJECTED);
+        approvalLineRepository.save(line);
+
+        System.out.println("현재결재자 상태 변경되었나아아아아아아");
+
+        // 4. 다음 결재자가 있는지 확인
+        List<ApprovalLine> lines = approvalLineRepository.findLinesByApprovalDocIdOrdered(approvalDocId);
+
+        boolean isLastApprover = true;
+        for (ApprovalLine l : lines) {
+            if (l.getApprovalLineOrder() > line.getApprovalLineOrder() && l.getApprovalStatus().equals("pending")) {
+                isLastApprover = false;
+                break;
+            }
+        }
+
+        System.out.println("다음 결재자 있는지 확인했나아아아아아");
+
+        // 5. 결재문서 상태 변경
+        ApprovalDoc doc = line.getApprovalDoc();
+        if (request.isApproved()) {
+            if (isLastApprover) {
+                doc.setApprovalStatus(APPROVED);
+                doc.setApprovalDate(LocalDate.now());
+
+                // ✅ 6. 자식 테이블 후처리
+                // if (doc.getDocType().getDocTypeCode().equals("LEAVE_REQUEST")) {
+                //     approvalEmpLeaveService.processApprovedLeave(doc);
+                // }
+            } else {
+                doc.setApprovalStatus(IN_PROGRESS);
+            }
+        } else {
+            doc.setApprovalStatus(REJECTED);
+        }
+
+        approvalRepository.save(doc);
+
+        System.out.println("다 저장되었찌로오오오오오");
+
+    }
+
 }

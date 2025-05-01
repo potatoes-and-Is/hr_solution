@@ -85,5 +85,4 @@ public class ApprovalLine {
         this.approvalLineOrder = approvalLineOrder;
     }
 
-
 }

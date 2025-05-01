@@ -12,9 +12,9 @@ import com.poi.hr.service.approval.ApprovalEmpLeaveService;
 import com.poi.hr.service.approval.ApprovalLineService;
 import com.poi.hr.service.approval.ApprovalService;
 import com.poi.hr.service.approval.ApprovalVacService;
+import com.poi.hr.util.SecurityUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -113,29 +113,46 @@ public class ApprovalController {
         return "approval/detail";
     }
 
+    /* 내게 온 결재 목록 출력하기 */
+    @GetMapping("/inboxList")
+    public String showMyApprovalList(Model model) {
+        List<ApprovalMyListDto> approvalMyList = approvalService.findMyApprovals();
+        model.addAttribute("approvalMyList", approvalMyList);
+        return "approval/inboxList";
+    }
+
+    /* 내게 온 결재 상세보기 출력 */
+    @GetMapping("/inbox/detail/{approvalDocId}")
+    public String showInboxDetail(@PathVariable int approvalDocId, Model model) {
+        ApprovalDetailDto approvalDetailDto = approvalService.findById(approvalDocId);
+
+        switch (approvalDetailDto.getDocTypeCode()) {
+            case "LEAVE_REQUEST":
+                model.addAttribute("approvalDoc", approvalEmpLeaveService.findApprovalEmpLeaveById(approvalDocId));
+                break;
+            case "VACATION_REQUEST":
+                model.addAttribute("approvalDoc", approvalVacService.findApprovalVacById(approvalDocId));
+                break;
+            default:
+                throw new IllegalArgumentException("결재 문서가 존재하지 않습니다.");
+        }
+
+        return "approval/testInboxDetail";
+    }
 
     /* 승인/반려 버튼 눌렀을 때 처리 */
-//    @PostMapping("/inbox/detail/{approvalDocId}")
-//    @ResponseBody
-//    public ResponseEntity<?> processApproval(
-//            @PathVariable int approvalDocId,
-//            @RequestBody ApprovalActionRequest request,
-//            Authentication authentication) {
-//
-//        AuthDetails authDetails = (AuthDetails) authentication.getPrincipal();
-//        int approverId = authDetails.getEmployeeId();
-//        approvalService.processApprovalAction(approvalDocId,approverId, request);
-//
-//        return ResponseEntity.ok().build();
-//    }
+    @PostMapping("/inbox/detail/{approvalDocId}")
+    @ResponseBody
+    public ResponseEntity<?> processApproval(
+            @PathVariable int approvalDocId,
+            @RequestBody ApprovalActionRequest request,
+            Authentication authentication) {
 
+        int approverId = SecurityUtil.getCurrentEmployeeId();
+        approvalService.processApprovalAction(approvalDocId, approverId, request);
 
-    @GetMapping("/mylist")
-    public String showMyApprovalList(Model model) {
-        int currentUserId = 1;
-        List<ApprovalMyListDto> approvalMyList = approvalService.findMyApprovals(currentUserId);
-        model.addAttribute("approvalMyList", approvalMyList);
-        return "approval/mylist";
+        return ResponseEntity.ok().build();
     }
+
 
 }

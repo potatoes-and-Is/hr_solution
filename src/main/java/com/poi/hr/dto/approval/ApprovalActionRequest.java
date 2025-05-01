@@ -2,11 +2,24 @@ package com.poi.hr.dto.approval;
 
 public class ApprovalActionRequest {
 
-    private String approvalComment;
     private boolean approved;
 
-    public ApprovalActionRequest(String approvalComment, boolean approved) {
+    private String approvalComment;
+    private String approvalRole;
+
+    public ApprovalActionRequest() {}
+
+    public ApprovalActionRequest(String approvalComment, boolean approved, String approvalRole) {
         this.approvalComment = approvalComment;
+        this.approved = approved;
+        this.approvalRole = approvalRole;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
         this.approved = approved;
     }
 
@@ -18,11 +31,11 @@ public class ApprovalActionRequest {
         this.approvalComment = approvalComment;
     }
 
-    public boolean isApproved() {
-        return approved;
+    public String getApprovalRole() {
+        return approvalRole;
     }
 
-    public void setApproved(boolean approved) {
-        this.approved = approved;
+    public void setApprovalRole(String approvalRole) {
+        this.approvalRole = approvalRole;
     }
 }

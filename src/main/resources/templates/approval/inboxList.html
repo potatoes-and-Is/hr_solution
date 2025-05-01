@@ -68,7 +68,7 @@
                 const approvalDocId = $(this).find('td:eq(0)').text().trim();
 
                 if (approvalDocId) {
-                    window.location.href = '/approval/detail/' + approvalDocId;
+                    window.location.href = '/approval/inbox/detail/' + approvalDocId;
                 } else {
                     alert('결재 문서가 없습니다.')
                 }
