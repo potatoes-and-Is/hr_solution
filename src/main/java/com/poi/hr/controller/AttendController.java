@@ -94,15 +94,6 @@ public class AttendController {
         }
     }
 
-    // 출퇴근 정정 폼 제출
-    @PostMapping("/attend-req/save")
-    public ResponseEntity<String> saveAttendFixDoc(@RequestBody Map<String, Object> request) {
-
-        // 결재 등록 함수 호출 필요
-
-        return ResponseEntity.ok("success");
-    }
-
 
 }
 

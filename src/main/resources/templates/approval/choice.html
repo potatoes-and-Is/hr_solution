@@ -38,13 +38,10 @@
 
             switch (type) {
                 case 'empleave':
-                    window.location.href = baseUrl + '/empleave';
+                    window.location.href = baseUrl + '/empleave?docTypeCode=LEAVE_REQUEST&docTypeName=' + encodeURIComponent('휴직 신청서');
                     break;
                 case 'retire':
-                    window.location.href = baseUrl + '/retire';
-                    break;
-                case 'resignation':
-                    window.location.href = baseUrl + '/resignation';
+                    window.location.href = baseUrl + '/retire?docTypeCode=RETIRE_REQUEST&docTypeName=' + encodeURIComponent('퇴직 신청서');
                     break;
                 default:
                     alert('유효하지 않은 문서 유형입니다.');

@@ -56,11 +56,9 @@ public class ApprovalEmpLeaveService {
 
     /* 휴직 데이터 저장 */
     @Transactional
-    public void saveApprovalEmpLeave(ApprovalEmpLeaveSaveDto approvalEmpLeaveSaveDto) {
-        System.out.println("service!! 저장 시작");
-        // 세션 employee 저장
-        Employee employee = employeeRepository.findById(1).orElse(null);
-        DocType docType = docTypeRepository.findByDocTypeCode("LEAVE_REQUEST");
+    public void saveApprovalEmpLeave(ApprovalEmpLeaveSaveDto approvalEmpLeaveSaveDto, int loginUserId) {
+        Employee employee = employeeRepository.findById(loginUserId).orElse(null);
+        DocType docType = docTypeRepository.findByDocTypeCode(approvalEmpLeaveSaveDto.getDocTypeCode());
 
         LeaveReq leaveReq = new LeaveReq(
                 employee,
@@ -73,7 +71,7 @@ public class ApprovalEmpLeaveService {
                 approvalEmpLeaveSaveDto.getLeaveEndDate(),
                 approvalEmpLeaveSaveDto.getLeaveType()
         );
-        System.out.println("서비스!!! 타입 확인" + docType.getDocTypeName());
+
         leaveReqRepository.save(leaveReq);
 
         approvalEmpLeaveSaveDto.getApprovalLineList().get(0).setApprovalDocId(leaveReq.getApprovalDocId());

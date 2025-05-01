@@ -77,7 +77,7 @@
                             <label>출근 일자</label>
                             <div class="form-row">
                                 <div class="col">
-                                    <input type="date" class="form-control" id="originAttendDate" readonly placeholder="출근일자">
+                                    <input type="date" class="form-control" id="attendDate" readonly placeholder="출근일자">
                                 </div>
                             </div><br>
                             <label>기존 출퇴근시간</label>
@@ -104,11 +104,11 @@
                             </div>
                         </div>
 
-                        <!-- 사유 -->
+                        <!--&lt;!&ndash; 사유 &ndash;&gt;
                         <div class="form-group">
                             <label for="fixReason">사유</label>
                             <textarea class="form-control" id="fixReason" rows="3" placeholder="정정 사유를 입력하세요" required></textarea>
-                        </div>
+                        </div>-->
 
                     </form>
                 </div>
@@ -116,7 +116,7 @@
                 <!-- Modal Footer -->
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                    <button class="btn btn-primary" id="submitAttendanceFix" onclick="submitCorrectionForm()">결재문서 만들기</button>
+                    <button class="btn btn-primary" type="button" id="submitAttendanceFix" onclick="submitCorrectionForm(event)">결재문서 만들기</button>
                 </div>
 
             </div>
@@ -161,16 +161,16 @@
             let checkOutTime = selectedCheckBox.getAttribute('data-checkout') || ''; // 퇴근 시간이 없을 경우 대비
 
             // 시간 형식 조정 (HH:mm:ss -> HH:mm)
-            if(checkInTime && checkInTime.includes(':')) {
+            /*if(checkInTime && checkInTime.includes(':')) {
                 checkInTime = checkInTime.substring(0,5);
             }
             if(checkOutTime && checkOutTime.includes(":")) {
                 checkOutTime = checkOutTime.substring(0,5);
-            }
+            }*/
 
             // 모달 폼에 데이터 채우기
             document.getElementById('attendId').value = attendId;
-            document.getElementById('originAttendDate').value = attendDate;
+            document.getElementById('attendDate').value = attendDate;
             document.getElementById('originCheckInTime').value = checkInTime;
             document.getElementById('originCheckOutTime').value = checkOutTime;
             document.getElementById('newCheckInTime').value = checkInTime;
@@ -181,16 +181,23 @@
         }
 
         // 폼 제출 함수
-        function submitCorrectionForm() {
+        function submitCorrectionForm(event) {
+            event.preventDefault(); // 폼 기본 제출 동작 방지
             const form = document.getElementById('attendanceFixForm');
+            if(!form.newCheckInTime || !form.newCheckOutTime) {
+                alert('변경할 시간을 입력해주세요.');
+                return;
+            }
             const formData = {
                 attendId: form.attendId.value,
+                attendDate: form.attendDate.value,
+                originCheckInTime: form.originCheckInTime.value,
+                originCheckOutTime: form.originCheckOutTime.value,
                 newCheckInTime: form.newCheckInTime.value,
-                newCheckOutTime: form.newCheckOutTime.value,
-                fixReason: form.fixReason.value
-            };
-
-            fetch('/api/attendance/attend-req/save', {
+                newCheckOutTime: form.newCheckOutTime.value
+                // fixReason: form.fixReason.value
+            }
+            fetch('/approval/save/fixattenddata', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -198,9 +205,11 @@
                 body: JSON.stringify(formData)
             })
                 .then(data => {
-                    alert('정정 요청이 성공적으로 제출되었습니다.');
+                    alert('정정 요청이 완료되었습니다. 결재 문서로 이동합니다.');
                     $('#correctionModal').modal('hide'); // 모달 닫기
                     form.reset(); // 폼 초기화
+                    const params = new URLSearchParams(formData).toString(); // 쿼리 파라미터로 데이터 전달
+                    window.location.href = `/approval/save/fixattenddata?${params}`; // 페이지 이동
                 })
                 .catch(error => {
                     console.error('Error:', error);

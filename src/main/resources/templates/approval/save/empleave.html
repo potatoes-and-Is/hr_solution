@@ -109,7 +109,25 @@
         const deptEmpMap = /*[(${deptEmpMapJson})]*/ {};
         /*]]>*/
     </script>
+
+    <!-- 문서 결재 유형 -->
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const params = new URLSearchParams(window.location.search);
+            const docTypeCode = params.get('docTypeCode');
+            const docTypeName = params.get('docTypeName');
+
+            if (docTypeCode) {
+                document.getElementById('docTypeCodeInput').value = docTypeCode;
+            }
+            if (docTypeName) {
+                document.getElementById('docTypeNameInput').value = docTypeName;
+            }
+        });
+    </script>
+    <script>
+
+
         console.log("deptEmpMap: ", deptEmpMap);
         function openApproverModal() {
             $('#approverModal').modal('show');
@@ -279,7 +297,8 @@
             <tr>
                 <th>문서유형</th>
                 <td>
-                    <input type="hidden" th:field="*{docType}" th:value="SICK">
+                    <input type="text" id="docTypeNameInput" class="form-control" readonly>
+                    <input type="hidden" th:field="*{docTypeCode}" id="docTypeCodeInput">
                 </td>
             </tr>
             <tr>
@@ -332,7 +351,7 @@
                 </span>
                         </div>
                     </div>
-<!--                    <input type="hidden" th:field="*{approvalLineList}">-->
+                    <!--                    <input type="hidden" th:field="*{approvalLineList}">-->
                 </td>
             </tr>
         </table>
