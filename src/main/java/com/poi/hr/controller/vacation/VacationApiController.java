@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/vacation")
-public class giVacationApiController {
+public class VacationApiController {
 
     private final VacationService vacationService;
 
