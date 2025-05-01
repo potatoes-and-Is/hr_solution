@@ -88,6 +88,18 @@
 
       // 검색 버튼 클릭 이벤트
       document.getElementById('searchBtn').addEventListener('click', function () {
+        searchEmployees(); // 검색 기능 실행
+      });
+
+      // 엔터 키로 검색 기능 실행
+      document.getElementById('searchInput').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          searchEmployees(); // 엔터 키를 누르면 검색 기능 실행
+        }
+      });
+
+      // 검색 기능
+      function searchEmployees() {
         const keyword = document.getElementById('searchInput').value.trim();  // 검색어
         const option = document.getElementById('searchOption').value;         // 이름, 부서, 직급 중 선택
 
@@ -109,7 +121,7 @@
 
         renderTable(filtered, currentPage); // 필터링된 데이터로 테이블 렌더링
         updatePagination(filtered.length); // 페이징 업데이트
-      });
+      }
 
       // 테이블 렌더링 함수
       function renderTable(data, page) {
@@ -123,17 +135,17 @@
 
         pageData.forEach(employee => {
           const row = `
-            <tr>
-              <td>
-                <a href="#" class="employee-author-detail" data-id="${employee.employeeId}">
-                  ${employee.employeeName}
-                </a>
-              </td>
-              <td>${employee.deptName}</td>
-              <td>${employee.levelName}</td>
-              <td>${employee.hireDate}</td>
-              <td>${employee.phone}</td>
-            </tr>`;
+          <tr>
+            <td>
+              <a href="#" class="employee-author-detail" data-id="${employee.employeeId}">
+                ${employee.employeeName}
+              </a>
+            </td>
+            <td>${employee.deptName}</td>
+            <td>${employee.levelName}</td>
+            <td>${employee.hireDate}</td>
+            <td>${employee.phone}</td>
+          </tr>`;
           tbody.insertAdjacentHTML('beforeend', row);
         });
 
