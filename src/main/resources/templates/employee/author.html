@@ -62,7 +62,6 @@
 </div>
 
 <!-- JS 스크립트 추가 영역 -->
-<!-- JS 스크립트 추가 영역 -->
 <th:block layout:fragment="scripts">
   <script src="/js/common.js"></script>
   <script src="/js/button.js"></script>
@@ -73,79 +72,73 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       let employeesData = []; // 전체 직원 데이터를 저장할 변수
-      const employeesPerPage = 5; // 한 페이지당 보여줄 직원 수
-      let currentPage = 1; // 현재 페이지 번호
 
       // 최초 전체 직원 불러오기
       fetch('/author/list')
               .then(response => response.json())
               .then(data => {
                 employeesData = data;
-                renderTable(employeesData, currentPage); // 테이블 렌더링
-                updatePagination(employeesData.length); // 페이징 업데이트
+                renderTable(employeesData); // 테이블 렌더링
               })
               .catch(error => console.error('직원 목록 불러오기 실패:', error));
 
-      // 검색 버튼 클릭 이벤트
-      document.getElementById('searchBtn').addEventListener('click', function () {
-        searchEmployees(); // 검색 기능 실행
+      // 직원 추가 버튼
+      document.getElementById('openPopup').addEventListener('click', function () {
+        openCenteredPopup('/author/popup', '직원 등록', 800, 600);
       });
 
-      // 엔터 키로 검색 기능 실행
-      document.getElementById('searchInput').addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-          searchEmployees(); // 엔터 키를 누르면 검색 기능 실행
+      // 수정 버튼 (동적 이벤트)
+      document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('update-btn')) {
+          const employeeId = e.target.dataset.id;
+          openCenteredPopup(/author/employee/update/${employeeId}, '직원 수정', 800, 600);
         }
       });
 
-      // 검색 기능
-      function searchEmployees() {
-        const keyword = document.getElementById('searchInput').value.trim();  // 검색어
-        const option = document.getElementById('searchOption').value;         // 이름, 부서, 직급 중 선택
+      // 검색 버튼 클릭 이벤트 (이벤트 위임)
+      document.addEventListener('click', function (e) {
+        if (e.target && e.target.id === 'searchBtn') {
+          const keyword = document.getElementById('searchInput').value.trim();  // 검색어
+          const option = document.getElementById('searchOption').value;         // 이름, 부서, 직급 중 선택
 
-        if (!keyword) {
-          renderTable(employeesData, currentPage); // 검색어 없으면 전체 출력
-          return;
-        }
-
-        const filtered = employeesData.filter(employee => {
-          if (option === '이름') {
-            return employee.employeeName.includes(keyword);
-          } else if (option === '부서') {
-            return employee.deptName.includes(keyword);
-          } else if (option === '직급') {
-            return employee.levelName.includes(keyword);
+          if (!keyword) {
+            renderTable(employeesData); // 검색어 없으면 전체 출력
+            return;
           }
-          return false;
-        });
 
-        renderTable(filtered, currentPage); // 필터링된 데이터로 테이블 렌더링
-        updatePagination(filtered.length); // 페이징 업데이트
-      }
+          const filtered = employeesData.filter(employee => {
+            if (option === '이름') {
+              return employee.employeeName.includes(keyword);
+            } else if (option === '부서') {
+              return employee.deptName.includes(keyword);
+            } else if (option === '직급') {
+              return employee.levelName.includes(keyword);
+            }
+            return false;
+          });
+
+          renderTable(filtered); // 필터링된 데이터로 테이블 렌더링
+        }
+      });
 
       // 테이블 렌더링 함수
-      function renderTable(data, page) {
+      function renderTable(data) {
         const tbody = document.getElementById('employeeTableBody');
         tbody.innerHTML = ''; // 기존 데이터 초기화
 
-        // 데이터 계산 (페이지에 맞게)
-        const startIndex = (page - 1) * employeesPerPage;
-        const endIndex = page * employeesPerPage;
-        const pageData = data.slice(startIndex, endIndex);
-
-        pageData.forEach(employee => {
-          const row = `
-          <tr>
-            <td>
-              <a href="#" class="employee-author-detail" data-id="${employee.employeeId}">
-                ${employee.employeeName}
-              </a>
-            </td>
-            <td>${employee.deptName}</td>
-            <td>${employee.levelName}</td>
-            <td>${employee.hireDate}</td>
-            <td>${employee.phone}</td>
-          </tr>`;
+        data.forEach(employee => {
+          const row =
+                  <tr>
+                    <td>
+                      <a href="#" class="employee-author-detail" data-id="${employee.employeeId}">
+                        ${employee.employeeName}
+                      </a>
+                    </td>
+                    <td>${employee.deptName}</td>
+                    <td>${employee.levelName}</td>
+                    <td>${employee.hireDate}</td>
+                    <td>${employee.phone}</td>
+                  </tr>;
           tbody.insertAdjacentHTML('beforeend', row);
         });
 
@@ -161,7 +154,7 @@
             const employeeId = link.dataset.id;
 
             // 팝업 열기
-            openCenteredPopup(`/author/employee/authorDetail/${employeeId}`, '직원 상세정보', 800, 500);
+            openCenteredPopup(/author/employee/authorDetail/${employeeId}, '직원 상세정보', 800, 500);
           });
         });
       }
