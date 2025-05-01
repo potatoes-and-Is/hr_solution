@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class TeamPosition {
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "teamPosition", fetch = FetchType.LAZY)
     private List<TeamPositionPermission> permissions = new ArrayList<>();
@@ -53,11 +54,11 @@ public class TeamPosition {
         return role;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 

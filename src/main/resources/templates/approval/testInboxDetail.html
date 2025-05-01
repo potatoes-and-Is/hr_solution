@@ -87,8 +87,6 @@
 
 <th:block layout:fragment="scripts">
     <!-- (DataTables는 여기서 안 써도 됨, 표가 아니니까) -->
-</th:block>
-
 <script>
     /* 승인, 반려 버튼 눌렀을 때 */
     const approveBtn = document.getElementById('approveBtn');
@@ -104,13 +102,13 @@
             "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                isApproved: isApproved,
+                approved: isApproved,
                 approvalComment: comment,
             })
         }).then(res => {
             if (res.ok) {
                 alert("결재가 처리되었습니다.");
-                location.href = "/approval/list"; // inbox 페이지 경로로 수정 필요
+                location.href = "/approval/inboxList";
             } else {
                 alert("결재 처리 중 오류가 발생했습니다.")
             }
@@ -120,5 +118,6 @@
     approveBtn.addEventListener('click', () => sendApprovalAction(true));
     rejectBtn.addEventListener('click', () => sendApprovalAction(false));
 </script>
+</th:block>
 </body>
 </html>

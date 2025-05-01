@@ -1,6 +1,8 @@
 package com.poi.hr.repository.approval;
 
+import com.poi.hr.domain.vacation.ApprovalDoc;
 import com.poi.hr.domain.vacation.ApprovalLine;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -18,12 +20,28 @@ public interface ApprovalLineRepository extends CrudRepository<ApprovalLine, Int
             "WHERE al.approvalDoc.approvalDocId = :approvalDocId " +
             "AND al.employee.employeeId = :employeeId")
     Optional<ApprovalLine> findApprovalLine(
-            @Param("approvalDocId") Long approvalDocId,
-            @Param("employeeId") Long employeeId);
+            @Param("approvalDocId") int approvalDocId,
+            @Param("employeeId") int employeeId);
 
     @Query("SELECT al FROM ApprovalLine al " +
             "WHERE al.approvalDoc.approvalDocId = :approvalDocId " +
             "ORDER BY al.approvalLineOrder ASC")
     List<ApprovalLine> findAllByDocIdOrderByOrder(
-            @Param("approvalDocId") Long approvalDocId);
+            @Param("approvalDocId") int approvalDocId);
+
+    @Query("""
+    SELECT al.approvalDoc
+    FROM ApprovalLine al
+    WHERE al.employee.employeeId = :employeeId
+      AND al.approvalStatus = 'PENDING'
+      AND NOT EXISTS (
+          SELECT ah FROM ApprovalHistory ah
+          WHERE ah.approvalLine.approvalLineId = al.approvalLineId
+      )
+""")
+    List<ApprovalDoc> findPendingDocsForMyApproval(@Param("employeeId") int employeeId);
+
+    @Query("SELECT al FROM ApprovalLine al WHERE al.approvalDoc.approvalDocId = :approvalDocId ORDER BY al.approvalLineOrder ASC")
+    List<ApprovalLine> findLinesByApprovalDocIdOrdered(@Param("approvalDocId") int approvalDocId);
+
 }

@@ -2,6 +2,7 @@ package com.poi.hr.service.approval;
 
 import com.poi.hr.domain.vacation.ApprovalDoc;
 import com.poi.hr.domain.vacation.DocType;
+import com.poi.hr.domain.vacation.EmployeeLeave;
 import com.poi.hr.domain.vacation.LeaveReq;
 import com.poi.hr.domain.employee.Employee;
 import com.poi.hr.dto.approval.ApprovalEmpLeaveResponseDto;
@@ -70,9 +71,34 @@ public class ApprovalEmpLeaveService {
                 approvalEmpLeaveSaveDto.getLeaveEndDate(),
                 approvalEmpLeaveSaveDto.getLeaveType()
         );
-
+        System.out.println("서비스!!! 타입 확인" + docType.getDocTypeName());
         leaveReqRepository.save(leaveReq);
 
         approvalEmpLeaveSaveDto.getApprovalLineList().get(0).setApprovalDocId(leaveReq.getApprovalDocId());
     }
+
+    /* 결재 승인 후 - 휴직 데이터 업데이트 */
+    @Transactional
+    public void processApprovedLeave(ApprovalDoc approvalDoc) {
+        LeaveReq leaveReq = leaveReqRepository.findByApprovalDocId(approvalDoc.getApprovalDocId())
+                .orElseThrow(() -> new EntityNotFoundException("휴직 데이터 없음"));
+
+        // 결재 승인될 때 EmployeeLeave 직접 생성하기 (휴직 데이터 저장. 현재 휴직요청에만 데이터 있음)
+//        Employee employee = approvalDoc.getEmployee();
+//
+//        EmployeeLeave employeeLeave = new EmployeeLeave(
+//
+//
+//                approvalDoc,
+//                employee,
+//                leaveReq.getLeaveStartDate(),
+//                leaveReq.getLeaveEndDate(),
+//                leaveReq.getLeaveType()
+//        );
+
+//        employeeLeaveRepository.save(leaveReq);
+    }
+
+
+
 }
