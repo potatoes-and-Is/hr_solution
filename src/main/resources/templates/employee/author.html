@@ -17,9 +17,6 @@
 
   <!-- 검색바 영역 -->
   <div class="row mb-3">
-    <div th:if="${allowedHr.contains(role)}" class="col-auto">
-      <button id="openPopup" class="btn btn-primary">직원 추가</button>
-    </div>
     <div class="col-auto">
       <select class="form-control" id="searchOption">
         <option>이름</option>
@@ -64,7 +61,6 @@
   </nav>
 </div>
 
-
 <!-- JS 스크립트 추가 영역 -->
 <th:block layout:fragment="scripts">
   <script src="/js/common.js"></script>
@@ -74,7 +70,7 @@
     const allowedHr = [[${allowedHr}]];
   </script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', function () {
       let employeesData = []; // 전체 직원 데이터를 저장할 변수
 
       // 최초 전체 직원 불러오기
@@ -86,23 +82,10 @@
               })
               .catch(error => console.error('직원 목록 불러오기 실패:', error));
 
-      // 직원 추가 버튼
-      document.getElementById('openPopup').addEventListener('click', function() {
-        openCenteredPopup('/author/popup', '직원 등록', 800, 600);
-      });
-
-      // 수정 버튼 (동적 이벤트)
-      document.addEventListener('click', function(e) {
-        if (e.target && e.target.classList.contains('update-btn')) {
-          const employeeId = e.target.dataset.id;
-          openCenteredPopup(`/author/employee/update/${employeeId}`, '직원 수정', 800, 600);
-        }
-      });
-
-      // 검색 버튼 클릭
-      document.getElementById('searchBtn').addEventListener('click', function() {
+      // 검색 버튼 클릭 이벤트
+      document.getElementById('searchBtn').addEventListener('click', function () {
         const keyword = document.getElementById('searchInput').value.trim();  // 검색어
-        const option = document.getElementById('searchOption').value;          // 이름, 부서, 직급 중 선택
+        const option = document.getElementById('searchOption').value;         // 이름, 부서, 직급 중 선택
 
         if (!keyword) {
           renderTable(employeesData); // 검색어 없으면 전체 출력
@@ -120,55 +103,49 @@
           return false;
         });
 
-        renderTable(filtered);
+        renderTable(filtered); // 필터링된 데이터로 테이블 렌더링
       });
 
-    });
+      // 테이블 렌더링 함수
+      function renderTable(data) {
+        const tbody = document.getElementById('employeeTableBody');
+        tbody.innerHTML = ''; // 기존 데이터 초기화
 
-    // 테이블 렌더링 함수
-    function renderTable(data) {
-      const tbody = document.getElementById('employeeTableBody');
-      tbody.innerHTML = ''; // 기존 데이터 초기화
-
-      data.forEach(employee => {
-        const showUpdateButton = allowedHr.includes(role);
-        const row = `
+        data.forEach(employee => {
+          const row = `
       <tr>
         <td>
-            <a href="#" class="employee-author-detail" data-id="${employee.employeeId}">
-                ${employee.employeeName}
-            </a>
+          <a href="#" class="employee-author-detail" data-id="${employee.employeeId}">
+            ${employee.employeeName}
+          </a>
         </td>
         <td>${employee.deptName}</td>
         <td>${employee.levelName}</td>
         <td>${employee.hireDate}</td>
         <td>${employee.phone}</td>
-        <td>
-          ${showUpdateButton ? `<button class="update-btn" data-id="${employee.employeeId}">수정</button>` : ''}
-        </td>
       </tr>`;
-        tbody.insertAdjacentHTML('beforeend', row);
-      });
-    }
+          tbody.insertAdjacentHTML('beforeend', row);
+        });
 
-    document.getElementById('openPopup').addEventListener('click', function() {
-      openCenteredPopup('/author/popup', '직원 등록', 800, 600);
-    });
-
-    document.addEventListener('click', function(e) {
-      if(e.target && e.target.classList.contains('update-btn')) {
-        const employeeId = e.target.dataset.id;
-        openCenteredPopup(`/author/employee/update/${employeeId}`, '직원 수정', 800, 600);
+        // 권한이 있을 때, 클릭 이벤트 바인딩
+        bindClickEvent();
       }
-    });
-    document.addEventListener('click', function(e) {
-      if (e.target && e.target.classList.contains('employee-author-detail')) {
-        e.preventDefault();
-        const employeeId = e.target.dataset.id;
-        openCenteredPopup(`/author/employee/authorDetail/${employeeId}`, '관리자직원상세정보', 800, 500);
+
+      // 클릭 이벤트 바인딩 (동적으로 렌더링된 링크에 대해 클릭 이벤트 처리)
+      function bindClickEvent() {
+        document.querySelectorAll('.employee-author-detail').forEach(link => {
+          link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const employeeId = link.dataset.id;
+
+            // 팝업 열기
+            openCenteredPopup(`/author/employee/authorDetail/${employeeId}`, '직원 상세정보', 800, 500);
+          });
+        });
       }
     });
   </script>
 </th:block>
 </body>
 </html>
+

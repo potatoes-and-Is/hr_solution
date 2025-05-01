@@ -1,14 +1,12 @@
 package com.poi.hr.controller;
 
-import com.poi.hr.auth.model.AuthDetails;
 import com.poi.hr.dto.vacation.ApprovalEmpAttendanceSaveDTO;
 import com.poi.hr.dto.vacation.ApprovalEmpVacationSaveDTO;
 import com.poi.hr.dto.vacation.ApprovalViewDTO;
 import com.poi.hr.dto.vacation.ApprovalEmpRetireSaveDTO;
 import com.poi.hr.dto.EmployeeRequestDTO;
-import com.poi.hr.service.ApprovalService;
+import com.poi.hr.service.ApprovalDocService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +18,11 @@ import java.util.List;
 public class ApprovalDocController {
 
     @Autowired
-    private ApprovalService approvalService; // ApprovalService 사용
+    private ApprovalDocService approvalDocService; // ApprovalService 사용
 
     @GetMapping("/retirementsave")
     public String showRetirementForm(Model model) {
-        ApprovalViewDTO viewDto = approvalService.getLeaveFormData();
+        ApprovalViewDTO viewDto = approvalDocService.getLeaveFormData();
 
         // ✅ HTML에서 참조하는 이름으로 정확히 맞춰주기
         model.addAttribute("approvalViewDTO", viewDto);
@@ -35,7 +33,7 @@ public class ApprovalDocController {
 
     @GetMapping("/vacationsave")
     public String showVacationForm(Model model) {
-        ApprovalViewDTO viewDto = approvalService.getLeaveFormData();
+        ApprovalViewDTO viewDto = approvalDocService.getLeaveFormData();
 
         // ✅ HTML에서 참조하는 이름으로 정확히 맞춰주기
         model.addAttribute("approvalViewDTO", viewDto);
@@ -46,7 +44,7 @@ public class ApprovalDocController {
 
     @GetMapping("/attendancesave")
     public String showAttendanceForm(Model model) {
-        ApprovalViewDTO viewDto = approvalService.getLeaveFormData();
+        ApprovalViewDTO viewDto = approvalDocService.getLeaveFormData();
 
         // ✅ HTML에서 참조하는 이름으로 정확히 맞춰주기
         model.addAttribute("approvalViewDTO", viewDto);
@@ -58,33 +56,22 @@ public class ApprovalDocController {
     @GetMapping("/by-department")
     @ResponseBody  // ✅ JSON 응답 보낼 때 필요함!!
     public List<EmployeeRequestDTO> getEmployeesByDepartment(@RequestParam String department) {
-        return approvalService.getEmployeesByDepartment(department);  // static 제거된 메서드 호출
+        return approvalDocService.getEmployeesByDepartment(department);  // static 제거된 메서드 호출
     }
 
 
     // 직원 상세 정보를 반환
     @GetMapping("/{employeeId}")
     public EmployeeRequestDTO getEmployeeDetail(@PathVariable int employeeId) {
-        return approvalService.getEmployeeDetail(employeeId);
+        return approvalDocService.getEmployeeDetail(employeeId);
     }
 
     // 다음 직원 번호를 반환
     @GetMapping("/next-employee-number")
     public int getNextEmployeeNumber() {
-        return approvalService.getNextEmployeeNumber();
+        return approvalDocService.getNextEmployeeNumber();
     }
 
-    @PostMapping("/save/retirement")
-    public String submitLeaveForm(@ModelAttribute ApprovalEmpRetireSaveDTO dto,
-                                  @AuthenticationPrincipal AuthDetails authDetails) {
-        // 로그인한 사용자의 ID 추출
-        int employeeId = authDetails.getLoginEmployeeDto().getEmployeeId();
-
-        // 저장 서비스 호출
-        approvalService.saveLeaveApproval(dto, employeeId);
-
-        return "redirect:/approval/leavesave?success";
-    }
 }
 
 

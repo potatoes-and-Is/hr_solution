@@ -1,0 +1,108 @@
+[33mcec984b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev[m[33m)[m Merge branch 'employee-detail' into dev
+[33m6aac1d2[m[33m ([m[1;31morigin/employee-detail[m[33m, [m[1;32memployee-detail[m[33m)[m 직원 상세조회
+[33mb878d7d[m 직원 상세조회
+[33m9566692[m[33m ([m[1;31morigin/dev[m[33m)[m Merge approval-link to dev
+[33mece133b[m 휴가 아이디 받아오기 수정 및 결재 승인 구현 중 타 기능 합치기 위해 dev에서 merge
+[33m5249533[m merge approval-docs-my-list
+[33m3699f13[m Merge branch 'dev' of https://github.com/potatoes-and-Is/hr_solution into dev
+[33mc8ecc22[m 내게 온 결재 목록 출력
+[33mba873f7[m 프론트 구현
+[33me98b725[m 프론트 구현
+[33m1038b45[m 중간저장3
+[33m0f6bbf1[m 중간저장3
+[33m59cf4a9[m 직책별 페이지 및 요소 권한 추가
+[33mab4af2f[m 중간 저장 2
+[33m76686a2[m 승인/결재 서비스 구현 수정중
+[33m96a019c[m addViewPermission
+[33m4b2f2a3[m 내게 온 결재 - 상세보기 승인/반려 버튼 이벤트 요청 구현 (목록 출력 먼저 해야함)
+[33mf03f7b5[m 로그인 사용자 이름 전역적으로 적용하기
+[33mdd71751[m 중간 저장
+[33mf6f618e[m fixError
+[33mf33b434[m 퇴직 결재 문서 프론트 완성
+[33mfc2018c[m 에러 해결
+[33m4ef2fed[m 중간저장
+[33m01f82db[m 오류 수정
+[33m9b38b35[m first commit
+[33m9901514[m merge approval-docs
+[33mb3cf393[m refactor: employee 패키지 이름 변경
+[33m23a1d75[m Merge branch 'dev' of https://github.com/potatoes-and-Is/hr_solution into dev
+[33m7b50c5f[m refactor: 패키지 경로 변경
+[33m2373ad8[m Merge branch 'dev' into department-delete
+[33mb22bdfb[m Merge branch 'dev' of https://github.com/potatoes-and-Is/hr_solution into dev
+[33m1d17b02[m feat: 부서 추가 프론트 수정 완료
+[33m9cadbaa[m feat: _ 없어서 team_position_permission_id으로 변경
+[33m39be73f[m feat: approval-docs-list-detail 브랜치에서 push
+[33m14629b2[m[33m ([m[1;31morigin/approval-docs-insert[m[33m)[m feat: 휴직 결재 문서 저장
+[33m276a819[m 직원 등록 오류 수정 (DTO 생성하여 적용)
+[33m2139071[m Merge branch 'dev' of https://github.com/potatoes-and-Is/hr_solution into dev
+[33m475b4e1[m[33m ([m[1;31morigin/department-delete[m[33m)[m Feat: 부서 추가 프론트 수정
+[33m22d0b0f[m[33m ([m[1;31morigin/view-permission[m[33m, [m[1;31morigin/employee-view[m[33m, [m[1;32memployee-view[m[33m)[m 버그 수정
+[33me6f5b0c[m[33m ([m[1;32mretirement-view[m[33m, [m[1;32memployment-debug[m[33m)[m 기능 옮김
+[33ma52e364[m 충돌 해결 #1
+[33m2c131ad[m chore: merge dev
+[33m7d845e8[m chore: merge dev
+[33m54cff88[m Merge branch 'vac-list-view' into dev
+[33m84140bc[m[33m ([m[1;31morigin/vac-list-view[m[33m)[m 휴가 신청 버튼 색상 변경
+[33m299fb26[m [feat] 결재문서 상태 승인되면 잔여휴가관리 테이블 휴가개수 수정하는 것 구현 완료 (결재 미구현이라 임시 컨트롤러와 페이지 만들어서 테스트함)
+[33me72fdde[m B Merge branch 'dev' into department-delete
+[33m1e073cb[m 부서 삭제
+[33mabcfcbe[m [Feat] login + depts
+[33m7ed673c[m attendanceFinal
+[33mf7728fe[m [Feat] login + detps
+[33m98752aa[m 결재문서 상태 승인 시 잔여휴가 테이블 차감 적용 서비스 함수 구현
+[33m867a691[m [feat] 나의 휴가 상세내역 목록 출력, 휴가 신청하기 모달 내 휴가종료일 자동 계산 이벤트 적용
+[33m4c09d9b[m Merge branch 'department-delete' into dev
+[33m90014f3[m 부서 삭제 추가
+[33m695a791[m ckeckOutTimeRecord
+[33maa6b0e4[m [feat] 나의 휴가 연도 드롭다운, 리스트 가져오기 위한 틀 형성
+[33m21a553a[m 부서 삭제
+[33m5ea0e95[m department-delete: merge 전 수정사항 임시 커밋
+[33mf02d47e[m [fix] 반차, 반반차 추가 위한 데이터 타입 수정 및 나의 휴가 페이지 문법 오류 수정
+[33mb3f6f8e[m dto id추가
+[33m264b3c7[m [feat] 휴가 신청하기 모달 - 결재 등록 요청 보내기
+[33m526baf4[m mergedev
+[33mf969178[m security추가
+[33mb1f0186[m 수정 사항 반영
+[33m78e8ccd[m [feat] 휴가 신청하기에서 휴가유형 출력하기 및 form 데이터 형식 수정
+[33m5c09d61[m record checkIn time
+[33m2e70a49[m[33m ([m[1;31morigin/department-post[m[33m)[m 부서추가하기
+[33m18b34bc[m 중간 저장
+[33m4ee58df[m 부서 추가하기
+[33m4994fa3[m 나의 휴가 페이지 - 휴가신청 모달 폼 생성 및 종료일 자동계산 JS 이벤트 구현
+[33mc30b8c9[m Merge branch 'login' into dev
+[33m10a1f55[m Merge branch 'dev' into attendance-view dev 브랜치의 최신 변경 사항을 attendance-view에 merge
+[33md2ea428[m attendance-record
+[33m82f3ab2[m 권한 가져오기 추가
+[33m857ea11[m DepPositionEmployeeId class delete
+[33mece9d87[m [fix] AttendanceFixReq JoinColumn 오류 수정
+[33mc5e782b[m[33m ([m[1;31morigin/vac-my-view[m[33m)[m Entity PK 타입 int로 변경, Enum 파일 생성, Entity 일부 수정
+[33md80c23a[m [feat] 나의 휴가 대시보드 조회 구현
+[33md74bbfd[m 나의 휴가 페이지 대시보드 가져오기 임시테스트
+[33me14623c[m [FIX] Entity명 수정
+[33m0c1ef58[m Entity 생성 완료(ApprovalExcutionHistory,ApprovalHistory,ApprovalLine) 및 Enum 한글 타입 getter 추가
+[33mc971752[m changeView
+[33m04ff407[m Entity 생성 - ApprovalDoc의 자식들인 AttendanceFixReq, LeaveReq, RetireReq / SupportDoc 생성
+[33m8af2991[m 로그인후 사원 + 직책 반가워요! 까지 추가
+[33mf5b5e53[m Entity 생성 - Attend, Language, Qualification, EmployeeLeave, Attend
+[33me515d29[m[33m ([m[1;31morigin/department-view[m[33m)[m 부서별 직원 목록 조회
+[33m634927c[m Entity 생성 - Education, VacationGrantHistory
+[33me0c0049[m 로그인 성공시 layout과 main에 사용자 이름까지 완료
+[33m0222088[m Entity 생성 - VacationReq
+[33m0e96a57[m[33m ([m[1;31morigin/approval-docs-list-detail[m[33m)[m feat: 결재 문서 상태 enum으로 변경
+[33mf09f583[m Entity 생성 - ApprovalDoc, DocType
+[33mf1a079d[m Entity 생성 - DeptPositionEmployee, TeamPositionPermission, UiPermission
+[33m9f7d624[m 부서 목록 조회
+[33m05fb89e[m Entity 생성 - TeamPosition(Enum 적용)
+[33mc3ce4f4[m Entity 생성 - Dept (self-join 고려)
+[33m1682e9c[m Entity 생성, Unique 제약 조건 적용
+[33m8c2c1f6[m Entity 생성
+[33m407881c[m feat: 결재 문서 상세 조회 구현 중
+[33mf967f2e[m Entity 생성 - Level, Employee, Career
+[33m2d9548f[m 로그아웃 까지 완료
+[33m18e70f7[m 로그인 구현 80% 완료
+[33m70573ea[m first commit
+[33m5155808[m first commit
+[33mb283839[m firstcommit
+[33m12cc570[m feat: 전자 결재 구현 진행 중
+[33m0d1da99[m 프로젝트 구조 설정 및 UI 기본 설정
+[33m84b7ecb[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m first commit
