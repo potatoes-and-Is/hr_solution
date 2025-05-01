@@ -220,15 +220,13 @@ public class ApprovalController {
         switch (approvalDetailDto.getDocTypeCode()) {
             case "LEAVE_REQUEST":
                 model.addAttribute("approvalDoc", approvalEmpLeaveService.findApprovalEmpLeaveById(approvalDocId));
-                break;
+                return "approval/mylistDetail";
             case "VACATION_REQUEST":
                 model.addAttribute("approvalDoc", approvalVacService.findApprovalVacById(approvalDocId));
-                break;
+                return "approval/mylistDetailVacation";
             default:
                 throw new IllegalArgumentException("결재 문서가 존재하지 않습니다.");
         }
-
-        return "approval/mylistDetail";
     }
 
     /* 승인/반려 버튼 눌렀을 때 처리 */
@@ -236,8 +234,7 @@ public class ApprovalController {
     @ResponseBody
     public ResponseEntity<?> processApproval(
             @PathVariable int approvalDocId,
-            @RequestBody ApprovalActionRequest request,
-            Authentication authentication) {
+            @RequestBody ApprovalActionRequest request) {
 
         int approverId = SecurityUtil.getCurrentEmployeeId();
         approvalService.processApprovalAction(approvalDocId, approverId, request);

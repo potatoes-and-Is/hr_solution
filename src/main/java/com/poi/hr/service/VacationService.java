@@ -137,12 +137,12 @@ public class VacationService {
             throw new RuntimeException("휴가신청 내역 없음");
         }
 
+        int year = req.getVacReqStartDate().getYear();
         VacationBalance balance = vacationRepository
                 .findVacationBalance(
                     approvalDoc.getEmployee().getEmployeeId(),
                     req.getVacationType().getVacTypeId(),
-                        req.getVacReqStartDate().getYear()
-
+                    year
                 );
 
         if (balance == null) {

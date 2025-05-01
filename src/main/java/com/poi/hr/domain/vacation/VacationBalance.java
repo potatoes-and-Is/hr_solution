@@ -29,7 +29,7 @@ public class VacationBalance {
     private Double remainVacCount;
 
     @Column(name = "year")
-    private Integer year;
+    private int year;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
