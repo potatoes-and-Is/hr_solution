@@ -187,23 +187,4 @@ public class Employee {
     public void setDepPositionEmployees(List<DepPositionEmployee> depPositionEmployees) {
         this.depPositionEmployees = depPositionEmployees;
     }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "employeeId=" + employeeId +
-                ", employeeName='" + employeeName + '\'' +
-                ", gender='" + gender + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", employeeIdentity='" + employeeIdentity + '\'' +
-                ", employeeStatus='" + employeeStatus + '\'' +
-                ", hireDate=" + hireDate +
-                ", retireDate=" + retireDate +
-                ", employeeNumber='" + employeeNumber + '\'' +
-                ", level=" + level +
-                ", depPositionEmployees=" + depPositionEmployees +
-                '}';
-    }
 }

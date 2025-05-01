@@ -1,5 +1,8 @@
 package com.poi.hr.service;
 
+import com.poi.hr.domain.employee.Employee;
+import com.poi.hr.domain.vacation.*;
+import com.poi.hr.dto.approval.ApprovalEmpLeaveSaveDto;
 import com.poi.hr.domain.dept.Dept;
 import com.poi.hr.domain.vacation.ApprovalDoc;
 import com.poi.hr.domain.vacation.VacationBalance;
@@ -8,7 +11,14 @@ import com.poi.hr.domain.vacation.VacationReq;
 import com.poi.hr.dto.vacation.DepartmentVacationDto;
 import com.poi.hr.dto.vacation.MyVacationListDTO;
 import com.poi.hr.dto.vacation.VacationBalanceDTO;
+import com.poi.hr.dto.vacation.VacationSaveDTO;
 import com.poi.hr.dto.vacation.VacationTypeResDTO;
+import com.poi.hr.repository.EmployeeRepository;
+import com.poi.hr.repository.approval.DocTypeRepository;
+import com.poi.hr.repository.vacation.VacationGrantHistoryRepository;
+import com.poi.hr.repository.vacation.VacationRepository;
+import com.poi.hr.repository.vacation.VacationReqRepository;
+import com.poi.hr.repository.vacation.VacationTypeRepository;
 import com.poi.hr.repository.DeptRepository;
 import com.poi.hr.repository.vacation.*;
 import org.springframework.stereotype.Service;
@@ -26,13 +36,17 @@ public class VacationService {
     private final VacationGrantHistoryRepository vacationGrantHistoryRepository;
     private final VacationReqRepository vacationReqRepository;
     private final DeptRepository deptRepository;
+    private final EmployeeRepository employeeRepository;
+    private final DocTypeRepository docTypeRepository;
 
-    public VacationService(VacationRepository vacationRepository, VacationTypeRepository vacationTypeRepository, VacationGrantHistoryRepository vacationGrantHistoryRepository, VacationReqRepository vacationReqRepository, DeptRepository deptRepository) {
+    public VacationService(VacationRepository vacationRepository, VacationTypeRepository vacationTypeRepository, DeptRepository deptRepository, VacationGrantHistoryRepository vacationGrantHistoryRepository, VacationReqRepository vacationReqRepository, EmployeeRepository employeeRepository, DocTypeRepository docTypeRepository) {
         this.vacationRepository = vacationRepository;
         this.vacationTypeRepository = vacationTypeRepository;
         this.vacationGrantHistoryRepository = vacationGrantHistoryRepository;
         this.vacationReqRepository = vacationReqRepository;
         this.deptRepository = deptRepository;
+        this.employeeRepository = employeeRepository;
+        this.docTypeRepository = docTypeRepository;
     }
 
     //대시보드 - 휴가정보 가져오기
@@ -127,7 +141,7 @@ public class VacationService {
                 .findVacationBalance(
                     approvalDoc.getEmployee().getEmployeeId(),
                     req.getVacationType().getVacTypeId(),
-                    req.getVacReqStartDate().getYear()
+                        req.getVacReqStartDate().getYear()
 
                 );
 
@@ -141,6 +155,10 @@ public class VacationService {
 
     public List<Dept> getAllDepartments() {
         return deptRepository.findAll();  // 반드시 데이터가 있어야 함
+    }
+    /* 휴가 유형 전체 조회 */
+    public List<VacationType> findAllVacationTypes() {
+        return vacationTypeRepository.findAll();
     }
 
     public List<DepartmentVacationDto> getApprovedVacationsByDeptId(Integer deptId) {
@@ -156,7 +174,37 @@ public class VacationService {
                 .collect(Collectors.toList());
     }
 
-//    public List<DepartmentVacationDto> getVacationsByDepartment(Integer deptId) {
+    /* 휴가 유형 조회 */
+    public VacationType findById(int vacTypeId) {
+        return vacationTypeRepository.findById(vacTypeId).orElse(null);
+    }
+
+
+    /* 휴가 결재 문서 저장 */
+    @Transactional
+    public void saveApprovalVacReq(VacationSaveDTO vacationSaveDTO, int loginUserId) {
+        Employee employee = employeeRepository.findById(loginUserId).orElse(null);
+        DocType docType = docTypeRepository.findByDocTypeCode(vacationSaveDTO.getDocTypeCode());
+
+        VacationReq vacationReq = new VacationReq(
+                employee,
+                docType,
+                vacationSaveDTO.getApprovalTitle(),
+                vacationSaveDTO.getApprovalContent(),
+                vacationSaveDTO.getApprovalReason(),
+
+                vacationSaveDTO.getVacationType(),
+                vacationSaveDTO.getVacReqStartDate(),
+                vacationSaveDTO.getVacReqEndDate(),
+                vacationSaveDTO.getVacUseDays()
+        );
+
+        vacationReqRepository.save(vacationReq);
+
+        vacationSaveDTO.getApprovalLineList().get(0).setApprovalDocId(vacationReq.getApprovalDocId());
+    }
+
+    //    public List<DepartmentVacationDto> getVacationsByDepartment(Integer deptId) {
 //        List<Object[]> rawDataList = employeeLeaveRepository.findVacationDataByDeptId(deptId);
 //        List<DepartmentVacationDto> dtos = new ArrayList<>();
 //
@@ -171,7 +219,4 @@ public class VacationService {
 //
 //        return dtos;
 //    }
-
-
-
 }

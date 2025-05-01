@@ -4,7 +4,6 @@ import com.poi.hr.domain.vacation.ApprovalDoc;
 import com.poi.hr.domain.vacation.DocType;
 import com.poi.hr.domain.vacation.LeaveReq;
 import com.poi.hr.domain.employee.Employee;
-import com.poi.hr.domain.vacation.enums.LeaveType;
 import com.poi.hr.dto.approval.ApprovalEmpLeaveResponseDto;
 import com.poi.hr.dto.approval.ApprovalEmpLeaveSaveDto;
 import com.poi.hr.repository.approval.ApprovalRepository;
@@ -54,7 +53,7 @@ public class ApprovalEmpLeaveService {
         );
     }
 
-    /* 휴직 데이터 저장 */
+    /* 휴직 결재 문서 저장 */
     @Transactional
     public void saveApprovalEmpLeave(ApprovalEmpLeaveSaveDto approvalEmpLeaveSaveDto, int loginUserId) {
         Employee employee = employeeRepository.findById(loginUserId).orElse(null);
@@ -75,7 +74,5 @@ public class ApprovalEmpLeaveService {
         leaveReqRepository.save(leaveReq);
 
         approvalEmpLeaveSaveDto.getApprovalLineList().get(0).setApprovalDocId(leaveReq.getApprovalDocId());
-
     }
-
 }
