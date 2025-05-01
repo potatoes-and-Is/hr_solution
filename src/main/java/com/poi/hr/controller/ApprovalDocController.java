@@ -17,7 +17,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/approval")
-public class ApprovalController {
+public class ApprovalDocController {
 
     @Autowired
     private ApprovalService approvalService; // ApprovalService 사용
