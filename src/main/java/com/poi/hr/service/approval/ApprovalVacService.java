@@ -5,6 +5,7 @@ import com.poi.hr.domain.vacation.VacationReq;
 import com.poi.hr.dto.approval.ApprovalVacResponseDto;
 import com.poi.hr.repository.approval.ApprovalRepository;
 import com.poi.hr.repository.vacation.VacationReqRepository;
+import com.poi.hr.service.VacationService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,14 @@ public class ApprovalVacService {
 
     private final ApprovalRepository approvalRepository;
     private final VacationReqRepository vacationReqRepository;
+    private final VacationService vacationService;
 
-    public ApprovalVacService(ApprovalRepository approvalRepository, VacationReqRepository vacationReqRepository) {
+    public ApprovalVacService(ApprovalRepository approvalRepository,
+                              VacationReqRepository vacationReqRepository,
+                              VacationService vacationService) {
         this.approvalRepository = approvalRepository;
         this.vacationReqRepository = vacationReqRepository;
+        this.vacationService = vacationService;
     }
 
     /* 휴가 신청 조회 */
@@ -41,5 +46,10 @@ public class ApprovalVacService {
                 vacationReq.getVacReqEndDate(),
                 vacationReq.getVacUseDays()
         );
+    }
+
+    /* 휴가 차감 처리 연결 */
+    public void processApprovedVacation(ApprovalDoc doc) {
+        vacationService.processApprovedVacation(doc);
     }
 }

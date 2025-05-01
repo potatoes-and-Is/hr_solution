@@ -1,6 +1,5 @@
 package com.poi.hr.service.approval;
 
-import com.poi.hr.auth.model.AuthDetails;
 import com.poi.hr.domain.vacation.ApprovalDoc;
 import com.poi.hr.domain.vacation.ApprovalHistory;
 import com.poi.hr.domain.vacation.ApprovalLine;
@@ -31,13 +30,18 @@ public class ApprovalService {
     private final ApprovalLineRepository approvalLineRepository;
     private final ApprovalHistoryRepository approvalHistoryRepository;
     private final ApprovalEmpLeaveService approvalEmpLeaveService;
+    private final ApprovalVacService approvalVacService;
 
-
-    public ApprovalService(ApprovalRepository approvalRepository, ApprovalLineRepository approvalLineRepository, ApprovalHistoryRepository approvalHistoryRepository, ApprovalEmpLeaveService approvalEmpLeaveService) {
+    public ApprovalService(ApprovalRepository approvalRepository,
+                           ApprovalLineRepository approvalLineRepository,
+                           ApprovalHistoryRepository approvalHistoryRepository,
+                           ApprovalEmpLeaveService approvalEmpLeaveService,
+                           ApprovalVacService approvalVacService) {
         this.approvalRepository = approvalRepository;
         this.approvalLineRepository = approvalLineRepository;
         this.approvalHistoryRepository = approvalHistoryRepository;
         this.approvalEmpLeaveService = approvalEmpLeaveService;
+        this.approvalVacService = approvalVacService;
     }
 
     /* 모든 결재문서 조회 */
@@ -140,8 +144,6 @@ public class ApprovalService {
             }
         }
 
-        System.out.println("다음 결재자 있는지 확인했나아아아아아");
-
         // 5. 결재문서 상태 변경
         ApprovalDoc doc = line.getApprovalDoc();
         if (request.isApproved()) {
@@ -152,8 +154,8 @@ public class ApprovalService {
                 // 6. 자식 테이블 후처리
                 switch (doc.getDocType().getDocTypeCode()) {
                     case "LEAVE_REQUEST" -> approvalEmpLeaveService.processApprovedLeave(doc);
-//                    case "VACATION_REQUEST" -> approvalVacService.processApprovedVacation(doc);
-                    // case "ATTENDANCE_FIX_REQUEST" -> attendanceFixService.applyFix(doc);
+                    case "VACATION_REQUEST" -> approvalVacService.processApprovedVacation(doc);
+//                     case "ATTENDANCE_FIX_REQUEST" -> attendanceFixService.applyFix(doc);
 
                 }
             } else {
