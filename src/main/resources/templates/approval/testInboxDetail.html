@@ -104,12 +104,11 @@
             body: JSON.stringify({
                 approved: isApproved,
                 approvalComment: comment,
-                approvalRole: "2차"
             })
         }).then(res => {
             if (res.ok) {
                 alert("결재가 처리되었습니다.");
-                location.href = "/approval/list"; // inbox 페이지 경로로 수정 필요
+                location.href = "/approval/inboxList";
             } else {
                 alert("결재 처리 중 오류가 발생했습니다.")
             }

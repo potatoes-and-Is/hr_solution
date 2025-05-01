@@ -33,6 +33,9 @@ public class ApprovalLine {
     @Column(name = "created_at", nullable = false, insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "image_save", columnDefinition = "LONGTEXT")
+    private String imageSave;
+
     public ApprovalLine() {
 
     }
@@ -56,9 +59,12 @@ public class ApprovalLine {
         return employee;
     }
 
-
     public int getApprovalLineOrder() {
         return approvalLineOrder;
+    }
+
+    public String getImageSave() {
+        return imageSave;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -85,4 +91,7 @@ public class ApprovalLine {
         this.approvalLineOrder = approvalLineOrder;
     }
 
+    public void setImageSave(String imageSave) {
+        this.imageSave = imageSave;
+    }
 }

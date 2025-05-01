@@ -30,11 +30,14 @@ public class ApprovalService {
     private final ApprovalRepository approvalRepository;
     private final ApprovalLineRepository approvalLineRepository;
     private final ApprovalHistoryRepository approvalHistoryRepository;
+    private final ApprovalEmpLeaveService approvalEmpLeaveService;
 
-    public ApprovalService(ApprovalRepository approvalRepository, ApprovalLineRepository approvalLineRepository, ApprovalHistoryRepository approvalHistoryRepository) {
+
+    public ApprovalService(ApprovalRepository approvalRepository, ApprovalLineRepository approvalLineRepository, ApprovalHistoryRepository approvalHistoryRepository, ApprovalEmpLeaveService approvalEmpLeaveService) {
         this.approvalRepository = approvalRepository;
         this.approvalLineRepository = approvalLineRepository;
         this.approvalHistoryRepository = approvalHistoryRepository;
+        this.approvalEmpLeaveService = approvalEmpLeaveService;
     }
 
     /* 모든 결재문서 조회 */
@@ -97,29 +100,25 @@ public class ApprovalService {
                 .findApprovalLine(approvalDocId, approverId)
                 .orElseThrow(() -> new RuntimeException("결재라인 정보 없음"));
 
-        System.out.println("결재라인 정보 가져왔다아아아" + line);
-
         // 2. 결재의견 저장
+        String approvalRole = getRoleFromOrder(line.getApprovalLineOrder());
         ApprovalHistory history = new ApprovalHistory();
         history.setApprovalLine(line);
-        history.setApprovalRole(request.getApprovalRole()); // 예: "2차승인자"
         history.setApprovalComment(request.getApprovalComment());
-        approvalHistoryRepository.save(history);
+        history.setApprovalRole(approvalRole);
 
-        System.out.println("저장되었꼬오오오오오오오오결재의견저장후");
+        approvalHistoryRepository.save(history);
 
         // 3. 현재 결재자 상태 변경
         line.setApprovalStatus(request.isApproved() ? APPROVED : REJECTED);
         approvalLineRepository.save(line);
-
-        System.out.println("현재결재자 상태 변경되었나아아아아아아");
 
         // 4. 다음 결재자가 있는지 확인
         List<ApprovalLine> lines = approvalLineRepository.findLinesByApprovalDocIdOrdered(approvalDocId);
 
         boolean isLastApprover = true;
         for (ApprovalLine l : lines) {
-            if (l.getApprovalLineOrder() > line.getApprovalLineOrder() && l.getApprovalStatus().equals("pending")) {
+            if (l.getApprovalLineOrder() > line.getApprovalLineOrder() && l.getApprovalStatus() ==  ApprovalDocStatus.PENDING) {
                 isLastApprover = false;
                 break;
             }
@@ -134,10 +133,13 @@ public class ApprovalService {
                 doc.setApprovalStatus(APPROVED);
                 doc.setApprovalDate(LocalDate.now());
 
-                // ✅ 6. 자식 테이블 후처리
-                // if (doc.getDocType().getDocTypeCode().equals("LEAVE_REQUEST")) {
-                //     approvalEmpLeaveService.processApprovedLeave(doc);
-                // }
+                // 6. 자식 테이블 후처리
+                switch (doc.getDocType().getDocTypeCode()) {
+                    case "LEAVE_REQUEST" -> approvalEmpLeaveService.processApprovedLeave(doc);
+//                    case "VACATION_REQUEST" -> approvalVacService.processApprovedVacation(doc);
+                    // case "ATTENDANCE_FIX_REQUEST" -> attendanceFixService.applyFix(doc);
+
+                }
             } else {
                 doc.setApprovalStatus(IN_PROGRESS);
             }
@@ -149,6 +151,16 @@ public class ApprovalService {
 
         System.out.println("다 저장되었찌로오오오오오");
 
+    }
+
+    // 결재 순서 → 역할 매핑
+    private String getRoleFromOrder(int order) {
+        return switch (order) {
+            case 1 -> "1차승인자";
+            case 2 -> "2차승인자";
+            case 3 -> "3차승인자";
+            default -> order + "차승인자";
+        };
     }
 
 }

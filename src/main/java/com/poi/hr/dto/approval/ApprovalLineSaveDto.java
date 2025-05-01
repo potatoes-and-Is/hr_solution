@@ -8,7 +8,7 @@ public class ApprovalLineSaveDto {
     public ApprovalLineSaveDto() {
     }
 
-    public ApprovalLineSaveDto(int approvalDocId, int employeeId, String approvalRole) {
+    public ApprovalLineSaveDto(int approvalDocId, int employeeId) {
         this.approvalDocId = approvalDocId;
         this.employeeId = employeeId;
     }

@@ -202,7 +202,7 @@ public class Employee {
                 ", retireDate=" + retireDate +
                 ", employeeNumber='" + employeeNumber + '\'' +
                 ", level=" + level +
-                ", depPositionEmployees=" + depPositionEmployees +
+                ", depPositionEmployees=" + (depPositionEmployees != null ? depPositionEmployees.getClass() : null) +
                 '}';
     }
 }
