@@ -90,7 +90,8 @@ public class ApprovalController {
 
     @GetMapping("/list")
     public String showApprovalList(Model model) {
-        List<ApprovalListDto> approvalList = approvalService.findAllApprovals();
+        int currentUserId = SecurityUtil.getCurrentEmployeeId();
+        List<ApprovalListDto> approvalList = approvalService.findApprovalsByWriter(currentUserId);
         model.addAttribute("approvalList", approvalList);
         return "approval/list";
     }

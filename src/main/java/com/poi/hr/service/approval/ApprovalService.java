@@ -163,4 +163,17 @@ public class ApprovalService {
         };
     }
 
+    /* 결재 목록 출력 (내가 작성한 것만) */
+    public List<ApprovalListDto> findApprovalsByWriter(int writerId) {
+        return approvalRepository.findAll().stream()
+                .filter(doc -> doc.getEmployee().getEmployeeId() == writerId)
+                .map(doc -> new ApprovalListDto(
+                        doc.getApprovalDocId(),
+                        doc.getDocType().getDocTypeName(),
+                        doc.getApprovalTitle(),
+                        doc.getCreatedAt(),
+                        doc.getApprovalDate(),
+                        doc.getApprovalStatus()
+                )).collect(Collectors.toList());
+    }
 }
