@@ -37,15 +37,21 @@ public class EmployeeLeave {
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "approval_doc_id", nullable = false)
+    private ApprovalDoc approvalDoc;
+
     public EmployeeLeave() {
+
     }
 
-    public EmployeeLeave(String leaveReason, LocalDate leaveStartDate, LocalDate leaveEndDate, String updatedBy, Employee employee) {
+    public EmployeeLeave(String leaveReason, LocalDate leaveStartDate, LocalDate leaveEndDate, String updatedBy, Employee employee, ApprovalDoc approvalDoc) {
         this.leaveReason = leaveReason;
         this.leaveStartDate = leaveStartDate;
         this.leaveEndDate = leaveEndDate;
         this.updatedBy = updatedBy;
         this.employee = employee;
+        this.approvalDoc = approvalDoc;
     }
 
     public int getLeaveId() {
@@ -80,6 +86,10 @@ public class EmployeeLeave {
         return employee;
     }
 
+    public ApprovalDoc getApprovalDoc() {
+        return approvalDoc;
+    }
+
     public void setLeaveReason(String leaveReason) {
         this.leaveReason = leaveReason;
     }
@@ -100,6 +110,10 @@ public class EmployeeLeave {
         this.employee = employee;
     }
 
+    public void setApprovalDoc(ApprovalDoc approvalDoc) {
+        this.approvalDoc = approvalDoc;
+    }
+
     @Override
     public String toString() {
         return "EmployeeLeave{" +
@@ -111,6 +125,7 @@ public class EmployeeLeave {
                 ", updatedAt=" + updatedAt +
                 ", createdAt=" + createdAt +
                 ", employeeId=" + (employee != null ? employee.getEmployeeId() : null) +
+                ", approvalDocId=" + (approvalDoc != null ? approvalDoc.getApprovalDocId() : null) +
                 '}';
     }
 }
