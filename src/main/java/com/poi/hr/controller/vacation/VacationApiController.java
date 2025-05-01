@@ -1,7 +1,9 @@
 package com.poi.hr.controller.vacation;
 
+import com.poi.hr.dto.vacation.VacationResponseDTO;
 import com.poi.hr.dto.vacation.VacationTypeResDTO;
 import com.poi.hr.service.VacationService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/poihr/api/vacation")
+@RequestMapping("/api/vacation")
 public class VacationApiController {
 
     private final VacationService vacationService;
@@ -23,11 +25,15 @@ public class VacationApiController {
         return vacationService.getAllVacationTypes();
     }
 
-    @PostMapping("/vac-req/save")
-    public ResponseEntity<String> saveApprovalDocument(@RequestBody Map<String, Object> request) {
-
-        //결재 등록하기 함수 호출 필요
-
-        return ResponseEntity.ok("결재 문서 올리기 완료");
+    /* 세션에 모달 휴가 정보 저장 */
+    @PostMapping("/temp/save-to-session")
+    public ResponseEntity<Void> saveTempToSession(@RequestBody VacationResponseDTO vacationResponseDTO, HttpSession session) {
+        session.setAttribute("vacationResponseDTO", vacationResponseDTO);
+        return ResponseEntity.ok().build();
     }
+
+//    @PostMapping("/save/vac-req")
+//    public ResponseEntity<VacationResponseDTO> saveApprovalDocument(@RequestBody VacationResponseDTO vacationResponseDTO) {
+//        return ResponseEntity.ok(vacationResponseDTO);
+//    }
 }

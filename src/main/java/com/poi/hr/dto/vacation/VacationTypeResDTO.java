@@ -17,4 +17,12 @@ public class VacationTypeResDTO {
     public String getVacTypeName() {
         return vacTypeName;
     }
+
+    public void setVacTypeId(int vacTypeId) {
+        this.vacTypeId = vacTypeId;
+    }
+
+    public void setVacTypeName(String vacTypeName) {
+        this.vacTypeName = vacTypeName;
+    }
 }
