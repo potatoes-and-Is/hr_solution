@@ -3,12 +3,14 @@ package com.poi.hr.service.approval;
 import com.poi.hr.domain.vacation.ApprovalDoc;
 import com.poi.hr.dto.approval.ApprovalDetailDto;
 import com.poi.hr.dto.approval.ApprovalListDto;
+import com.poi.hr.dto.approval.ApprovalMyListDto;
 import com.poi.hr.repository.approval.ApprovalRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ApprovalService {
@@ -51,5 +53,20 @@ public class ApprovalService {
                 approvalDoc.getApprovalContent(),
                 approvalDoc.getApprovalReason()
         );
+    }
+
+    /* 내게 온 결재문서 목록 조회 */
+    public List<ApprovalMyListDto> findMyApprovals(int currentUserId) {
+        return approvalRepository.findAll().stream()
+                .filter(doc -> doc.getEmployee().getEmployeeId() == currentUserId)
+                .map(doc -> new ApprovalMyListDto(
+                        doc.getApprovalDocId(),
+                        doc.getDocType().getDocTypeName(),
+                        doc.getApprovalTitle(),
+                        doc.getEmployee().getEmployeeName(),
+                        doc.getCreatedAt(),
+                        doc.getApprovalStatus()
+                ))
+                .collect(Collectors.toList());
     }
 }

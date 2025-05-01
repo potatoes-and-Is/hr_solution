@@ -4,6 +4,9 @@ import java.time.LocalTime;
 
 public class CheckOutDTO {
 
+    public CheckOutDTO() {
+    }
+
     private LocalTime checkOutTime = LocalTime.now();
 
     public CheckOutDTO(LocalTime checkOutTime) {

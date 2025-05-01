@@ -92,7 +92,7 @@ public class ApprovalController {
     }
 
     @GetMapping("/detail/{id}")
-    public String showApprovalDetail(Model model, @PathVariable int id) {
+    public String showApprovalDetail(Model model, @PathVariable("id") int id) {
         ApprovalDetailDto approvalDetailDto = approvalService.findById(id);
 
         switch (approvalDetailDto.getDocTypeCode()) {
@@ -108,4 +108,13 @@ public class ApprovalController {
 
         return "approval/detail";
     }
+
+    @GetMapping("/mylist")
+    public String showMyApprovalList(Model model) {
+        int currentUserId = 1;
+        List<ApprovalMyListDto> approvalMyList = approvalService.findMyApprovals(currentUserId);
+        model.addAttribute("approvalMyList", approvalMyList);
+        return "approval/mylist";
+    }
+
 }
