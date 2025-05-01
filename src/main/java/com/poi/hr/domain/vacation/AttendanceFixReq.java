@@ -11,8 +11,8 @@ import java.time.LocalTime;
         name = "Attendance_fix_reqs",
         uniqueConstraints = {
                 @UniqueConstraint(
-                    name = "uq_attendance_fix_req_attend_id",
-                    columnNames = {"attend_id"}
+                        name = "uq_attendance_fix_req_attend_id",
+                        columnNames = {"attend_id"}
                 )
         }
 )
@@ -32,8 +32,9 @@ public class AttendanceFixReq extends ApprovalDoc {
 
     }
 
-    public AttendanceFixReq(Employee employee, DocType docType, String approvalTitle, String approvalContent, String approvalReason, LocalTime reqCheckInTime, LocalTime reqCheckOutTime) {
+    public AttendanceFixReq(Employee employee, DocType docType, Attend attend, String approvalTitle, String approvalContent, String approvalReason, LocalTime reqCheckInTime, LocalTime reqCheckOutTime) {
         super(employee, docType, approvalTitle, approvalContent, approvalReason);
+        this.attend = attend;
         this.reqCheckInTime = reqCheckInTime;
         this.reqCheckOutTime = reqCheckOutTime;
     }

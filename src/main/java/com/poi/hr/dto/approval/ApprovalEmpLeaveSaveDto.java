@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ApprovalEmpLeaveSaveDto {
 
-    private String docType;
+    private String docTypeCode;
     private String approvalTitle;
     private String approvalContent;
     private String approvalReason;
@@ -20,7 +20,7 @@ public class ApprovalEmpLeaveSaveDto {
     }
 
     public ApprovalEmpLeaveSaveDto(String docType, String approvalTitle, String approvalContent, String approvalReason, LocalDate leaveStartDate, LocalDate leaveEndDate, LeaveType leaveType, List<ApprovalLineSaveDto> approvalLineList) {
-        this.docType = docType;
+        this.docTypeCode = docType;
         this.approvalTitle = approvalTitle;
         this.approvalContent = approvalContent;
         this.approvalReason = approvalReason;
@@ -30,8 +30,8 @@ public class ApprovalEmpLeaveSaveDto {
         this.approvalLineList = approvalLineList;
     }
 
-    public String getDocType() {
-        return docType;
+    public String getDocTypeCode() {
+        return docTypeCode;
     }
 
     public String getApprovalTitle() {
@@ -62,8 +62,8 @@ public class ApprovalEmpLeaveSaveDto {
         return approvalLineList;
     }
 
-    public void setDocType(String docType) {
-        this.docType = docType;
+    public void setDocTypeCode(String docTypeCode) {
+        this.docTypeCode = docTypeCode;
     }
 
     public void setApprovalTitle(String approvalTitle) {

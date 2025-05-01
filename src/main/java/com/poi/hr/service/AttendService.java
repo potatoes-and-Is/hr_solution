@@ -4,6 +4,7 @@ import com.poi.hr.domain.attendance.Attend;
 import com.poi.hr.domain.attendance.AttendStatus;
 import com.poi.hr.domain.employee.Employee;
 import com.poi.hr.dto.AttendDTO;
+import com.poi.hr.dto.approval.ApprovalFixAttendSaveDTO;
 import com.poi.hr.repository.AttendRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -121,4 +122,5 @@ public class AttendService {
 
         return saveAttendList;
     }
+
 }
