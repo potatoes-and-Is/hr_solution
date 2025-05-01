@@ -35,7 +35,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/login", "/auth/fail").permitAll()
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/auth/login", "/auth/fail").permitAll()
                 .requestMatchers("/").hasAnyAuthority(
                         Arrays.stream(TeamPositionRole.values())
                                 .map(TeamPositionRole::name)
