@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
 <head>
+    <title>결재 상세 조회</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>결재 상세 조회</title>
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
@@ -23,13 +22,13 @@
             border-radius: 0.35rem;
             padding: 30px;
             position: relative;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58,59,69,0.15);
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 120px;
+            margin-top: 30px;
         }
 
         td, th {
@@ -71,13 +70,19 @@
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     </th:block>
 </head>
-<body>
 
+<body>
 <div layout:fragment="content">
     <form>
         <div class="form-container">
             <h2 style="color:#4e73df; text-align:center; margin-bottom:30px;">휴직 결재 문서</h2>
             <table>
+                <tr>
+                    <th>결재번호</th>
+                    <td>
+                        <input type="text" id="approvalDocId" th:value="${approvalDoc.approvalDocId}" readonly>
+                    </td>
+                </tr>
                 <tr>
                     <th>문서유형</th>
                     <td><input type="text" th:value="${approvalDoc.docTypeName}" readonly></td>
@@ -108,8 +113,9 @@
                             <option th:text="${approvalDoc.leaveType}"></option>
                         </select>
                     </td>
-                </tr>1
+                </tr>
             </table>
+
             <div class="mt-4">
                 <label for="comment" style="font-weight: bold;">코멘트</label>
                 <textarea id="comment" name="comment" rows="4" class="form-control" placeholder="의견을 작성하세요..."></textarea>
@@ -130,7 +136,7 @@
         const rejectBtn = document.getElementById('rejectBtn');
 
         function sendApprovalAction(isApproved) {
-            const approvalDocId = document.getElementById('approvalDocId')?.value; // null safe
+            const approvalDocId = document.getElementById('approvalDocId').value;
             const comment = document.getElementById('comment').value;
 
             if (!approvalDocId) {
@@ -161,6 +167,5 @@
         rejectBtn.addEventListener('click', () => sendApprovalAction(false));
     </script>
 </th:block>
-
 </body>
 </html>

@@ -2,7 +2,6 @@ package com.poi.hr.service.approval;
 
 import com.poi.hr.domain.vacation.ApprovalDoc;
 import com.poi.hr.domain.vacation.DocType;
-import com.poi.hr.domain.vacation.EmployeeLeave;
 import com.poi.hr.domain.vacation.LeaveReq;
 import com.poi.hr.domain.employee.Employee;
 import com.poi.hr.dto.approval.ApprovalEmpLeaveResponseDto;

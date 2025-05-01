@@ -261,18 +261,18 @@ public class ApprovalController {
 //    }
 
 
-    @GetMapping("/mylist/{id}")
-    public String showMylistDetail(@PathVariable("id") int id, Model model) {
-        ApprovalEmpLeaveResponseDto dto = approvalEmpLeaveService.findApprovalEmpLeaveById(id);  // ← 여기 수정
-
-        model.addAttribute("docType", dto.getDocTypeName());
-        model.addAttribute("approvalTitle", dto.getApprovalTitle());
-        model.addAttribute("approvalContent", dto.getApprovalContent());
-        model.addAttribute("approvalReason", dto.getApprovalReason());
-        model.addAttribute("leaveStartDate", dto.getVacReqStart());
-        model.addAttribute("leaveEndDate", dto.getVacReqEnd());
-        model.addAttribute("leaveType", dto.getLeaveType());
-
-        return "approval/mylistDetail";
-    }
+//    @GetMapping("/mylist/{id}")
+//    public String showMylistDetail(@PathVariable("id") int id, Model model) {
+//        ApprovalEmpLeaveResponseDto dto = approvalEmpLeaveService.findApprovalEmpLeaveById(id);  // ← 여기 수정
+//
+//        model.addAttribute("docType", dto.getDocTypeName());
+//        model.addAttribute("approvalTitle", dto.getApprovalTitle());
+//        model.addAttribute("approvalContent", dto.getApprovalContent());
+//        model.addAttribute("approvalReason", dto.getApprovalReason());
+//        model.addAttribute("leaveStartDate", dto.getVacReqStart());
+//        model.addAttribute("leaveEndDate", dto.getVacReqEnd());
+//        model.addAttribute("leaveType", dto.getLeaveType());
+//
+//        return "approval/mylistDetail";
+//    }
  }

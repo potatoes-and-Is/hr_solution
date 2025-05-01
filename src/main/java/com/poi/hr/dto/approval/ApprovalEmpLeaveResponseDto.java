@@ -4,34 +4,47 @@ import java.time.LocalDate;
 
 public class ApprovalEmpLeaveResponseDto extends ApprovalDetailDto {
 
-    private LocalDate vacReqStart;
-    private LocalDate vacReqEnd;
+    private LocalDate leaveStartDate;
+    private LocalDate leaveEndDate;
     private String leaveType;
 
     public ApprovalEmpLeaveResponseDto() {
     }
 
-    public ApprovalEmpLeaveResponseDto(int approvalDocId, String docTypeCode, String docTypeName, String approvalTitle, LocalDate createdAt, LocalDate approvalDate, String approvalStatus, String approvalContent, String approvalReason, LocalDate vacReqStart, LocalDate vacReqEnd, String leaveType) {
+    public ApprovalEmpLeaveResponseDto(
+            int approvalDocId,
+            String docTypeCode,
+            String docTypeName,
+            String approvalTitle,
+            LocalDate createdAt,
+            LocalDate approvalDate,
+            String approvalStatus,
+            String approvalContent,
+            String approvalReason,
+            LocalDate leaveStartDate,
+            LocalDate leaveEndDate,
+            String leaveType
+    ) {
         super(approvalDocId, docTypeCode, docTypeName, approvalTitle, createdAt, approvalDate, approvalStatus, approvalContent, approvalReason);
-        this.vacReqStart = vacReqStart;
-        this.vacReqEnd = vacReqEnd;
+        this.leaveStartDate = leaveStartDate;
+        this.leaveEndDate = leaveEndDate;
         this.leaveType = leaveType;
     }
 
-    public LocalDate getVacReqStart() {
-        return vacReqStart;
+    public LocalDate getLeaveStartDate() {
+        return leaveStartDate;
     }
 
-    public void setVacReqStart(LocalDate vacReqStart) {
-        this.vacReqStart = vacReqStart;
+    public void setLeaveStartDate(LocalDate leaveStartDate) {
+        this.leaveStartDate = leaveStartDate;
     }
 
-    public LocalDate getVacReqEnd() {
-        return vacReqEnd;
+    public LocalDate getLeaveEndDate() {
+        return leaveEndDate;
     }
 
-    public void setVacReqEnd(LocalDate vacReqEnd) {
-        this.vacReqEnd = vacReqEnd;
+    public void setLeaveEndDate(LocalDate leaveEndDate) {
+        this.leaveEndDate = leaveEndDate;
     }
 
     public String getLeaveType() {

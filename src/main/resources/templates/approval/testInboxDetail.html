@@ -64,11 +64,11 @@
             </div>
             <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
                 <label for="vacReqStart" class="mr-2 mb-0"><strong>휴직시작일 :</strong></label>
-                <input type="text" class="form-control-plaintext mr-2" id="vacReqStart" th:value="${approvalDoc.vacReqStart}" disabled>
+                <input type="text" class="form-control-plaintext mr-2" id="vacReqStart" th:value="${approvalDoc.leaveStartDate}" disabled>
             </div>
             <div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
                 <label for="vacReqEnd" class="mr-2 mb-0"><strong>휴직종료일 :</strong></label>
-                <input type="text" class="form-control-plaintext mr-2" id="vacReqEnd" th:value="${approvalDoc.vacReqEnd}" disabled>
+                <input type="text" class="form-control-plaintext mr-2" id="vacReqEnd" th:value="${approvalDoc.leaveEndDate}" disabled>
             </div>
             <!--<div class="d-flex align-items-center mb-2" style="white-space: nowrap;">
                 <label for="vacUseDay" class="mr-2 mb-0"><strong>휴직사용일수 :</strong></label>
