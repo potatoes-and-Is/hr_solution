@@ -80,35 +80,35 @@
             <table>
                 <tr>
                     <th>문서유형</th>
-                    <td><input type="text" th:value="${docType}" readonly></td>
+                    <td><input type="text" th:value="${approvalDoc.docTypeName}" readonly></td>
                 </tr>
                 <tr>
                     <th>제목</th>
-                    <td><input type="text" th:value="${approvalTitle}" readonly></td>
+                    <td><input type="text" th:value="${approvalDoc.approvalTitle}" readonly></td>
                 </tr>
                 <tr>
                     <th>내용</th>
-                    <td><textarea readonly th:text="${approvalContent}" rows="3"></textarea></td>
+                    <td><textarea readonly th:text="${approvalDoc.approvalContent}" rows="3"></textarea></td>
                 </tr>
                 <tr>
                     <th>사유</th>
-                    <td><textarea readonly th:text="${approvalReason}" rows="5"></textarea></td>
+                    <td><textarea readonly th:text="${approvalDoc.approvalReason}" rows="5"></textarea></td>
                 </tr>
                 <tr>
                     <th>휴직일</th>
                     <td>
-                        <input type="date" th:value="${leaveStartDate}" readonly> ~
-                        <input type="date" th:value="${leaveEndDate}" readonly>
+                        <input type="date" th:value="${approvalDoc.leaveStartDate}" readonly> ~
+                        <input type="date" th:value="${approvalDoc.leaveEndDate}" readonly>
                     </td>
                 </tr>
                 <tr>
                     <th>휴직 종류</th>
                     <td>
                         <select disabled>
-                            <option th:text="${leaveType}"></option>
+                            <option th:text="${approvalDoc.leaveType}"></option>
                         </select>
                     </td>
-                </tr>
+                </tr>1
             </table>
             <div class="mt-4">
                 <label for="comment" style="font-weight: bold;">코멘트</label>

@@ -20,6 +20,7 @@ import com.poi.hr.dto.vacation.MyVacationListDTO;
 import com.poi.hr.dto.vacation.VacationBalanceDTO;
 import com.poi.hr.service.VacationService;
 import com.poi.hr.service.approval.ApprovalLineService;
+import com.poi.hr.util.SecurityUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -63,10 +64,7 @@ public class MyVacationController {
             Model model) {
 
         //0. 로그인 사용자 정보 가져오기
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        AuthDetails principal = (AuthDetails) auth.getPrincipal();
-        int employeeId = principal.getEmployeeId();
-        System.out.println("회원아이디입니다요오오오오오오오옹 employeeId = " + employeeId);
+        int employeeId = SecurityUtil.getCurrentEmployeeId();
 
         //1. year 없으면 올해 년도로 지정
         if (year == null) { //null 체크를 했기에 서비스 레이어에서 int로 매개변수 받을 수 있음
