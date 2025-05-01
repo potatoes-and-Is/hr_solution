@@ -8,7 +8,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>휴직 결재 문서</title>
+    <title>휴가 결재 문서</title>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <style>
         body {
@@ -126,8 +126,6 @@
         });
     </script>
     <script>
-
-
         console.log("deptEmpMap: ", deptEmpMap);
         function openApproverModal() {
             $('#approverModal').modal('show');
@@ -287,18 +285,19 @@
 
 <div class="form-container">
 
-    <form th:action="@{/approval/save/empleave}" method="post" th:object="${approvalEmpLeaveSaveDto}"> <!-- 여기에 form 추가 -->
+    <form th:action="@{/vacation/save/vac-req}" method="post" th:object="${vacationSaveDTO}">
 
         <div id="signatures" class="signatures"></div>
 
-        <h2 style="color:#4e73df; text-align:center; margin-bottom:30px;">휴직 결재 문서</h2>
+        <h2 style="color:#4e73df; text-align:center; margin-bottom:30px;">휴가 결재 문서</h2>
 
         <table>
             <tr>
                 <th>문서유형</th>
                 <td>
-                    <input type="text" id="docTypeNameInput" class="form-control" readonly>
-                    <input type="hidden" th:field="*{docTypeCode}" id="docTypeCodeInput">
+                    <input type="text" class="form-control" th:value="'휴가 신청서'" readonly>
+                    <input type="hidden" th:field="*{docTypeCode}" th:value="'VACATION_REQUEST'">
+
                 </td>
             </tr>
             <tr>
@@ -322,19 +321,24 @@
             <tr>
                 <th>휴직일</th>
                 <td>
-                    <input type="date" th:field="*{leaveStartDate}"> ~
-                    <input type="date" th:field="*{leaveEndDate}">
+                    <input type="date" th:field="*{vacReqStartDate}"> ~
+                    <input type="date" th:field="*{vacReqEndDate}">
                 </td>
             </tr>
             <tr>
-                <th>휴직 종류</th>
+                <th>휴가사용일수</th>
+                <td>
+                    <input type="number" th:field="*{vacUseDays}" placeholder="휴가사용일수를 입력하세요.">
+                </td>
+            </tr>
+            <tr>
+                <th>휴가 종류</th>
                 <td>
                     <label>
-                        <select th:field="*{leaveType}">
-                            <option value="">-- 선택하세요 --</option>
-                            <option th:each="type : ${approvalEmpLeaveViewDto.leaveTypeList}"
-                                    th:value="${type.name()}"
-                                    th:text="${type.getDisplayName()}">
+                        <select th:field="*{vacationType}">
+                            <option th:each="type : ${vacationViewDTO.vacationTypeList}"
+                                    th:value="${type.vacTypeId}"
+                                    th:text="${type.vacTypeName}">
                             </option>
                         </select>
                     </label>
@@ -351,7 +355,7 @@
                 </span>
                         </div>
                     </div>
-<!--                    <input type="hidden" th:field="*{approvalLineList}">-->
+                    <!--                    <input type="hidden" th:field="*{approvalLineList}">-->
                 </td>
             </tr>
         </table>
@@ -374,7 +378,7 @@
                     <label for="departmentSelect">부서 선택</label>
                     <select id="departmentSelect" class="form-control" onchange="loadEmployeesByDepartment()">
                         <option value="">-- 선택하세요 --</option>
-                        <option th:each="type : ${approvalEmpLeaveViewDto.deptList}"
+                        <option th:each="type : ${vacationViewDTO.deptList}"
                                 th:value="${type.getDeptId()}"
                                 th:text="${type.getDeptName()}">
                         </option>

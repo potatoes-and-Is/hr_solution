@@ -142,7 +142,10 @@
                                 <label for="vacType">휴가유형</label>
                                 <select class="form-control" id="vacType" name="vacTypeId" required>
                                     <option value="">-- 휴가유형 선택 --</option>
-                                    <option th:each="type : ${vacationTypes}" th:value="${type.vacTypeId}" th:text="${type.vacTypeName}"></option>
+                                    <option th:each="type : ${vacationTypeList}"
+                                            th:value="${type.getVacTypeId()}"
+                                            th:text="${type.getVacTypeName()}">
+                                    </option>
                                 </select>
                             </div>
 
@@ -247,21 +250,21 @@
 
 
     //휴가 신청하기 모달 - 휴가 유형 출력(페이지 로드될 때)
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('/poihr/api/vacation/types')
-            .then(response => response.json())
-            .then(data => {
-                const vacationTypeSelect = document.getElementById('vacType');
-
-                data.forEach(type => {
-                    const option = document.createElement('option');
-                    option.value = type.vacTypeId;
-                    option.text = type.vacTypeName;
-                    vacationTypeSelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('휴가유형 가져오기를 실패하였습니다.', error));
-    });
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     fetch('/api/vacation/types')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             const vacationTypeSelect = document.getElementById('vacType');
+    //
+    //             data.forEach(type => {
+    //                 const option = document.createElement('option');
+    //                 option.value = type.vacTypeId;
+    //                 option.text = type.vacTypeName;
+    //                 vacationTypeSelect.appendChild(option);
+    //             });
+    //         })
+    //         .catch(error => console.error('휴가유형 가져오기를 실패하였습니다.', error));
+    // });
 
     //휴가 신청하기 모달 - 결재 등록으로 데이터 전송
     document.getElementById('submitVacationRequest').addEventListener('click', function () {
@@ -269,14 +272,14 @@
 
         //form 입력값 가져오기
         const requestData = {
-            vacTypeID: form.vacType.value,
-            vacUseDays: form.vacUseDays.value,
-            startDate: form.startDate.value,
-            endDate: form.endDate.value,
-            reason: form.reason.value,
+            vacTypeId: form.vacTypeId.value,
+            vacUseDay: form.vacUseDays.value,
+            vacReqStartDate: form.startDate.value,
+            vacReqEndDate: form.endDate.value,
+            approvalReason: form.reason.value,
         };
 
-        fetch('/poihr/api/vacation/vac-req/save', {
+        fetch('/api/vacation/temp/save-to-session', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -287,11 +290,10 @@
                 if (!response.ok) {
                     throw new Error('서버 오류');
                 }
-                return response.json();
             })
-            .then(data => {
+            .then(() => {
                 alert('휴가 신청이 정상적으로 상신되었습니다.');
-                location.reload(); //목록 갱신
+                window.location.href = '/vacation/save/vac-req';
             })
             .catch(error => {
                 console.error('휴가 신청 실패:', error);

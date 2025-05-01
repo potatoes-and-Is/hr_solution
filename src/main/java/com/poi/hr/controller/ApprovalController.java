@@ -2,6 +2,7 @@ package com.poi.hr.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.poi.hr.auth.model.AuthDetails;
 import com.poi.hr.domain.dept.DepPositionEmployee;
 import com.poi.hr.domain.dept.Dept;
 import com.poi.hr.domain.vacation.enums.LeaveType;
@@ -11,6 +12,8 @@ import com.poi.hr.service.approval.ApprovalEmpLeaveService;
 import com.poi.hr.service.approval.ApprovalLineService;
 import com.poi.hr.service.approval.ApprovalService;
 import com.poi.hr.service.approval.ApprovalVacService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,11 +48,19 @@ public class ApprovalController {
 //        return "approval/detail";
 //    }
 
+    /* 로그인한 사용자 ID */
+    public int loginUserId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        AuthDetails principal = (AuthDetails) auth.getPrincipal();
+        return principal.getLoginEmployeeDto().getEmployeeId();
+    }
+
     @GetMapping("/choice")
     public String saveApproval() {
         return "approval/choice";
     }
 
+    /* 휴직 신청서 작성 */
     @GetMapping("/save/empleave")
     public String showApprovalEmpLeave(Model model) throws JsonProcessingException {
         model.addAttribute("approvalEmpLeaveSaveDto", new ApprovalEmpLeaveSaveDto());
@@ -76,14 +87,15 @@ public class ApprovalController {
         return "approval/save/empleave";
     }
 
-
+    /* 휴직 신청서 저장 */
     @PostMapping("/save/empleave")
     public String SaveEmpLeave(@ModelAttribute ApprovalEmpLeaveSaveDto approvalEmpLeaveSaveDto) {
-        approvalEmpLeaveService.saveApprovalEmpLeave(approvalEmpLeaveSaveDto);
+        approvalEmpLeaveService.saveApprovalEmpLeave(approvalEmpLeaveSaveDto, loginUserId());
         approvalLineService.saveApprovalLine(approvalEmpLeaveSaveDto.getApprovalLineList());
         return "redirect:/approval/list";
     }
 
+    /* 결재 문서 전체 조회 */
     @GetMapping("/list")
     public String showApprovalList(Model model) {
         List<ApprovalListDto> approvalList = approvalService.findAllApprovals();
@@ -91,6 +103,7 @@ public class ApprovalController {
         return "approval/list";
     }
 
+    /* 결재 문서 상세 조회 */
     @GetMapping("/detail/{id}")
     public String showApprovalDetail(Model model, @PathVariable int id) {
         ApprovalDetailDto approvalDetailDto = approvalService.findById(id);
