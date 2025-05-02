@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+    <meta charset="utf-8">
+    <th:block layout:fragment="head">
+        <style>
+            /* 카드 스타일 */
+            .attendance-card {
+                width: 450px !important;
+                height: 200px !important;
+                background-color: #F6F6F6 !important;
+            }
+            .vacation-card {
+                width: 450px !important;
+                height: 200px !important;
+                background-color: #e6f0fa !important;
+            }
+            /* 출퇴근 제목 스타일 */
+            .attendance-title {
+                font-size: 1.1rem;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 10px;
+            }
+            /* 버튼 스타일 */
+            .custom-btn {
+                font-size: 1rem;
+                padding: 40px 60px;
+                background-color: #4e73df;
+                border-color: #4e73df;
+            }
+            .custom-btn:hover {
+                background-color: #2e59d9;
+                border-color: #2e59d9;
+            }
+            /* 달력 스타일 */
+            .calendar-table th, .calendar-table td {
+                font-size: 1.2rem;
+                padding: 15px;
+            }
+            .calendar-table {
+                width: 100%;
+            }
+            /* 제목 스타일 */
+            .greeting-text {
+                font-size: 2rem;
+            }
+            .date-text {
+                font-size: 1.2rem;
+            }
+            /* 휴가 글자 위치 */
+            .vacation-date {
+                margin-top: 20px;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- 컨테이너 -->
+    <div class="container">
+        <!-- "000님, 반가워요!"와 날짜 -->
+        <div class="row justify-content-start mb-4">
+            <div class="col-md-10">
+<!--                <h1 class="greeting-text text-gray-800" th:text="${userName} + '님, 반가워요!'">사용자님, 반가워요!</h1>-->
+                <h1 class="greeting-text text-gray-800" th:text="${userName} + ' ' + ${userRole} + '님 반가워요!'">사용자님, 반가워요!</h1>
+<!--                <p class="date-text" th:text="${currentDateTime}">2025.04.22(화) 20:30</p>-->
+                <p id="currentDateTime" class="date-text" th:text="${currentDateTime}">2025.04.22(화) 20:30:00</p>
+            </div>
+        </div>
+
+        <!-- 출근하기/퇴근하기/휴가 박스 -->
+        <div class="row justify-content-start mb-4">
+            <div class="col-md-10 d-flex justify-content-start">
+                <!-- 출근하기/퇴근하기 박스 -->
+                <div class="card shadow attendance-card mr-4">
+                    <div class="card-body">
+                        <h5 class="attendance-title text-left">출퇴근</h5>
+                        <div class="d-flex justify-content-start">
+                            <button class="btn btn-primary custom-btn mr-3" id="checkInButton" onclick="checkIn()" style="background-color: #1cc88a; border-color:#1cc88a">출근하기</button>
+                            <button class="btn btn-primary custom-btn" id="checkOutButton" onclick="checkOut()" style="background-color: #e74a3b; border-color:#e74a3b">퇴근하기</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 휴가 -->
+                <div class="card shadow vacation-card">
+                    <div class="card-body text-center"><br>
+                        <h5 class="m-0 font-weight-bold text-primary mb-3">휴가</h5>
+                        <p class="m-0 vacation-date">2025.05.15 휴가 (승인완료)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 달력 -->
+        <div class="row justify-content-start">
+            <div class="col-md-10">
+                <iframe src="https://calendar.google.com/calendar/embed?src=your_calendar_id&ctz=Asia/Seoul" style="border: 0" width="1000" height="600" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+    <!-- 페이지별 추가 스크립트 -->
+    <!-- 버튼 클릭 시 알림 기능 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('api/attendance/todayCheckIn', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const checkInButton = document.getElementById("checkInButton");
+
+                    if(data) {
+                        checkInButton.disabled = true;
+                        checkInButton.textContent = `출근 완료 ${data.checkInTime}`;
+                    }
+
+                    return fetch('api/attendance/todayCheckOut', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            const checkOutButton = document.getElementById('checkOutButton');
+
+                            if(data) {
+                                checkOutButton.disabled = true;
+                                checkOutButton.textContent = `퇴근 완료 ${data.checkOutTime}`;
+                            }
+                        })
+                })
+        })
+
+
+        // 출근하기 버튼 click
+        function checkIn() {
+            alert("출근 시간이 등록되었습니다: " + new Date().toLocaleString());
+            const button = document.getElementById("checkInButton");
+            const now = new Date();
+            const checkInTime = now.toTimeString().split(' ')[0];
+
+            button.disabled = true; // 버튼 비활성화
+            button.textContent = `출근 완료 ${checkInTime}`;
+
+            fetch('/api/attendance/check-in', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    checkInTime: checkInTime
+                })
+            })
+                .then(response => {
+                    if(!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .catch(error => {
+                    console.error("에러:", error);
+                    alert("출근 요청 실패:" + error.message);
+                    button.disabled = false;
+                    button.textContent = "출근하기";
+                })
+        }
+        // 퇴근하기 버튼 click
+        function checkOut() {
+            alert("퇴근 시간이 등록되었습니다: " + new Date().toLocaleString());
+            const button = document.getElementById("checkOutButton");
+            const now = new Date();
+            const checkOutTime = now.toTimeString().split(' ')[0];
+
+            button.disabled = true;
+            document.getElementById("checkOutButton").textContent = `퇴근 완료 ${checkOutTime}`;
+
+            fetch('/api/attendance/check-out', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    checkOutTime: checkOutTime
+                })
+            })
+                .then(response => {
+                    if(!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .catch(error => {
+                    console.error("에러:", error);
+                    alert("퇴근 요청 실패:" + error.message);
+                    button.disabled = false;
+                    button.textContent = "퇴근하기";
+                })
+        }
+    </script>
+    <script>
+        window.onload = function() {
+            function updateCurrentDateTime() {
+                const now = new Date();
+
+                const year = now.getFullYear();
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const date = now.getDate().toString().padStart(2, '0');
+                const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+                const day = dayNames[now.getDay()];
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+
+                const formattedDateTime = `${year}.${month}.${date}(${day}) ${hours}:${minutes}:${seconds}`;
+
+                const currentDateTimeElement = document.getElementById('currentDateTime');
+                if (currentDateTimeElement) {
+                    currentDateTimeElement.textContent = formattedDateTime;
+                }
+            }
+
+            updateCurrentDateTime(); // 🔥 첫 로딩 시 바로 실행
+            setInterval(updateCurrentDateTime, 1000); // 🔥 1초마다 갱신
+        }
+    </script>
+</th:block>
+</body>
+</html>

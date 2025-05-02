@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+  <style>
+    #dataTable tbody tr:hover {
+      cursor: pointer;
+      background-color: #f2f2f2;
+    }
+  </style>
+  <th:block layout:fragment="head">
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+  </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">부서별 휴가 내역 조회</h1>
+  <p class="mb-4">부서를 선택하면 해당 부서 직원들의 휴가 내역을 조회할 수 있습니다.</p>
+
+  <!-- 부서 선택 Form -->
+  <form th:action="@{/vacation/department}" method="get" class="mb-4 form-inline">
+    <label class="mr-2" for="deptId">부서 선택:</label>
+    <select name="deptId" id="deptId" class="form-control mr-2">
+      <option value="">-- 부서 선택 --</option>
+      <option th:each="dept : ${departments}"
+              th:value="${dept.deptId}"
+              th:text="${dept.deptName}"
+              th:selected="${#strings.equals(#strings.toString(dept.deptId), param.deptId)}">
+<!--              th:selected="${dept.deptId.toString() == param.deptId}">-->
+      </option>
+    </select>
+    <button type="submit" class="btn btn-primary">조회</button>
+  </form>
+
+  <!-- DataTable 결과 테이블 -->
+  <div class="card shadow mb-4" th:if="${vacations != null}">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">휴가 내역</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+          <tr>
+            <th>직원명</th>
+            <th>휴가 시작일</th>
+            <th>휴가 종료일</th>
+            <th>휴가 유형</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="vac : ${vacations}">
+            <td th:text="${vac.employeeName}">직원명</td>
+            <td th:text="${#temporals.format(vac.startDate, 'yyyy-MM-dd')}">시작일</td>
+            <td th:text="${#temporals.format(vac.endDate, 'yyyy-MM-dd')}">종료일</td>
+            <td th:text="${vac.vacationType}">휴가 유형</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DataTables JS -->
+<th:block layout:fragment="scripts">
+  <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#dataTable').DataTable();
+    });
+  </script>
+</th:block>
+</body>
+</html>

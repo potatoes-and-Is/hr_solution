@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>휴직 결재 문서</title>
+    <!-- Bootstrap 4 CSS 추가 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- 모달 HTML -->
+    <div class="modal fade" id="documentTypeModal" tabindex="-1" role="dialog" aria-labelledby="documentTypeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="documentTypeModalLabel">문서 유형 선택</h5>
+                </div>
+                <div class="modal-body">
+                    <button class="btn btn-primary btn-block mb-2" onclick="goToDocument('empleave')">휴직 신청서</button>
+                    <button class="btn btn-warning btn-block" onclick="goToDocument('retire')">퇴직 신청서</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 4 JS 추가 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // 페이지 로드 시 모달 자동 오픈
+        document.addEventListener('DOMContentLoaded', function() {
+            $('#documentTypeModal').modal({backdrop: 'static', keyboard: false});
+        });
+
+        // 유형 선택에 따른 이동 함수
+        function goToDocument(type) {
+            let baseUrl = '/approval/save'; // 기본 URL
+
+            switch (type) {
+                case 'empleave':
+                    window.location.href = baseUrl + '/empleave?docTypeCode=LEAVE_REQUEST&docTypeName=' + encodeURIComponent('휴직 신청서');
+                    break;
+                case 'retire':
+                    window.location.href = baseUrl + '/retire?docTypeCode=RETIRE_REQUEST&docTypeName=' + encodeURIComponent('퇴직 신청서');
+                    break;
+                default:
+                    alert('유효하지 않은 문서 유형입니다.');
+            }
+        }
+    </script>
+</head>
+</html>

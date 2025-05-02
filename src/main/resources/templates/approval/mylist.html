@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+<head>
+    <style>
+        /* 행 위에 올렸을 때 커서와 색깔 변경 */
+        #dataTable tbody tr:hover {
+            cursor: pointer;
+            background-color: #f2f2f2;
+        }
+    </style>
+    <th:block layout:fragment="head">
+        <!-- DataTables CSS -->
+        <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">내게 온 결재 목록</h1>
+    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
+    <p class="mb-4" th:text="${userName} + '님의 전자 결재 페이지입니다.'"><a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">내게 온 결재 목록</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>결재번호</th>
+                        <th>구분</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>기안일</th>
+                        <th>상태</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="approval : ${approvalMyList}">
+                        <td th:text="${approval.approvalDocId}"></td>
+                        <td th:text="${approval.docTypeName}"></td>
+                        <td th:text="${approval.approvalTitle}"></td>
+                        <td th:text="${approval.employeeName}"></td> <!-- ✅ 객체 접근 X, 문자열 필드 -->
+                        <td th:text="${approval.createdAt}"></td>
+                        <td th:text="${approval.approvalStatus}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Page level custom scripts -->
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable();
+
+            // 테이블 행 클릭 이벤트
+            $('#dataTable tbody').on('click', 'tr', function() {
+                const approvalDocId = $(this).find('td:eq(0)').text().trim();
+
+                if (approvalDocId) {
+                    window.location.href = '/approval/detail/' + approvalDocId;
+                } else {
+                    alert('결재 문서가 없습니다.')
+                }
+            })
+        });
+    </script>
+</th:block>
+</body>
+</html>
